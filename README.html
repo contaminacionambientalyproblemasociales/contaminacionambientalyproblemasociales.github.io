@@ -3,428 +3,651 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CAPS | Contaminación Ambiental y Problemas Sociales</title>
+    <title>CAPS - Contaminación y Problemas Sociales del Siglo XXI</title>
     
-    <!-- Única fuente permitida: Inter -->
+    <!-- Tailwind CSS por CDN para mantener el archivo único y ligero -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter. REGLA CRITICA: UNICA FUENTE -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Configuración de Tailwind para adaptar la paleta a un estilo "hypr.land" (oscuro, neón, bordes finos) -->
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'], // Forzando Inter como única fuente
-                    },
-                    colors: {
-                        hypr: {
-                            bg: '#050505',
-                            panel: 'rgba(20, 20, 20, 0.6)',
-                            border: 'rgba(255, 255, 255, 0.08)',
-                            borderHover: 'rgba(255, 255, 255, 0.2)',
-                            accent: '#33ccff', // Un cyan estilo neón
-                            accentSecondary: '#00ff99'
-                        }
-                    },
-                    animation: {
-                        'fade-in-up': 'fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
-                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                    },
-                    keyframes: {
-                        fadeInUp: {
-                            '0%': { opacity: '0', transform: 'translateY(20px)' },
-                            '100%': { opacity: '1', transform: 'translateY(0)' },
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-
     <style>
-        /* Estilos base y scrollbar minimalista */
+        /* Regla Crítica: UNA ÚNICA FUENTE DE TEXTO PARA TODA LA PÁGINA */
+        * {
+            font-family: 'Inter', sans-serif !important;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-base: #0a0a0f;
+            --bg-surface: #14141c;
+            --text-primary: #e2e2e5;
+            --text-secondary: #a1a1aa;
+            --accent-cyan: #00e5ff;
+            --accent-purple: #b300ff;
+            --accent-green: #00ff88;
+        }
+
         body {
-            background-color: #050505;
-            color: #e5e5e5;
-            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-base);
+            color: var(--text-primary);
             overflow-x: hidden;
+            line-height: 1.6;
         }
 
-        ::selection {
-            background-color: rgba(51, 204, 255, 0.3);
-            color: white;
+        /* Efecto Cristal (Glassmorphism) para barras de navegación */
+        .glass-nav {
+            background: rgba(10, 10, 15, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #050505;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #333;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #555;
-        }
-
-        /* Efecto Glassmorphism refinado estilo Hyprland */
-        .glass {
-            background: rgba(15, 15, 15, 0.4);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+        /* Tarjetas Estilo Hyprland: Bordes de gradiente animado invisibles hasta hacer hover */
+        .hypr-card {
+            position: relative;
+            background-color: var(--bg-surface);
+            border-radius: 12px;
+            z-index: 1;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        /* Utilidad para elementos que revelan al hacer scroll */
-        .reveal {
+        .hypr-card::before {
+            content: "";
+            position: absolute;
+            inset: -2px;
+            border-radius: 14px;
+            background: linear-gradient(120deg, var(--accent-cyan), var(--accent-purple), var(--accent-green));
+            background-size: 300% 300%;
+            z-index: -1;
             opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: opacity 0.4s ease;
+            animation: gradientBorder 4s ease infinite;
         }
-        .reveal.active {
+
+        .hypr-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .hypr-card:hover::before {
+            opacity: 1;
+        }
+
+        @keyframes gradientBorder {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Scrollbar minimalista estilo Linux */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-base);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #272733;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-cyan);
+        }
+
+        /* Transiciones fluidas entre el panel principal y la lectura de artículos */
+        .view-layer {
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+        .hidden-layer {
+            display: none !important;
+            opacity: 0;
+            transform: translateY(15px);
+        }
+        .active-layer {
+            display: block;
             opacity: 1;
             transform: translateY(0);
         }
 
-        /* Gradiente de texto */
+        /* Utilidad para degradados de texto */
         .text-gradient {
-            background: linear-gradient(135deg, #fff 0%, #a1a1aa 100%);
+            background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-        }
-        .text-gradient-accent {
-            background: linear-gradient(135deg, #33ccff 0%, #00ff99 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            background-image: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
         }
 
-        /* Ocultar scrollbar horizontal en el contenedor de tarjetas pero permitir scroll */
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
+        /* Formato enriquecido para el blog */
+        .blog-content h3 { color: white; font-size: 1.5rem; font-weight: 700; margin-top: 2.5rem; margin-bottom: 1rem; }
+        .blog-content p { margin-bottom: 1.25rem; font-size: 1.125rem; color: var(--text-secondary); line-height: 1.8; }
+        .blog-content ul { list-style-type: disc; margin-left: 1.5rem; margin-bottom: 1.5rem; color: var(--text-secondary); font-size: 1.125rem; }
+        .blog-content li { margin-bottom: 0.5rem; }
+        .blog-content strong { color: var(--text-primary); font-weight: 600; }
+        .blog-content blockquote { border-left: 4px solid var(--accent-purple); padding-left: 1rem; font-style: italic; background: rgba(255,255,255,0.02); padding: 1rem; border-radius: 0 8px 8px 0; margin: 2rem 0; }
     </style>
 </head>
-<body class="antialiased selection:bg-hypr-accent selection:text-black">
+<body class="min-h-screen flex flex-col">
 
-    <!-- Navbar Omnipresente -->
-    <nav class="fixed w-full top-0 z-50 transition-all duration-300 border-b border-transparent" id="navbar">
-        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-            <a href="#" class="text-xl font-bold tracking-widest text-white hover:text-hypr-accent transition-colors duration-300">
-                C A P S <span class="text-hypr-accent">.</span>
-            </a>
-            
-            <!-- Menú Desktop -->
-            <div class="hidden md:flex items-center space-x-8 text-sm font-medium text-neutral-400">
-                <a href="#inicio" class="hover:text-white transition-colors duration-200">Inicio</a>
-                <a href="#quienes-somos" class="hover:text-white transition-colors duration-200">Acerca De</a>
-                <a href="#tematicas" class="hover:text-white transition-colors duration-200">Temáticas</a>
-                <a href="#contacto" class="px-5 py-2 rounded-full border border-hypr-border hover:border-hypr-accent hover:text-white transition-all duration-300 bg-white/5">Contacto</a>
+    <!-- BARRA TITULAR OMNIPRESENTE -->
+    <nav class="fixed top-0 w-full z-50 glass-nav transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logotipo a la izquierda -->
+                <div class="flex-shrink-0 cursor-pointer" onclick="goHome()">
+                    <span class="text-xl font-bold tracking-widest text-white">
+                        <span class="text-gradient">CAPS</span>._
+                    </span>
+                </div>
+                <!-- Enlaces Desktop -->
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-6">
+                        <button onclick="goHome()" class="hover:text-white px-3 py-2 rounded-md text-sm font-medium text-gray-400 transition-colors">Inicio</button>
+                        <button onclick="scrollToSection('quienes-somos')" class="hover:text-white px-3 py-2 rounded-md text-sm font-medium text-gray-400 transition-colors">Quiénes Somos</button>
+                        <button onclick="scrollToSection('blog-grid')" class="hover:text-white px-3 py-2 rounded-md text-sm font-medium text-gray-400 transition-colors">Temas y Artículos</button>
+                    </div>
+                </div>
+                <!-- Botón Menú Móvil -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-btn" class="text-gray-400 hover:text-white focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                </div>
             </div>
-
-            <!-- Menú Mobile Toggle -->
-            <button class="md:hidden text-neutral-400 hover:text-white" id="mobile-menu-btn" aria-label="Abrir menú">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                </svg>
-            </button>
         </div>
-        
-        <!-- Menú Mobile Dropdown -->
-        <div class="md:hidden hidden glass absolute top-20 left-0 w-full flex-col items-center py-6 space-y-6 text-sm font-medium border-b border-hypr-border" id="mobile-menu">
-            <a href="#inicio" class="text-neutral-300 hover:text-white">Inicio</a>
-            <a href="#quienes-somos" class="text-neutral-300 hover:text-white">Acerca De</a>
-            <a href="#tematicas" class="text-neutral-300 hover:text-white">Temáticas</a>
+        <!-- Dropdown Móvil -->
+        <div id="mobile-menu" class="hidden md:hidden bg-[#0a0a0f] border-b border-gray-800">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <button onclick="goHome(); toggleMenu()" class="block w-full text-left px-3 py-2 text-base font-medium text-gray-300">Inicio</button>
+                <button onclick="scrollToSection('quienes-somos'); toggleMenu()" class="block w-full text-left px-3 py-2 text-base font-medium text-gray-300">Quiénes Somos</button>
+                <button onclick="scrollToSection('blog-grid'); toggleMenu()" class="block w-full text-left px-3 py-2 text-base font-medium text-gray-300">Temas y Artículos</button>
+            </div>
         </div>
     </nav>
 
-    <!-- Inicio / Welcome Section -->
-    <header id="inicio" class="relative min-h-screen flex flex-col items-center justify-center pt-20 overflow-hidden px-6">
-        <!-- Fondos ambientales / Glows -->
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] h-[60vw] rounded-full bg-hypr-accent/5 blur-[120px] -z-10 animate-pulse-slow"></div>
-        <div class="absolute bottom-0 left-0 w-full h-1/3 bg-gradient-to-t from-hypr-bg to-transparent z-0"></div>
-
-        <div class="z-10 w-full max-w-4xl mx-auto text-center flex flex-col items-center reveal active">
-            <!-- Título Principal -->
-            <h1 class="text-7xl md:text-9xl font-extrabold tracking-tighter text-white mb-6">
-                CAPS
+    <!-- CAPA 1: INICIO Y LISTA DE BLOGS -->
+    <main id="home-layer" class="flex-grow pt-24 view-layer active-layer">
+        
+        <!-- SECCIÓN 1: BIENVENIDA (Ligeramente desplazada a la izquierda según requerimiento) -->
+        <section id="inicio" class="relative max-w-7xl mx-auto px-6 lg:px-12 py-20 md:py-32 flex flex-col justify-center items-start overflow-hidden">
+            <!-- Efecto de luz difusa ambiental -->
+            <div class="absolute top-0 right-0 w-[40vw] h-[40vw] bg-[#00e5ff] rounded-full blur-[150px] opacity-[0.05] pointer-events-none"></div>
+            
+            <h1 class="text-6xl md:text-8xl font-black tracking-tighter mb-6 text-white">
+                C.A.P.S.
             </h1>
-            
-            <!-- Subtítulo -->
-            <h2 class="text-lg md:text-2xl font-light text-neutral-400 mb-12 tracking-wide uppercase max-w-2xl">
-                Contaminación Ambiental y los <span class="text-hypr-accent font-medium">Problemas Sociales</span> del Siglo XXI
+            <div class="w-20 h-1.5 bg-gradient-to-r from-[#00e5ff] to-[#b300ff] mb-8"></div>
+            <h2 class="text-2xl md:text-4xl font-light text-gray-300 max-w-4xl leading-tight">
+                Contaminación ambiental y los problemas sociales del siglo XXI.
             </h2>
+            <p class="mt-6 text-gray-500 max-w-2xl text-lg">
+                Proyecto Final ITLA • Historia Universal 101 • Análisis de la triple crisis planetaria.
+            </p>
+        </section>
 
-            <!-- Frase Central -->
-            <div class="relative p-8 rounded-2xl glass border-hypr-border max-w-3xl group transition-all duration-500 hover:border-hypr-borderHover">
-                <p class="text-xl md:text-3xl font-medium leading-relaxed text-gradient">
-                    "La contaminación es la letra pequeña de todos los problemas de nuestro tiempo."
-                </p>
-                <!-- Decoración esquina superior izquierda -->
-                <div class="absolute top-0 left-0 w-2 h-2 border-t border-l border-hypr-accent rounded-tl-sm -translate-x-1 -translate-y-1 opacity-50 group-hover:opacity-100 transition-opacity"></div>
-                <!-- Decoración esquina inferior derecha -->
-                <div class="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-hypr-accent rounded-br-sm translate-x-1 translate-y-1 opacity-50 group-hover:opacity-100 transition-opacity"></div>
-            </div>
-        </div>
-
-        <!-- Indicador de Scroll -->
-        <a href="#quienes-somos" class="absolute bottom-10 left-1/2 -translate-x-1/2 text-neutral-500 hover:text-white transition-colors duration-300 flex flex-col items-center animate-bounce">
-            <span class="text-xs uppercase tracking-widest mb-2">Descubrir</span>
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-            </svg>
-        </a>
-    </header>
-
-    <!-- Sección Quiénes Somos -->
-    <section id="quienes-somos" class="py-32 px-6 relative z-10 border-t border-hypr-border/50">
-        <div class="max-w-5xl mx-auto">
-            <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
-                
-                <!-- Columna Izquierda: Título -->
-                <div class="md:col-span-5 reveal">
-                    <div class="flex items-center space-x-4 mb-6">
-                        <div class="h-px bg-hypr-accent w-12"></div>
-                        <span class="text-hypr-accent text-sm font-semibold tracking-widest uppercase">Acerca de nosotros</span>
+        <!-- SECCIÓN 2: QUIÉNES SOMOS -->
+        <section id="quienes-somos" class="max-w-7xl mx-auto px-6 lg:px-12 py-16">
+            <div class="hypr-card p-8 md:p-14 border border-gray-800/50">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
+                    <div class="lg:col-span-1">
+                        <span class="text-xs font-bold uppercase tracking-widest text-[#00e5ff] mb-2 block">Introducción</span>
+                        <h3 class="text-3xl md:text-4xl font-bold text-white">Quiénes Somos</h3>
                     </div>
-                    <h3 class="text-4xl md:text-5xl font-bold text-white leading-tight">
-                        ¿Quiénes <br/> Somos?
-                    </h3>
-                </div>
-
-                <!-- Columna Derecha: Texto -->
-                <div class="md:col-span-7 reveal delay-100">
-                    <div class="glass p-8 md:p-10 rounded-3xl border border-hypr-border relative overflow-hidden group">
-                        <!-- Glow interno en hover -->
-                        <div class="absolute inset-0 bg-gradient-to-br from-hypr-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                        
-                        <p class="text-neutral-400 text-base md:text-lg leading-relaxed relative z-10">
-                            Somos un colectivo dedicado al análisis crítico, la investigación y la divulgación de las intersecciones entre la crisis climática y las dinámicas sociales. 
-                            <br><br>
-                            En el marco del siglo XXI, entendemos que la contaminación no es únicamente un fenómeno químico o físico, sino un síntoma de <span class="text-neutral-200 font-medium">desigualdad social, modelos económicos extractivistas y políticas ineficientes</span>. Nuestro portal "CAPS" busca documentar, educar y crear un espacio de reflexión profunda sobre estos retos contemporáneos.
+                    <div class="lg:col-span-2 text-gray-400 text-lg leading-relaxed space-y-6">
+                        <p>
+                            Somos un equipo de investigación universitario conformado para la asignatura de Historia Universal (ITLA). Nuestro propósito central es analizar y documentar exhaustivamente la intrincada red que vincula la degradación ecológica con el deterioro estructural de nuestra sociedad moderna.
+                        </p>
+                        <p>
+                            Frente a la triple crisis planetaria identificada por las Naciones Unidas —cambio climático, pérdida de biodiversidad y contaminación creciente— hemos diseñado este portal informativo. Aquí no analizamos el medio ambiente desde una perspectiva aislada; lo abordamos como el eje central de los mayores <strong>problemas sociales, económicos, políticos y sanitarios</strong> del siglo XXI.
                         </p>
                     </div>
                 </div>
-
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Sección Temáticas (Tarjetas estilo Blog con Navegación) -->
-    <section id="tematicas" class="py-32 px-6 bg-black relative">
-        <div class="max-w-7xl mx-auto">
-            
-            <!-- Subbarra Titular -->
-            <div class="flex flex-col md:flex-row justify-between items-end md:items-center mb-12 border-b border-hypr-border pb-6 reveal">
-                <div>
-                    <h4 class="text-3xl md:text-4xl font-bold text-white mb-2">Explorar Temáticas</h4>
-                    <p class="text-neutral-500 text-sm md:text-base">Análisis, documentales y opiniones estructuradas.</p>
-                </div>
+        <!-- SECCIÓN 3: TARJETAS ESTILO BLOG -->
+        <section id="blog-grid" class="max-w-7xl mx-auto px-6 lg:px-12 py-20">
+            <div class="mb-12">
+                <h3 class="text-3xl font-bold text-white">Módulos de Investigación</h3>
+                <p class="text-gray-500 mt-2">Seleccione un tema para acceder al artículo completo.</p>
+            </div>
+
+            <!-- Contenedor donde JS inyectará las tarjetas -->
+            <div id="cards-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Inyección JS -->
+            </div>
+        </section>
+    </main>
+
+    <!-- CAPA 2: MODO LECTURA DE ARTÍCULO (Oculto por defecto) -->
+    <main id="reader-layer" class="flex-grow pt-16 view-layer hidden-layer bg-[#0a0a0f]">
+        
+        <!-- SUB-BARRA TITULAR (Nav Siguiente/Anterior) -->
+        <div class="sticky top-16 w-full z-40 bg-[#0a0a0f]/90 backdrop-blur-md border-b border-gray-800 shadow-2xl transition-all">
+            <div class="max-w-4xl mx-auto px-4 py-4 flex justify-between items-center text-sm md:text-base font-medium">
+                <button onclick="prevArticle()" id="btn-prev" class="flex items-center text-gray-400 hover:text-white transition-colors group">
+                    <svg class="w-5 h-5 mr-2 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                    Anterior
+                </button>
                 
-                <!-- Botones Anterior y Siguiente -->
-                <div class="flex space-x-3 mt-6 md:mt-0">
-                    <button id="btn-prev" class="w-12 h-12 rounded-full glass border-hypr-border flex items-center justify-center text-neutral-400 hover:text-white hover:border-hypr-accent transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
-                    </button>
-                    <button id="btn-next" class="w-12 h-12 rounded-full glass border-hypr-border flex items-center justify-center text-neutral-400 hover:text-white hover:border-hypr-accent transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Contenedor de Tarjetas (Scroll Horizontal) -->
-            <div id="cards-container" class="flex overflow-x-auto snap-x snap-mandatory gap-6 pb-10 no-scrollbar reveal delay-200 scroll-smooth">
+                <button onclick="goHome()" class="text-[#00e5ff] hover:text-white flex flex-col items-center group">
+                    <svg class="w-5 h-5 mb-1 opacity-50 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+                    <span class="text-xs uppercase tracking-widest">Volver al Muro</span>
+                </button>
                 
-                <!-- Tarjeta 1 -->
-                <a href="#" class="min-w-[85vw] md:min-w-[400px] flex-shrink-0 snap-start group cursor-pointer block">
-                    <article class="h-full glass rounded-2xl border border-hypr-border hover:border-hypr-borderHover p-6 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_10px_30px_rgba(51,204,255,0.05)] relative overflow-hidden">
-                        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-hypr-accent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                        <div class="text-xs font-bold tracking-wider text-hypr-accent mb-4">MIGRACIÓN</div>
-                        <h5 class="text-xl text-white font-semibold mb-3">Las Migraciones y la Globalización</h5>
-                        <p class="text-neutral-400 text-sm leading-relaxed mb-6">
-                            El impacto de los desastres ecológicos en los desplazamientos humanos masivos y cómo la globalización dicta estas nuevas fronteras.
-                        </p>
-                        <div class="mt-auto flex justify-between items-center text-xs text-neutral-500 border-t border-hypr-border/50 pt-4">
-                            <span>Lectura: 5 min</span>
-                            <span class="group-hover:text-hypr-accent transition-colors">Leer Artículo →</span>
-                        </div>
-                    </article>
-                </a>
-
-                <!-- Tarjeta 2 -->
-                <a href="#" class="min-w-[85vw] md:min-w-[400px] flex-shrink-0 snap-start group cursor-pointer block">
-                    <article class="h-full glass rounded-2xl border border-hypr-border hover:border-hypr-borderHover p-6 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_10px_30px_rgba(0,255,153,0.05)] relative overflow-hidden">
-                        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-hypr-accentSecondary to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                        <div class="text-xs font-bold tracking-wider text-hypr-accentSecondary mb-4">ECONOMÍA</div>
-                        <h5 class="text-xl text-white font-semibold mb-3">Desigualdad Social y Riquezas</h5>
-                        <p class="text-neutral-400 text-sm leading-relaxed mb-6">
-                            Cómo la acumulación de capital afecta el desarrollo de infraestructuras sostenibles y perpetúa el daño ambiental en zonas vulnerables.
-                        </p>
-                        <div class="mt-auto flex justify-between items-center text-xs text-neutral-500 border-t border-hypr-border/50 pt-4">
-                            <span>Lectura: 7 min</span>
-                            <span class="group-hover:text-hypr-accentSecondary transition-colors">Leer Artículo →</span>
-                        </div>
-                    </article>
-                </a>
-
-                <!-- Tarjeta 3 -->
-                <a href="#" class="min-w-[85vw] md:min-w-[400px] flex-shrink-0 snap-start group cursor-pointer block">
-                    <article class="h-full glass rounded-2xl border border-hypr-border hover:border-hypr-borderHover p-6 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_10px_30px_rgba(51,204,255,0.05)] relative overflow-hidden">
-                        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-hypr-accent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                        <div class="text-xs font-bold tracking-wider text-hypr-accent mb-4">TECNOLOGÍA</div>
-                        <h5 class="text-xl text-white font-semibold mb-3">Revolución Tecnológica e IA</h5>
-                        <p class="text-neutral-400 text-sm leading-relaxed mb-6">
-                            El doble filo de la innovación: soluciones climáticas impulsadas por inteligencia artificial vs. la huella de carbono digital.
-                        </p>
-                        <div class="mt-auto flex justify-between items-center text-xs text-neutral-500 border-t border-hypr-border/50 pt-4">
-                            <span>Video Documental</span>
-                            <span class="group-hover:text-hypr-accent transition-colors">Ver ahora →</span>
-                        </div>
-                    </article>
-                </a>
-
-                <!-- Tarjeta 4 -->
-                <a href="#" class="min-w-[85vw] md:min-w-[400px] flex-shrink-0 snap-start group cursor-pointer block">
-                    <article class="h-full glass rounded-2xl border border-hypr-border hover:border-hypr-borderHover p-6 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_10px_30px_rgba(0,255,153,0.05)] relative overflow-hidden">
-                        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-hypr-accentSecondary to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                        <div class="text-xs font-bold tracking-wider text-hypr-accentSecondary mb-4">GEOPOLÍTICA</div>
-                        <h5 class="text-xl text-white font-semibold mb-3">Cambio Climático y Políticas</h5>
-                        <p class="text-neutral-400 text-sm leading-relaxed mb-6">
-                            Un análisis exhaustivo sobre los acuerdos internacionales y su eficacia real frente a la corrupción y el lobby industrial del siglo XXI.
-                        </p>
-                        <div class="mt-auto flex justify-between items-center text-xs text-neutral-500 border-t border-hypr-border/50 pt-4">
-                            <span>Lectura: 8 min</span>
-                            <span class="group-hover:text-hypr-accentSecondary transition-colors">Leer Artículo →</span>
-                        </div>
-                    </article>
-                </a>
-
+                <button onclick="nextArticle()" id="btn-next" class="flex items-center text-gray-400 hover:text-white transition-colors group">
+                    Siguiente
+                    <svg class="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                </button>
             </div>
         </div>
-    </section>
 
-    <!-- Footer Minimalista -->
-    <footer id="contacto" class="border-t border-hypr-border/30 bg-hypr-bg pt-16 pb-8 px-6 text-center md:text-left">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center">
-            <div class="mb-6 md:mb-0">
-                <a href="#" class="text-2xl font-bold tracking-widest text-white">
-                    C A P S <span class="text-hypr-accent">.</span>
-                </a>
-                <p class="text-neutral-500 text-sm mt-2 max-w-sm">
-                    Investigación académica sobre medio ambiente y dinámicas sociales.
-                </p>
-            </div>
+        <!-- AREA DEL CONTENIDO (Blog Completo) -->
+        <article class="max-w-4xl mx-auto px-6 py-16 pb-32">
+            <header class="mb-12">
+                <span id="article-category" class="text-sm font-bold uppercase tracking-widest text-[#00ff88] mb-4 block">Categoría</span>
+                <h1 id="article-title" class="text-4xl md:text-5xl lg:text-6xl font-black text-white leading-tight mb-8">Título del Artículo</h1>
+                <div class="h-[1px] w-full bg-gradient-to-r from-gray-800 to-transparent"></div>
+            </header>
             
-            <div class="flex space-x-6">
-                <a href="https://github.com/contaminacionambientalyproblemasociales/contaminacionambientalyproblemasociales.github.io" target="_blank" class="text-neutral-500 hover:text-white transition-colors">
-                    <!-- Icono GitHub inline SVG -->
-                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                        <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd" />
-                    </svg>
-                </a>
+            <!-- Contenido dinámico inyectado -->
+            <div id="article-content" class="blog-content">
+                <!-- Se inyecta HTML rico aquí -->
             </div>
-        </div>
-        <div class="max-w-7xl mx-auto mt-10 text-center text-neutral-600 text-xs border-t border-hypr-border/20 pt-6">
-            &copy; 2026 CAPS. Proyecto de investigación e historia. Alojado en GitHub Pages.
+        </article>
+    </main>
+
+    <footer class="border-t border-gray-900 bg-[#060608] py-12 mt-auto">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <h2 class="text-xl font-bold text-gray-300 mb-6 tracking-wide">C.A.P.S. • Fuentes y Bibliografía</h2>
+            <div class="flex flex-wrap justify-center gap-6 text-sm text-gray-500 mb-8">
+                <a href="https://www.who.int/data/gho/data/themes/air-pollution/1000" target="_blank" class="hover:text-white transition-colors">OMS — Calidad del Aire</a>
+                <a href="https://www.ipcc.ch/report/sixth-assessment-report-cycle/" target="_blank" class="hover:text-white transition-colors">IPCC — 6to Informe</a>
+                <a href="https://www.unep.org/resources/Global-Resource-Outlook-2024" target="_blank" class="hover:text-white transition-colors">PNUMA — Global Resources 2024</a>
+                <a href="https://datatopics.worldbank.org/what-a-waste/" target="_blank" class="hover:text-white transition-colors">Banco Mundial — What a Waste 2.0</a>
+            </div>
+            <p class="text-gray-700 text-sm">
+                © 2026 Proyecto Universitario ITLA - Historia Universal 101. Interfaz construida con enfoque minimalista UX/UI.
+            </p>
         </div>
     </footer>
 
-    <!-- Scripts para Interactividad UI/UX -->
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // 1. Efecto Navbar Glass On-Scroll
-            const navbar = document.getElementById('navbar');
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > 50) {
-                    navbar.classList.add('glass');
-                } else {
-                    navbar.classList.remove('glass');
-                }
-            });
-
-            // 2. Lógica Menú Móvil
-            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-            const mobileMenu = document.getElementById('mobile-menu');
-            mobileMenuBtn.addEventListener('click', () => {
-                mobileMenu.classList.toggle('hidden');
-                mobileMenu.classList.toggle('flex');
-            });
-            // Ocultar menú móvil al hacer click en un link
-            mobileMenu.querySelectorAll('a').forEach(link => {
-                link.addEventListener('click', () => {
-                    mobileMenu.classList.add('hidden');
-                    mobileMenu.classList.remove('flex');
-                });
-            });
-
-            // 3. Scroll Reveal Animations (Intersection Observer)
-            const reveals = document.querySelectorAll('.reveal');
-            const observerOptions = {
-                root: null,
-                rootMargin: '0px',
-                threshold: 0.15
-            };
-
-            const revealObserver = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('active');
-                        observer.unobserve(entry.target); // Solo anima una vez
-                    }
-                });
-            }, observerOptions);
-
-            reveals.forEach(reveal => {
-                revealObserver.observe(reveal);
-            });
-
-            // 4. Lógica de Subbarra Titular (Carrusel de Tarjetas Blog)
-            const container = document.getElementById('cards-container');
-            const btnPrev = document.getElementById('btn-prev');
-            const btnNext = document.getElementById('btn-next');
-            
-            // Función para determinar el tamaño de scroll (1 tarjeta + gap aprox)
-            const getScrollAmount = () => {
-                const card = container.querySelector('a');
-                if(!card) return 300;
-                // Ancho de la tarjeta + gap (24px por 'gap-6' de tailwind)
-                return card.offsetWidth + 24; 
-            };
-
-            btnNext.addEventListener('click', () => {
-                container.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
-            });
-
-            btnPrev.addEventListener('click', () => {
-                container.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' });
-            });
-
-            // Actualizar estado de los botones basados en el scroll
-            const updateButtons = () => {
-                const isAtStart = container.scrollLeft <= 5;
-                const isAtEnd = container.scrollLeft + container.clientWidth >= container.scrollWidth - 5;
-                
-                btnPrev.disabled = isAtStart;
-                btnNext.disabled = isAtEnd;
-            };
-
-            container.addEventListener('scroll', updateButtons);
-            // Checkeo inicial y al redimensionar ventana
-            updateButtons();
-            window.addEventListener('resize', updateButtons);
+        // Lógica sencilla Menú Móvil
+        const mobileMenu = document.getElementById('mobile-menu');
+        document.getElementById('mobile-btn').addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
         });
+        function toggleMenu() { mobileMenu.classList.add('hidden'); }
+
+        /* 
+         BASE DE DATOS DE ARTÍCULOS 
+         Procesado meticulosamente desde el documento entregado por el usuario.
+         Incluye tags HTML, imágenes (Placeholders fáciles de reemplazar) y videos (iframes).
+        */
+        const dbArticles = [
+            {
+                category: "Conceptos Fundamentales",
+                title: "¿Qué es la contaminación y su relación con la sociedad?",
+                excerpt: "Análisis de la introducción de agentes en el ambiente y cómo la sociedad y la contaminación se afectan mutuamente de forma crítica.",
+                content: `
+                    <h3>1. ¿Qué es la contaminación ambiental?</h3>
+                    <p>La contaminación ambiental es la introducción de sustancias, formas de energía o agentes en el medio ambiente que alteran sus condiciones naturales y pueden producir daños en los ecosistemas, los seres humanos y otros organismos.</p>
+                    
+                    <img src="https://placehold.co/1200x600/14141c/00e5ff?text=Imagen:+Smog+en+ciudad+industrial" alt="Smog urbano" class="w-full rounded-xl my-8 border border-gray-800 shadow-2xl object-cover aspect-video">
+                    
+                    <p>Entre los principales contaminantes se encuentran:</p>
+                    <ul>
+                        <li>Gases y partículas provenientes de vehículos e industrias.</li>
+                        <li>Aguas residuales y productos químicos.</li>
+                        <li>Plásticos y otros residuos sólidos.</li>
+                        <li>Pesticidas y fertilizantes.</li>
+                        <li>Metales pesados y derrames de petróleo.</li>
+                        <li>Contaminantes procedentes de actividades mineras.</li>
+                        <li>Ruido y contaminación lumínica.</li>
+                        <li>Gases de efecto invernadero.</li>
+                    </ul>
+                    
+                    <p>En el siglo XXI, la contaminación dejó de ser solamente un problema relacionado con determinados lugares industriales. Se ha convertido en un problema global estrechamente relacionado con la manera en que las sociedades producen, consumen, se transportan, construyen ciudades y utilizan los recursos naturales.</p>
+                    
+                    <blockquote>"El PNUMA describe la situación actual como una triple crisis planetaria, formada por el cambio climático, la pérdida de biodiversidad y la contaminación y los residuos."</blockquote>
+
+                    <h3>2. La relación entre contaminación y sociedad</h3>
+                    <p>La relación es de doble sentido:</p>
+                    
+                    <div class="p-6 bg-[#14141c] rounded-xl border border-gray-800 my-6 text-center font-bold text-[#b300ff]">
+                        La sociedad produce contaminación → La contaminación afecta a la sociedad.
+                    </div>
+
+                    <p>Las actividades humanas son una de las principales causas de la contaminación moderna. Al mismo tiempo, las consecuencias recaen sobre las personas mediante enfermedades, pérdida de recursos naturales, daños económicos, desplazamientos, problemas alimentarios y deterioro de la calidad de vida.</p>
+                    
+                    <p><strong>Por ejemplo:</strong> Producción industrial → emisiones → contaminación atmosférica → enfermedades respiratorias → gastos médicos y pérdidas económicas. <br><br>
+                    <strong>Otro ejemplo:</strong> Consumo excesivo → más residuos → acumulación de basura → contaminación del agua y suelo → daños a ecosistemas → problemas para comunidades humanas.</p>
+                    
+                    <p>Por eso, la contaminación ambiental no debe analizarse únicamente como un problema de la naturaleza. También es un problema social, económico, político y sanitario urgente.</p>
+                `
+            },
+            {
+                category: "Medio Físico",
+                title: "Impacto físico: El Aire, el Agua y el Suelo",
+                excerpt: "Los componentes vitales de nuestro planeta están bajo asedio. Un vistazo profundo a las fuentes de contaminación física.",
+                content: `
+                    <h3>3. Contaminación del aire</h3>
+                    <p>La contaminación atmosférica es uno de los problemas ambientales más importantes del siglo XXI. Sus principales fuentes son automóviles, camiones, centrales eléctricas, industrias, quema de combustibles fósiles, basura, actividades agrícolas y el uso de combustibles contaminantes dentro de los hogares.</p>
+                    
+                    <p>Entre los contaminantes más importantes están las partículas finas (PM2.5), óxidos de nitrógeno, dióxido de azufre, monóxido de carbono y ozono troposférico.</p>
+                    
+                    <blockquote>La Organización Mundial de la Salud señala que el 99 % de la población mundial está expuesta a niveles de contaminación atmosférica que superan sus recomendaciones.</blockquote>
+
+                    <p>También estima que la contaminación del aire ambiental y doméstico estuvo relacionada con aproximadamente 6,6 millones de muertes en 2021. Esto demuestra que la contaminación atmosférica no solamente afecta al medio ambiente: afecta directamente a la sociedad y a la salud pública.</p>
+
+                    <!-- ESPACIO PARA VIDEO / IFRAME FACILMENTE REEMPLAZABLE -->
+                    <div class="my-10 w-full aspect-video bg-[#14141c] rounded-xl overflow-hidden border border-gray-800 shadow-xl relative">
+                        <!-- El usuario puede cambiar este src por un video de YouTube -->
+                        <iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/e6rglsLy1Ys?si=V-k480kK8_YV9YhN" title="Video ilustrativo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+
+                    <h3>5. Contaminación del agua</h3>
+                    <p>El agua es fundamental para la vida y para prácticamente todas las actividades humanas. Sin embargo, puede contaminarse por aguas residuales sin tratamiento adecuado, petróleo, productos químicos industriales, pesticidas, metales pesados y plásticos.</p>
+                    
+                    <p>La contaminación del agua puede provocar enfermedades, afectar la agricultura, reducir la disponibilidad de agua potable y destruir ecosistemas acuáticos. También tiene consecuencias económicas. Una comunidad que depende de un río contaminado puede perder recursos relacionados con la pesca, agricultura, turismo, y agua potable. Por lo tanto, un problema ambiental puede convertirse rápidamente en un problema económico y social.</p>
+
+                    <h3>6. Contaminación del suelo</h3>
+                    <p>El suelo también puede contaminarse mediante sustancias químicas y residuos. Algunas causas son el uso excesivo de pesticidas, desechos industriales, minería, derrames de petróleo, vertederos y basura electrónica.</p>
+                    <p>La contaminación del suelo puede disminuir la productividad agrícola y permitir que sustancias peligrosas lleguen a las plantas, animales y seres humanos. Esto es especialmente importante porque la sociedad depende del suelo para producir gran parte de los alimentos.</p>
+                `
+            },
+            {
+                category: "Impacto Social",
+                title: "Desigualdad, Pobreza y Salud Pública",
+                excerpt: "Cómo la contaminación afecta de manera desproporcionada a los más vulnerables y detona crisis sanitarias globales.",
+                content: `
+                    <h3>4. Contaminación y desigualdad social</h3>
+                    <p>Uno de los aspectos más importantes de la contaminación en el siglo XXI es que sus efectos no se distribuyen de manera igualitaria.</p>
+                    
+                    <p>Las personas con menos recursos suelen estar más expuestas a determinados riesgos ambientales. Por ejemplo, pueden vivir cerca de:</p>
+                    <ul>
+                        <li>Vertederos.</li>
+                        <li>Industrias contaminantes.</li>
+                        <li>Carreteras con mucho tráfico.</li>
+                        <li>Zonas con deficiente infraestructura sanitaria.</li>
+                        <li>Ríos contaminados y áreas vulnerables a inundaciones.</li>
+                    </ul>
+
+                    <p>Además, las comunidades con menos recursos suelen tener menos capacidad económica para protegerse o recuperarse de los daños. El IPCC señala que las contribuciones históricas y actuales al cambio climático son desiguales entre regiones, y están relacionadas con los patrones de consumo y producción.</p>
+
+                    <img src="https://placehold.co/1200x600/14141c/b300ff?text=Imagen:+Desigualdad+Urbana+y+Contaminacion" alt="Desigualdad Urbana" class="w-full rounded-xl my-8 border border-gray-800 shadow-2xl object-cover aspect-video">
+
+                    <h3>12. La contaminación como problema de salud pública</h3>
+                    <p>La contaminación ambiental puede afectar prácticamente todos los aspectos de la salud. Está relacionada con enfermedades cardiovasculares, accidentes cerebrovasculares, enfermedad pulmonar obstructiva crónica, cáncer de pulmón e infecciones respiratorias.</p>
+                    <p>La OMS también señala que aproximadamente 2.1 mil millones de personas todavía cocinan utilizando combustibles o tecnologías contaminantes, lo que demuestra que la contaminación doméstica continúa siendo un importante problema social. No todas las personas tienen las mismas posibilidades de evitar la exposición.</p>
+
+                    <h3>13. Contaminación y pobreza</h3>
+                    <p>La pobreza y la contaminación pueden reforzarse mutuamente creando un círculo vicioso difícil de romper:</p>
+                    
+                    <div class="p-6 bg-red-900/10 border border-red-500/20 rounded-xl my-6 text-center text-red-200">
+                        Pobreza → menor acceso a infraestructura → gestión deficiente de residuos → contaminación → enfermedades → gastos médicos → menor capacidad económica.
+                    </div>
+
+                    <p>En países y comunidades con pocos recursos pueden existir dificultades para financiar sistemas de alcantarillado, plantas de tratamiento de agua, recogida de residuos y transporte público. Por eso, combatir la contaminación también requiere políticas de desarrollo social urgentes.</p>
+                `
+            },
+            {
+                category: "Consumo Moderno",
+                title: "Residuos y la peligrosa Sociedad de Consumo",
+                excerpt: "El modelo lineal de extraer, usar y tirar está ahogando al planeta en plásticos y desechos insostenibles.",
+                content: `
+                    <h3>7. El problema de los residuos</h3>
+                    <p>El crecimiento de las ciudades, la población y el consumo ha aumentado considerablemente la cantidad de residuos generados.</p>
+                    
+                    <blockquote>Según el Banco Mundial, en 2016 se generaron aproximadamente 2.01 mil millones de toneladas de residuos sólidos municipales en el mundo. El informe "What a Waste 2.0" proyectó que esta cantidad podría llegar a 3.40 mil millones de toneladas para 2050 si no se producen cambios importantes.</blockquote>
+
+                    <p>El problema no consiste solamente en producir basura, sino también en cómo se gestiona. Cuando los residuos se depositan o queman de manera inadecuada pueden contaminar el suelo, las aguas subterráneas, liberar gases tóxicos, aumentar el riesgo de inundaciones urbanas, dañar animales y contaminar los océanos.</p>
+
+                    <!-- Imagen ilustrativa -->
+                    <img src="https://placehold.co/1200x500/14141c/00ff88?text=Imagen:+Vertedero+y+Contaminación+por+Plástico" alt="Plásticos" class="w-full rounded-xl my-8 border border-gray-800 shadow-xl object-cover">
+
+                    <h3>8. Plásticos y sociedad de consumo</h3>
+                    <p>El plástico representa uno de los ejemplos más claros de la relación entre contaminación y hábitos sociales. Los plásticos tienen numerosas ventajas: son baratos, ligeros, resistentes y fáciles de producir. Se utilizan en envases, transporte, medicina, electrónica y prácticamente todos los sectores de la economía.</p>
+                    
+                    <p>El problema colosal aparece cuando una sociedad utiliza grandes cantidades de productos de <strong>corta duración (de un solo uso)</strong> y posteriormente los desecha. Entre los principales problemas están:</p>
+                    <ul>
+                        <li>Acumulación de plástico en vertederos.</li>
+                        <li>Contaminación severa marina y de ríos.</li>
+                        <li>Fragmentación en microplásticos que entran a la cadena alimenticia.</li>
+                        <li>Daños a animales que lo ingieren por accidente.</li>
+                        <li>Dificultad técnica y económica para reciclar determinados productos.</li>
+                    </ul>
+
+                    <p>El Banco Mundial estimó que los plásticos representan aproximadamente el 12 % de los residuos sólidos municipales. Esto demuestra en última instancia que el problema de los residuos está directamente fundamentado en el modelo de consumo contemporáneo.</p>
+                `
+            },
+            {
+                category: "Macro Perspectiva",
+                title: "Cambio Climático, Urbanización y Economía",
+                excerpt: "Una vista satelital a cómo nuestras ciudades, nuestras industrias y nuestra economía alteran irreversiblemente la biósfera.",
+                content: `
+                    <h3>9. Contaminación y cambio climático</h3>
+                    <p>Aunque contaminación ambiental y cambio climático no son exactamente lo mismo, están profundamente relacionados. La utilización de combustibles fósiles (carbón, petróleo, gas natural) produce contaminantes atmosféricos y gases de efecto invernadero simultáneamente.</p>
+                    
+                    <p>Cuando se queman, liberan principalmente dióxido de carbono (CO₂). El IPCC concluyó que las actividades humanas han causado inequívocamente el calentamiento global. La temperatura media alcanzó aproximadamente 1,1 °C por encima de los niveles preindustriales. El cambio climático puede aumentar problemas sociales como olas de calor, sequías, inundaciones, escasez de agua y desplazamientos forzados de población.</p>
+
+                    <h3>10. Urbanización y contaminación</h3>
+                    <p>El siglo XXI se caracteriza por una enorme expansión urbana. Las ciudades concentran personas, vehículos, industrias, construcciones y generación brutal de residuos y demanda energética. Esto genera oportunidades económicas, pero también aumenta de manera crítica las presiones ambientales.</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
+                        <div class="bg-[#14141c] p-6 rounded-xl border border-gray-800">
+                            <h4 class="font-bold text-white mb-2">Ciudad mal planificada</h4>
+                            <ul class="mb-0 text-sm">
+                                <li>Congestión vehicular crónica.</li>
+                                <li>Mala calidad del aire.</li>
+                                <li>Escasez de áreas verdes.</li>
+                                <li>Problemas de gestión de residuos.</li>
+                                <li>Contaminación acústica y lumínica.</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-900/50 p-6 rounded-xl border border-gray-800">
+                            <h4 class="font-bold text-[#00e5ff] mb-2">Ciudad sostenible</h4>
+                            <p class="text-sm">Una ciudad sostenible necesita forzosamente combinar desarrollo económico inteligente, bienestar social inclusivo y protección y planificación ambiental.</p>
+                        </div>
+                    </div>
+
+                    <h3>11. Contaminación y economía</h3>
+                    <p>La contaminación también tiene un enorme impacto económico negativo en los estados y naciones. Puede generar enormes <strong>gastos sanitarios</strong> debido a las enfermedades asociadas; <strong>pérdida de productividad</strong> porque la fuerza laboral enferma; <strong>daños a la agricultura</strong>; <strong>caída del turismo</strong> al deteriorarse playas y recursos naturales; y masivos <strong>costos de limpieza</strong>.</p>
+                    <p>Por eso, prevenir la contaminación de manera proactiva es económicamente mucho más eficiente que intentar solucionar reactivamente sus consecuencias.</p>
+                `
+            },
+            {
+                category: "Responsabilidades",
+                title: "El Papel Activo de Empresas, Gobiernos y Ciudadanos",
+                excerpt: "Nadie escapa a la crisis. ¿Cuáles son las cuotas de responsabilidad para las corporaciones, los estados y el individuo?",
+                content: `
+                    <h3>14. El papel de las empresas</h3>
+                    <p>Las empresas tienen un papel fundamental porque producen los bienes y servicios que requieren extraer materias primas, agua y energía. Una empresa contribuye a la contaminación si utiliza procesos sucios o produce bienes con empaques desechables.</p>
+                    
+                    <p>Sin embargo, también pueden ser parte de la solución liderando mediante la adopción de energías renovables, eficiencia energética, fomento del reciclaje, implementación de la <strong>economía circular</strong>, y tecnologías menos contaminantes. Hoy en día, la sostenibilidad ambiental es sinónimo de responsabilidad corporativa y viabilidad a largo plazo.</p>
+
+                    <img src="https://placehold.co/1200x500/14141c/00ccff?text=Imagen:+Energías+Renovables+en+Industrias" alt="Industria verde" class="w-full rounded-xl my-8 border border-gray-800 shadow-xl object-cover">
+
+                    <h3>15. El papel de los gobiernos</h3>
+                    <p>Los gobiernos tienen la obligación y la responsabilidad ética de establecer reglas jurídicas y operativas que reduzcan la contaminación. Medidas críticas incluyen:</p>
+                    <ul>
+                        <li>Establecer límites estrictos de emisiones y normas de calidad del aire y agua.</li>
+                        <li>Desarrollar y financiar sistemas modernos de gestión de residuos.</li>
+                        <li>Aplicar impuestos a entidades contaminantes.</li>
+                        <li>Incentivar drásticamente el uso de energías limpias y expandir el transporte público.</li>
+                        <li>Educar ambientalmente a su población.</li>
+                    </ul>
+                    <p>La cooperación internacional diplomática es igualmente vital, ya que problemas como el CO2 y los plásticos oceánicos no respetan las fronteras nacionales trazadas por humanos.</p>
+
+                    <h3>16. El papel de los ciudadanos</h3>
+                    <p>La sociedad no está formada solamente por macro-entidades. Los individuos pueden y deben influir diariamente. Acciones como reducir el consumo superfluo, separar residuos, usar bicicleta o transporte público, y evitar productos desechables suman. Además, el ciudadano tiene el poder de <strong>exigir políticas ambientales</strong> a través del activismo y su voto.</p>
+                    <p>No obstante, es vital recalcar: <em>la responsabilidad no debe recaer únicamente en el individuo</em>. Las decisiones macroeconómicas de los gobiernos e industrias tienen un impacto estructural monumentalmente mayor.</p>
+                `
+            },
+            {
+                category: "Soluciones",
+                title: "Educación, Tecnología y el Camino hacia el Futuro",
+                excerpt: "La transición obligatoria de un modelo lineal destructivo hacia una civilización circular e informada.",
+                content: `
+                    <h3>17. Educación ambiental</h3>
+                    <p>La educación es la piedra angular, porque las personas necesitan comprender íntimamente la relación causa-efecto entre sus acciones y su entorno. Desarrollar una cultura preventiva empodera a las comunidades para rechazar prácticas nocivas y exigir mejores políticas a sus líderes. Una sociedad desinformada es víctima pasiva de la degradación.</p>
+
+                    <h3>18. Tecnología: problema y solución</h3>
+                    <p>La tecnología presenta una marcada ambivalencia. Por un lado, la obsolescencia programada y el consumo digital producen enormes volúmenes de residuos electrónicos tóxicos. Por el otro, el avance tecnológico nos ofrece herramientas milagrosas: paneles solares hiper-eficientes, vehículos eléctricos, agricultura de precisión, reciclaje robótico e Inteligencia Artificial para gestión energética.</p>
+                    <p>La pregunta no es si la tecnología es "buena o mala", sino bajo qué marcos éticos, regulatorios y económicos se diseña e implementa.</p>
+
+                    <h3>19. Economía circular y Biodiversidad</h3>
+                    <p>Uno de los conceptos que definirá la supervivencia en el siglo XXI es la <strong>economía circular</strong>. Debemos erradicar el modelo lineal (Extraer → producir → consumir → desechar) y abrazar el nuevo paradigma:</p>
+                    
+                    <div class="p-6 bg-[#14141c] border border-green-500/30 rounded-xl my-6 text-center font-bold text-[#00ff88]">
+                        Reducir → Reutilizar → Reparar → Reciclar → Recuperar materiales
+                    </div>
+
+                    <p>Mantener los materiales circulando en la economía reduce drásticamente la extracción de nueva materia prima. Esto alivia la asfixiante presión sobre la <strong>biodiversidad</strong> natural, evitando la destrucción de ecosistemas que nos proveen servicios insustituibles (polinización, purificación de agua, regulación del clima).</p>
+                    
+                    <!-- Video Ilustrativo Soluciones -->
+                    <div class="my-10 w-full aspect-video bg-[#14141c] rounded-xl overflow-hidden border border-gray-800 shadow-xl relative">
+                        <!-- El usuario puede cambiar este src por un video de YouTube -->
+                        <iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/zCRKvDzzqKI?si=V-k480kK8_YV9YhN" title="Economia Circular" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                `
+            },
+            {
+                category: "Conclusión",
+                title: "Enfrentando la Contaminación en el Siglo XXI",
+                excerpt: "Reflexión final sobre el mayor reto de nuestra civilización: La sostenibilidad o el colapso social.",
+                content: `
+                    <h3>21. La contaminación en el futuro</h3>
+                    <p>Si la trayectoria actual no se corrige severamente, los problemas socio-ambientales colapsarán sistemas enteros debido a la combinación de crecimiento urbano desmedido, hiperconsumo, cambio climático y degradación agónica de los ecosistemas.</p>
+                    <p>El Banco Mundial advierte sobre el crecimiento inmanejable de los residuos hacia 2050. El IPCC enfatiza que la ventana de tiempo para mitigar el calentamiento global se cierra velozmente, y que las políticas que implementemos en <em>esta década</em> tendrán ecos durante siglos.</p>
+
+                    <h3>22. ¿Cómo puede la sociedad enfrentar esto?</h3>
+                    <p>La acción debe ser un frente unido y simultáneo en todas las esferas humanas:</p>
+                    <ul>
+                        <li><strong>Individual:</strong> Consumo consciente y reducción radical de desperdicios.</li>
+                        <li><strong>Comunitario:</strong> Activismo local y protección vecinal del medio ambiente.</li>
+                        <li><strong>Empresarial:</strong> Abandono de combustibles fósiles, responsabilidad en el ciclo de vida del producto.</li>
+                        <li><strong>Gubernamental:</strong> Imperio de la ley ambiental e inversión pública masiva en infraestructuras verdes.</li>
+                        <li><strong>Internacional:</strong> Solidaridad global, acuerdos vinculantes y financiamiento a naciones vulnerables.</li>
+                    </ul>
+
+                    <h3>23. Conclusión Final</h3>
+                    <p>La contaminación ambiental representa, sin lugar a duda, el gran desafío existencial de la sociedad moderna. Como hemos detallado, no es simplemente un problema de "salvar árboles", es un <strong>colapso social ralentizado</strong>. Afecta mortalmente a la salud pública, mutila la economía, agudiza la pobreza extrema y socava la estabilidad misma de nuestras ciudades.</p>
+                    
+                    <p>La evidencia científica (OMS, IPCC, PNUMA) es irrefutable. Ya no basta con "intentar contaminar menos". Requerimos un rediseño holístico de la civilización: cómo producimos energía, cómo urbanizamos, cómo nos alimentamos y cómo definimos el progreso.</p>
+
+                    <blockquote class="text-xl">
+                        "La protección de nuestro entorno natural y la supervivencia y bienestar de la sociedad son objetivos inseparables y mutuamente dependientes. Una verdadera sociedad sostenible satisface sus necesidades actuales sin aniquilar las bases operativas de las futuras generaciones."
+                    </blockquote>
+                `
+            }
+        ];
+
+        // Variables de Estado de la Interfaz
+        let currentIndex = 0;
+        const homeLayer = document.getElementById('home-layer');
+        const readerLayer = document.getElementById('reader-layer');
+
+        function renderBlogCards() {
+            const container = document.getElementById('cards-container');
+            container.innerHTML = '';
+            
+            dbArticles.forEach((article, index) => {
+                const html = `
+                    <div class="hypr-card p-8 flex flex-col h-full cursor-pointer group" onclick="openArticle(${index})">
+                        <span class="text-xs font-bold uppercase tracking-widest text-[#00e5ff] mb-3 block">${article.category}</span>
+                        <h4 class="text-2xl font-bold text-white mb-4 line-clamp-3 leading-snug">${article.title}</h4>
+                        <p class="text-gray-400 text-sm flex-grow line-clamp-4 mb-6 leading-relaxed">${article.excerpt}</p>
+                        
+                        <div class="mt-auto flex items-center text-[#b300ff] group-hover:text-[#00ff88] font-bold text-sm tracking-wide transition-colors">
+                            Leer publicación
+                            <svg class="w-4 h-4 ml-2 transform group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += html;
+            });
+        }
+
+        function openArticle(index) {
+            currentIndex = index;
+            const article = dbArticles[index];
+            
+            // Llenar contenido del lector
+            document.getElementById('article-category').textContent = article.category;
+            document.getElementById('article-title').textContent = article.title;
+            document.getElementById('article-content').innerHTML = article.content;
+            
+            // Actualizar botones de navegación en la sub-barra
+            document.getElementById('btn-prev').style.visibility = index === 0 ? 'hidden' : 'visible';
+            document.getElementById('btn-next').style.visibility = index === dbArticles.length - 1 ? 'hidden' : 'visible';
+
+            // Transición suave al modo lector
+            homeLayer.classList.remove('active-layer');
+            homeLayer.classList.add('hidden-layer');
+            
+            setTimeout(() => {
+                readerLayer.classList.remove('hidden-layer');
+                readerLayer.classList.add('active-layer');
+                window.scrollTo({ top: 0, behavior: 'auto' });
+            }, 350); 
+        }
+
+        function nextArticle() {
+            if (currentIndex < dbArticles.length - 1) {
+                openArticle(currentIndex + 1);
+            }
+        }
+
+        function prevArticle() {
+            if (currentIndex > 0) {
+                openArticle(currentIndex - 1);
+            }
+        }
+
+        function goHome() {
+            // Transición suave de vuelta al menú/muro
+            readerLayer.classList.remove('active-layer');
+            readerLayer.classList.add('hidden-layer');
+            
+            setTimeout(() => {
+                homeLayer.classList.remove('hidden-layer');
+                homeLayer.classList.add('active-layer');
+                // Al volver, escrollear suavemente a la grilla de artículos para seguir leyendo
+                setTimeout(()=> scrollToSection('blog-grid', 100), 50);
+            }, 350);
+        }
+
+        function scrollToSection(id, offsetAdd = 0) {
+            const isReading = readerLayer.classList.contains('active-layer');
+            if (isReading) {
+                // Si está en el lector, primero salir y luego navegar
+                goHome();
+                setTimeout(() => executeScroll(id, offsetAdd), 450);
+            } else {
+                executeScroll(id, offsetAdd);
+            }
+        }
+
+        function executeScroll(id, offsetAdd) {
+            const element = document.getElementById(id);
+            if (element) {
+                const yOffset = -90 + offsetAdd; // Espacio para la barra flotante
+                const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                window.scrollTo({top: y, behavior: 'smooth'});
+            }
+        }
+
+        // Inicializar renderizado de tarjetas en carga
+        document.addEventListener('DOMContentLoaded', () => {
+            renderBlogCards();
+        });
+
     </script>
 </body>
 </html>
