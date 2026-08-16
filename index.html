@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hypr.Eco // Contaminación & Sociedad S.XXI</title>
+    <!-- Fonts: JetBrains Mono for Unix/Code style & Inter for UI readability -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        catppuccin: {
+                            base: '#1e1e2e',
+                            mantle: '#181825',
+                            crust: '#11111b',
+                            surface: '#313244',
+                            text: '#cdd6f4',
+                            subtext: '#a6adc8',
+                            blue: '#89b4fa',
+                            lavender: '#b4befe',
+                            green: '#a6e3a1',
+                            red: '#f38ba8',
+                            peach: '#fab387',
+                            yellow: '#f9e2af',
+                            mauve: '#cba6f7',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom Hyprland Rice & Blur Animations */
+        body {
+            background-color: #0f0f17;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(137, 180, 250, 0.08) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(166, 227, 161, 0.08) 0px, transparent 50%),
+                radial-gradient(at 50% 50%, rgba(203, 166, 247, 0.05) 0px, transparent 50%);
+            background-attachment: fixed;
+            color: #cdd6f4;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Hyprland Animated Glowing Active Border */
+        .hypr-tile {
+            position: relative;
+            background: rgba(24, 24, 37, 0.75);
+            backdrop-filter: blur(16px);
+            border-radius: 12px;
+            transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.3s ease;
+        }
+
+        .hypr-tile::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, rgba(137, 180, 250, 0.2), rgba(166, 227, 161, 0.2), rgba(203, 166, 247, 0.2));
+            z-index: -1;
+            transition: opacity 0.3s ease;
+            opacity: 0.5;
+        }
+
+        .hypr-tile:hover::before, .hypr-tile.active::before {
+            opacity: 1;
+            background: linear-gradient(135deg, #89b4fa, #a6e3a1, #cba6f7);
+            background-size: 200% 200%;
+            animation: hyprGlow 4s ease infinite;
+        }
+
+        .hypr-tile:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px -10px rgba(137, 180, 250, 0.25);
+        }
+
+        @keyframes hyprGlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Waybar style pill elements */
+        .waybar-pill {
+            background: rgba(30, 30, 46, 0.85);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #11111b;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #313244;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #89b4fa;
+        }
+
+        /* Scanline effect for terminal */
+        .scanlines {
+            background: linear-gradient(
+                rgba(18, 16, 16, 0) 50%, 
+                rgba(0, 0, 0, 0.25) 50%
+            );
+            background-size: 100% 4px;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between p-2 md:p-4 selection:bg-catppuccin-blue selection:text-catppuccin-crust">
+
+    <!-- TOP BAR (Waybar Style Navigation) -->
+    <header class="w-full mb-4 flex flex-wrap items-center justify-between gap-2 px-2">
+        <!-- Workspaces -->
+        <div class="waybar-pill px-3 py-1.5 flex items-center gap-2 text-xs font-mono">
+            <span class="text-catppuccin-mauve font-bold flex items-center gap-1">
+                <i data-lucide="layout-grid" class="w-3.5 h-3.5"></i> HYPR-BLOG
+            </span>
+            <div class="h-3 w-px bg-catppuccin-surface mx-1"></div>
+            <button onclick="switchWorkspace(1)" id="ws-1" class="ws-btn px-2 py-0.5 rounded bg-catppuccin-blue text-catppuccin-crust font-bold transition">1: Inicio</button>
+            <button onclick="switchWorkspace(2)" id="ws-2" class="ws-btn px-2 py-0.5 rounded hover:bg-catppuccin-surface text-catppuccin-subtext transition">2: Temas</button>
+            <button onclick="switchWorkspace(3)" id="ws-3" class="ws-btn px-2 py-0.5 rounded hover:bg-catppuccin-surface text-catppuccin-subtext transition">3: Consola</button>
+            <button onclick="switchWorkspace(4)" id="ws-4" class="ws-btn px-2 py-0.5 rounded hover:bg-catppuccin-surface text-catppuccin-subtext transition">4: Dev Bio</button>
+        </div>
+
+        <!-- Active Window Title -->
+        <div class="hidden lg:flex waybar-pill px-4 py-1.5 text-xs font-mono text-catppuccin-subtext items-center gap-2">
+            <i data-lucide="terminal" class="w-3.5 h-3.5 text-catppuccin-green"></i>
+            <span>~/blog/contaminacion-y-sociedad-xxi.md</span>
+        </div>
+
+        <!-- System Eco Indicators & Clock -->
+        <div class="waybar-pill px-3 py-1.5 flex items-center gap-3 text-xs font-mono">
+            <div class="flex items-center gap-1.5 text-catppuccin-red">
+                <i data-lucide="flame" class="w-3.5 h-3.5"></i>
+                <span>CO₂: <span class="font-bold">424 ppm</span></span>
+            </div>
+            <div class="hidden sm:flex items-center gap-1.5 text-catppuccin-peach">
+                <i data-lucide="thermometer-snowflake" class="w-3.5 h-3.5"></i>
+                <span>+1.25°C</span>
+            </div>
+            <div class="flex items-center gap-1.5 text-catppuccin-green border-l border-catppuccin-surface pl-3">
+                <i data-lucide="clock" class="w-3.5 h-3.5"></i>
+                <span id="live-clock">00:00:00</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN WORKSPACE CONTAINER -->
+    <main class="flex-1 max-w-7xl w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-4 pb-4">
+
+        <!-- WORKSPACE 1: HERO & OVERVIEW (Default View) -->
+        <!-- Left Tiling Window: Portfolio Intro & Eco Mission -->
+        <section class="lg:col-span-7 flex flex-col gap-4">
+            
+            <div class="hypr-tile active p-6 flex flex-col justify-between relative overflow-hidden">
+                <!-- Window Titlebar -->
+                <div class="flex items-center justify-between pb-4 mb-4 border-b border-catppuccin-surface/50 text-xs font-mono">
+                    <div class="flex items-center gap-2">
+                        <span class="w-3 h-3 rounded-full bg-catppuccin-red inline-block"></span>
+                        <span class="w-3 h-3 rounded-full bg-catppuccin-yellow inline-block"></span>
+                        <span class="w-3 h-3 rounded-full bg-catppuccin-green inline-block"></span>
+                        <span class="ml-2 text-catppuccin-subtext">bienvenida.sh — Hyprland Eco-Rice</span>
+                    </div>
+                    <span class="text-catppuccin-mauve bg-catppuccin-surface/60 px-2 py-0.5 rounded">v2.026</span>
+                </div>
+
+                <!-- Hero Content -->
+                <div class="space-y-4">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-catppuccin-blue/10 border border-catppuccin-blue/30 text-catppuccin-blue text-xs font-mono">
+                        <i data-lucide="code-2" class="w-3.5 h-3.5"></i>
+                        <span>Desarrollador Web & Activista Climático</span>
+                    </div>
+
+                    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white leading-tight">
+                        Contaminación Ambiental <br>
+                        <span class="bg-clip-text text-transparent bg-gradient-to-r from-catppuccin-blue via-catppuccin-mauve to-catppuccin-green">
+                            & Problemas Sociales del S.XXI
+                        </span>
+                    </h1>
+
+                    <p class="text-catppuccin-subtext text-sm sm:text-base leading-relaxed">
+                        Un espacio de análisis crítico donde el <strong>desarrollo web, la ciencia de datos y la conciencia ecológica</strong> se intersectan. Exponemos el impacto del antropoceno, las brechas de desigualdad social y la urgente necesidad de una transición justa.
+                    </p>
+                </div>
+
+                <!-- Feature Stats Row -->
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 my-6">
+                    <div class="p-3 rounded-lg bg-catppuccin-crust/60 border border-catppuccin-surface/40">
+                        <span class="text-xs font-mono text-catppuccin-subtext block">Residuos Plásticos</span>
+                        <span class="text-xl font-bold font-mono text-catppuccin-red">+400Mt/año</span>
+                    </div>
+                    <div class="p-3 rounded-lg bg-catppuccin-crust/60 border border-catppuccin-surface/40">
+                        <span class="text-xs font-mono text-catppuccin-subtext block">Justicia Climática</span>
+                        <span class="text-xl font-bold font-mono text-catppuccin-peach">10% emite 50%</span>
+                    </div>
+                    <div class="p-3 rounded-lg bg-catppuccin-crust/60 border border-catppuccin-surface/40 col-span-2 sm:col-span-1">
+                        <span class="text-xs font-mono text-catppuccin-subtext block">E-Waste Digital</span>
+                        <span class="text-xl font-bold font-mono text-catppuccin-yellow">62M Toneladas</span>
+                    </div>
+                </div>
+
+                <!-- CTA Actions -->
+                <div class="flex flex-wrap items-center gap-3 pt-2">
+                    <a href="#articulos" onclick="switchWorkspace(2)" class="px-5 py-2.5 rounded-lg bg-catppuccin-blue text-catppuccin-crust font-semibold font-mono text-sm hover:bg-catppuccin-lavender transition flex items-center gap-2 shadow-lg shadow-catppuccin-blue/20">
+                        <i data-lucide="book-open" class="w-4 h-4"></i> Explorar Artículos
+                    </a>
+                    <a href="#terminal" onclick="switchWorkspace(3)" class="px-5 py-2.5 rounded-lg bg-catppuccin-surface/80 text-catppuccin-text font-mono text-sm hover:bg-catppuccin-surface transition border border-catppuccin-subtext/20 flex items-center gap-2">
+                        <i data-lucide="terminal" class="w-4 h-4 text-catppuccin-green"></i> Abrir Consola
+                    </a>
+                </div>
+            </div>
+
+            <!-- Quick Dev Stack & Eco Pledge -->
+            <div class="hypr-tile p-5 flex items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="p-3 rounded-xl bg-catppuccin-green/10 text-catppuccin-green">
+                        <i data-lucide="leaf" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-semibold text-white">Green Web Development</h4>
+                        <p class="text-xs text-catppuccin-subtext">Diseño minimalista optimizado para bajo consumo energético y reducida huella de carbono digital.</p>
+                    </div>
+                </div>
+                <div class="hidden sm:block text-right font-mono text-xs text-catppuccin-mauve bg-catppuccin-crust px-3 py-1.5 rounded-lg border border-catppuccin-surface">
+                    ⚡ 0.12g CO₂ / visita
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Right Tiling Window: Major Topics Grid (Tiling layout) -->
+        <section class="lg:col-span-5 flex flex-col gap-4">
+
+            <!-- Window Header -->
+            <div class="flex items-center justify-between text-xs font-mono text-catppuccin-subtext px-1">
+                <span class="flex items-center gap-1.5">
+                    <i data-lucide="layers" class="w-4 h-4 text-catppuccin-blue"></i>
+                    <span>EJES_TEMATICOS.conf</span>
+                </span>
+                <span class="text-catppuccin-green">Tiling Layout: Active</span>
+            </div>
+
+            <!-- Topic Tile 1: Contaminación & E-Waste -->
+            <article class="hypr-tile p-5 group cursor-pointer" onclick="openTopicModal('e-waste')">
+                <div class="flex items-start justify-between mb-2">
+                    <div class="p-2 rounded-lg bg-catppuccin-red/10 text-catppuccin-red">
+                        <i data-lucide="cpu" class="w-5 h-5"></i>
+                    </div>
+                    <span class="text-xs font-mono text-catppuccin-subtext bg-catppuccin-crust px-2 py-0.5 rounded">Tecnología vs Naturaleza</span>
+                </div>
+                <h3 class="text-lg font-bold text-white group-hover:text-catppuccin-blue transition">Basura Electrónica y Brechas Digitales</h3>
+                <p class="text-xs text-catppuccin-subtext mt-1 line-clamp-2">
+                    Cómo el consumo desmedido de hardware en el Norte Global genera vertederos tóxicos en el Sur Global.
+                </p>
+                <div class="mt-3 flex items-center justify-between text-xs font-mono text-catppuccin-mauve pt-2 border-t border-catppuccin-surface/30">
+                    <span>Leer análisis →</span>
+                    <span class="text-catppuccin-subtext">5 min lectura</span>
+                </div>
+            </article>
+
+            <!-- Topic Tile 2: Justicia Ambiental -->
+            <article class="hypr-tile p-5 group cursor-pointer" onclick="openTopicModal('justicia')">
+                <div class="flex items-start justify-between mb-2">
+                    <div class="p-2 rounded-lg bg-catppuccin-peach/10 text-catppuccin-peach">
+                        <i data-lucide="scale" class="w-5 h-5"></i>
+                    </div>
+                    <span class="text-xs font-mono text-catppuccin-subtext bg-catppuccin-crust px-2 py-0.5 rounded">Desigualdad Social</span>
+                </div>
+                <h3 class="text-lg font-bold text-white group-hover:text-catppuccin-peach transition">Racismo Ambiental y Desigualdad</h3>
+                <p class="text-xs text-catppuccin-subtext mt-1 line-clamp-2">
+                    Las poblaciones históricamente vulnerables sufren la mayor exposición a contaminantes y eventos extremos.
+                </p>
+                <div class="mt-3 flex items-center justify-between text-xs font-mono text-catppuccin-peach pt-2 border-t border-catppuccin-surface/30">
+                    <span>Leer análisis →</span>
+                    <span class="text-catppuccin-subtext">7 min lectura</span>
+                </div>
+            </article>
+
+            <!-- Topic Tile 3: Microplásticos y Salud -->
+            <article class="hypr-tile p-5 group cursor-pointer" onclick="openTopicModal('plásticos')">
+                <div class="flex items-start justify-between mb-2">
+                    <div class="p-2 rounded-lg bg-catppuccin-yellow/10 text-catppuccin-yellow">
+                        <i data-lucide="waves" class="w-5 h-5"></i>
+                    </div>
+                    <span class="text-xs font-mono text-catppuccin-subtext bg-catppuccin-crust px-2 py-0.5 rounded">Océanos & Salud</span>
+                </div>
+                <h3 class="text-lg font-bold text-white group-hover:text-catppuccin-yellow transition">La Era Invisible del Microplástico</h3>
+                <p class="text-xs text-catppuccin-subtext mt-1 line-clamp-2">
+                    Infiltrados en la cadena alimentaria global y la sangre humana: la contaminación silenciosa del siglo XXI.
+                </p>
+                <div class="mt-3 flex items-center justify-between text-xs font-mono text-catppuccin-yellow pt-2 border-t border-catppuccin-surface/30">
+                    <span>Leer análisis →</span>
+                    <span class="text-catppuccin-subtext">4 min lectura</span>
+                </div>
+            </article>
+
+        </section>
+
+        <!-- FULL WIDTH CLI TERMINAL SECTION (Interactive Hyprland Shell) -->
+        <section class="lg:col-span-12 mt-2">
+            <div class="hypr-tile p-4 font-mono text-sm bg-catppuccin-crust/90 relative overflow-hidden border border-catppuccin-surface">
+                
+                <!-- Terminal Header -->
+                <div class="flex items-center justify-between pb-3 mb-3 border-b border-catppuccin-surface text-xs text-catppuccin-subtext">
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="terminal" class="w-4 h-4 text-catppuccin-green"></i>
+                        <span class="font-bold text-catppuccin-text">eco-cli v1.0.4 (hypr-shell)</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="text-catppuccin-subtext hidden sm:inline">Escribe <code class="text-catppuccin-yellow">help</code> para ver comandos</span>
+                        <button onclick="clearTerminal()" class="hover:text-white transition">Limpiar</button>
+                    </div>
+                </div>
+
+                <!-- Terminal Output Window -->
+                <div id="terminal-output" class="h-48 overflow-y-auto space-y-2 text-xs sm:text-sm font-mono pr-2">
+                    <div class="text-catppuccin-subtext">
+                        Bienvenido al CLI de <span class="text-catppuccin-blue">Hypr.Eco</span>. Sistema cargado correctamente.
+                    </div>
+                    <div class="text-catppuccin-green">
+                        [OK] Conectado a base de datos ambiental // Estado de planeta: Crítico
+                    </div>
+                    <div class="text-catppuccin-subtext">
+                        Escribe <span class="text-catppuccin-yellow">ayuda</span>, <span class="text-catppuccin-yellow">manifesto</span>, <span class="text-catppuccin-yellow">stats</span> o <span class="text-catppuccin-yellow">autor</span>.
+                    </div>
+                </div>
+
+                <!-- Terminal Input Line -->
+                <form id="terminal-form" onsubmit="handleTerminalCommand(event)" class="mt-3 pt-2 border-t border-catppuccin-surface/50 flex items-center gap-2">
+                    <span class="text-catppuccin-green font-bold">eco@hyprland:~$</span>
+                    <input type="text" id="terminal-input" autocomplete="off" class="flex-1 bg-transparent border-none outline-none text-catppuccin-text font-mono text-xs sm:text-sm focus:ring-0" placeholder="Escribe un comando aquí...">
+                    <button type="submit" class="text-catppuccin-blue text-xs hover:underline">Ejecutar</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- DEV PORTFOLIO & AUTHOR CREDENTIALS -->
+        <section class="lg:col-span-12 grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
+            
+            <!-- Dev Profile Tile -->
+            <div class="hypr-tile p-5 flex items-center gap-4">
+                <div class="w-14 h-14 rounded-full bg-gradient-to-tr from-catppuccin-blue to-catppuccin-mauve p-0.5 flex-shrink-0">
+                    <div class="w-full h-full bg-catppuccin-mantle rounded-full flex items-center justify-center font-mono font-bold text-catppuccin-blue text-xl">
+                        &lt;DEV/&gt;
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-base font-bold text-white">Desarrollador Web</h4>
+                    <p class="text-xs text-catppuccin-subtext">Especializado en interfaces modernas, rendimiento sostenible y divulgación sociomedioambiental.</p>
+                </div>
+            </div>
+
+            <!-- Fast Philosophy -->
+            <div class="hypr-tile p-5 flex flex-col justify-center">
+                <h5 class="text-xs font-mono text-catppuccin-mauve font-bold uppercase mb-1">// Filosofía del Proyecto</h5>
+                <p class="text-xs text-catppuccin-subtext">
+                    La tecnología no es neutra. Usamos el código para visibilizar las contradicciones del desarrollo industrial del siglo XXI.
+                </p>
+            </div>
+
+            <!-- Social / Code Repos -->
+            <div class="hypr-tile p-5 flex items-center justify-around font-mono text-xs">
+                <a href="https://github.com" target="_blank" class="flex flex-col items-center gap-1.5 text-catppuccin-subtext hover:text-catppuccin-blue transition">
+                    <i data-lucide="github" class="w-5 h-5"></i>
+                    <span>GitHub</span>
+                </a>
+                <a href="#" onclick="alert('Inicia la conversación en la consola usando el comando mail')" class="flex flex-col items-center gap-1.5 text-catppuccin-subtext hover:text-catppuccin-green transition">
+                    <i data-lucide="mail" class="w-5 h-5"></i>
+                    <span>Contacto</span>
+                </a>
+                <a href="#" onclick="switchWorkspace(3)" class="flex flex-col items-center gap-1.5 text-catppuccin-subtext hover:text-catppuccin-yellow transition">
+                    <i data-lucide="terminal" class="w-5 h-5"></i>
+                    <span>Shell</span>
+                </a>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- MODAL DIALOG (To simulate reading full article without leaving Hyprland rice) -->
+    <div id="topic-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="hypr-tile max-w-2xl w-full p-6 max-h-[85vh] overflow-y-auto border border-catppuccin-blue/40">
+            <div class="flex items-center justify-between pb-3 mb-4 border-b border-catppuccin-surface">
+                <span id="modal-category" class="text-xs font-mono text-catppuccin-blue">CATEGORIA</span>
+                <button onclick="closeTopicModal()" class="text-catppuccin-subtext hover:text-white p-1">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <h2 id="modal-title" class="text-2xl font-bold text-white mb-3">Título del Artículo</h2>
+            <div id="modal-content" class="text-sm text-catppuccin-subtext space-y-3 leading-relaxed">
+                <!-- Content injected via JS -->
+            </div>
+            <div class="mt-6 pt-4 border-t border-catppuccin-surface flex justify-end">
+                <button onclick="closeTopicModal()" class="px-4 py-2 rounded-lg bg-catppuccin-surface text-xs font-mono text-white hover:bg-catppuccin-surface/80">
+                    Cerrar Ventana [ESC]
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER KEYBINDINGS BAR -->
+    <footer class="w-full max-w-7xl mx-auto my-2 px-2 flex flex-wrap items-center justify-between text-[11px] font-mono text-catppuccin-subtext/70 gap-2">
+        <div class="flex items-center gap-3">
+            <span><kbd class="bg-catppuccin-surface text-catppuccin-text px-1.5 py-0.5 rounded border border-catppuccin-subtext/30">SUPER</kbd> + <kbd class="bg-catppuccin-surface text-catppuccin-text px-1.5 py-0.5 rounded border border-catppuccin-subtext/30">1..4</kbd> Cambiar área</span>
+            <span class="hidden sm:inline">•</span>
+            <span class="hidden sm:inline"><kbd class="bg-catppuccin-surface text-catppuccin-text px-1.5 py-0.5 rounded border border-catppuccin-subtext/30">CLICK</kbd> Enfocar ventana</span>
+        </div>
+        <div>
+            <span>Hyprland Inspired Rice CSS • Modo Oscuro Nativo</span>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Live Waybar Clock
+        function updateClock() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('es-ES', { hour12: false });
+            document.getElementById('live-clock').textContent = timeString;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        function switchWorkspace(id) {
+            // Update buttons visually
+            document.querySelectorAll('.ws-btn').forEach((btn, idx) => {
+                if (idx + 1 === id) {
+                    btn.className = "ws-btn px-2 py-0.5 rounded bg-catppuccin-blue text-catppuccin-crust font-bold transition";
+                } else {
+                    btn.className = "ws-btn px-2 py-0.5 rounded hover:bg-catppuccin-surface text-catppuccin-subtext transition";
+                }
+            });
+
+            // Smooth scroll to relevant section based on workspace
+            if (id === 1) {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else if (id === 2) {
+                document.querySelector('article').scrollIntoView({ behavior: 'smooth' });
+            } else if (id === 3) {
+                document.getElementById('terminal-input').focus();
+                document.getElementById('terminal-output').scrollIntoView({ behavior: 'smooth' });
+            } else if (id === 4) {
+                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+            }
+        }
+
+        const terminalOutput = document.getElementById('terminal-output');
+        const terminalInput = document.getElementById('terminal-input');
+
+        const articlesData = {
+            'e-waste': {
+                category: 'TECNOLOGÍA & MEDIO AMBIENTE',
+                title: 'Basura Electrónica y Brechas Digitales en el S.XXI',
+                content: `
+                    <p>La aceleración del ciclo de obsolescencia programada ha transformado la tecnología digital en uno de los flujos de residuos de más rápido crecimiento en el planeta.</p>
+                    <p><strong>El problema social:</strong> Mientas los países desarrollados disfrutan de la actualización constante de dispositivos, toneladas de "e-waste" son exportadas hacia comunidades en desarrollo en África y Asia (como Agbogbloshie), donde trabajadores informales —incluidos niños— procesan cables y placas expuestos a metales pesados como plomo, mercurio y cadmio.</p>
+                    <p><strong>Reflexión para desarrolladores:</strong> Como creadores de software, debemos abogar por código eficiente, compatibilidad hacia atrás y reducción de consumo de recursos para mitigar la necesidad constante de renovar hardware.</p>
+                `
+            },
+            'justicia': {
+                category: 'SOCIEDAD & JUSTICIA CLIMÁTICA',
+                title: 'Racismo Ambiental: La Desigualdad en la Exposición al Riesgo',
+                content: `
+                    <p>El término <em>Racismo Ambiental</em> describe cómo las políticas, industrias y vertederos contaminantes tienden a situarse desproporcionadamente cerca de comunidades de bajos ingresos o minorías marginadas.</p>
+                    <p><strong>Impacto sociopolítico:</strong> La crisis climática actúa como un multiplicador de amenazas. Las poblaciones que menos han contribuido a las emisiones globales de CO₂ son las que carecen de infraestructura resiliente para soportar inundaciones, sequías u olas de calor extremas.</p>
+                    <p>El reto del siglo XXI exige articular soluciones que combinen la descarbonización ecológica con garantías de protección e inclusión social.</p>
+                `
+            },
+            'plásticos': {
+                category: 'CONTAMINACIÓN GLOBAL',
+                title: 'La Era Invisible del Microplástico y la Salud Pública',
+                content: `
+                    <p>Se estima que un ser humano promedio ingiere el equivalente al peso de una tarjeta de crédito en plástico cada semana a través del agua, aire y alimentos.</p>
+                    <p>La fragmentación de plásticos de un solo uso en micro y nanopartículas ha superado las barreras naturales del ecosistema, hallándose en cumbres montañosas, fosas marinas y en órganos del cuerpo humano.</p>
+                    <p>Superar esta crisis requiere legislación vinculante global sobre plásticos, transición hacia biomateriales y reestructuración de los hábitos de consumo industrial.</p>
+                `
+            }
+        };
+
+        function handleTerminalCommand(e) {
+            e.preventDefault();
+            const cmd = terminalInput.value.trim().toLowerCase();
+            if (!cmd) return;
+
+            // Echo command
+            const cmdLine = document.createElement('div');
+            cmdLine.className = 'text-catppuccin-text font-bold';
+            cmdLine.innerHTML = `<span class="text-catppuccin-green">eco@hyprland:~$</span> ${escapeHtml(cmd)}`;
+            terminalOutput.appendChild(cmdLine);
+
+            // Process Command
+            const responseLine = document.createElement('div');
+            responseLine.className = 'text-catppuccin-subtext pl-2 border-l-2 border-catppuccin-surface';
+
+            switch (cmd) {
+                case 'help':
+                case 'ayuda':
+                    responseLine.innerHTML = `
+                        <div class="space-y-1">
+                            <p class="text-catppuccin-yellow font-bold">Comandos disponibles:</p>
+                            <p>• <span class="text-catppuccin-blue">manifesto</span> : Muestra la misión del blog</p>
+                            <p>• <span class="text-catppuccin-blue">stats</span> : Datos ambientales clave del siglo XXI</p>
+                            <p>• <span class="text-catppuccin-blue">temas</span> : Lista los artículos de análisis disponibles</p>
+                            <p>• <span class="text-catppuccin-blue">autor</span> : Info sobre el desarrollador web</p>
+                            <p>• <span class="text-catppuccin-blue">limpiar</span> : Limpia la pantalla del terminal</p>
+                        </div>
+                    `;
+                    break;
+                case 'manifesto':
+                    responseLine.innerHTML = `<span class="text-catppuccin-green">"Creemos que el código y el desarrollo web son herramientas de transformación social para documentar, denunciar y proponer alternativas ante la degradación ambiental del siglo XXI."</span>`;
+                    break;
+                case 'stats':
+                    responseLine.innerHTML = `
+                        <p class="text-catppuccin-red">⚠️ MÉTIRCAS AMBIENTALES CRÍTICAS:</p>
+                        <p>- Concentración CO₂ Atmosférico: 424.5 ppm (Récord histórico)</p>
+                        <p>- Temperatura media global: +1.25°C sobre niveles preindustriales</p>
+                        <p>- Basura plástica vertida al océano: ~11 millones de toneladas/año</p>
+                    `;
+                    break;
+                case 'temas':
+                    responseLine.innerHTML = `
+                        <p class="text-catppuccin-mauve">Artículos disponibles (usa el comando 'leer [tema]'):</p>
+                        <p>- <span class="text-catppuccin-yellow">e-waste</span> : Basura electrónica y desigualdades</p>
+                        <p>- <span class="text-catppuccin-yellow">justicia</span> : Racismo ambiental y clase social</p>
+                        <p>- <span class="text-catppuccin-yellow">plasticos</span> : Microplásticos en la cadena trófica</p>
+                    `;
+                    break;
+                case 'autor':
+                    responseLine.innerHTML = `Desarrollador Web apasionado por Linux, Hyprland rices, sostenibilidad digital y justicia ambiental. Tech stack: HTML/CSS/JS, Tailwind, Node, Data Viz.`;
+                    break;
+                case 'limpiar':
+                case 'clear':
+                    clearTerminal();
+                    terminalInput.value = '';
+                    return;
+                default:
+                    if (cmd.startsWith('leer ')) {
+                        const topicKey = cmd.replace('leer ', '').trim();
+                        if (articlesData[topicKey]) {
+                            openTopicModal(topicKey);
+                            responseLine.innerHTML = `<span class="text-catppuccin-green">Abriendo artículo "${topicKey}" en ventana flotante...</span>`;
+                        } else {
+                            responseLine.innerHTML = `<span class="text-catppuccin-red">Tema no encontrado. Usa el comando 'temas' para ver opciones.</span>`;
+                        }
+                    } else {
+                        responseLine.innerHTML = `<span class="text-catppuccin-red">Comando no reconocido: '${escapeHtml(cmd)}'. Escribe 'ayuda' para ver opciones.</span>`;
+                    }
+            }
+
+            terminalOutput.appendChild(responseLine);
+            terminalInput.value = '';
+            terminalOutput.scrollTop = terminalOutput.scrollHeight;
+        }
+
+        function clearTerminal() {
+            terminalOutput.innerHTML = '<div class="text-catppuccin-subtext">Consola reiniciada. Escribe <span class="text-catppuccin-yellow">ayuda</span> para comandos.</div>';
+        }
+
+        function escapeHtml(str) {
+            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+
+        function openTopicModal(key) {
+            const data = articlesData[key];
+            if (!data) return;
+
+            document.getElementById('modal-category').textContent = data.category;
+            document.getElementById('modal-title').textContent = data.title;
+            document.getElementById('modal-content').innerHTML = data.content;
+            document.getElementById('topic-modal').classList.remove('hidden');
+        }
+
+        function closeTopicModal() {
+            document.getElementById('topic-modal').classList.add('hidden');
+        }
+
+        // Close modal on Escape key press
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeTopicModal();
+            }
+        });
+    </script>
+</body>
+</html>
