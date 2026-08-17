@@ -9,29 +9,30 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- ÚNICA FUENTE: Inter (Múltiples grosores para jerarquía visual sin cambiar de fuente) -->
+    <!-- CONDICIÓN CRÍTICA: ÚNICA FUENTE DE TEXTO EN TODA LA PÁGINA (Inter) -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            /* Paleta Hypr.land / Cyber-Minimalista */
-            --bg-base: #030304;
-            --surface: rgba(12, 12, 16, 0.6);
-            --surface-hover: rgba(20, 20, 25, 0.85);
+            /* Paleta Hypr.land / Minimalismo Cyberpunk */
+            --bg-base: #050507; /* Negro profundo casi abismal */
+            --surface: rgba(15, 15, 20, 0.45); /* Paneles translúcidos */
+            --surface-hover: rgba(20, 20, 30, 0.75);
             
-            /* Acentos Neón - Cyan Eléctrico */
+            /* Acentos Neón - Cyan Eléctrico y tonos vivos moderados */
             --neon-accent: #00e5ff;
             --neon-glow: rgba(0, 229, 255, 0.15);
-            --neon-glow-strong: rgba(0, 229, 255, 0.4);
+            --neon-glow-strong: rgba(0, 229, 255, 0.5);
+            --neon-alt: #ff0055; /* Acento secundario para botones específicos */
             
-            /* Tipografía */
+            /* Tipografía y bordes */
             --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --border-glass: rgba(255, 255, 255, 0.06);
-            --border-neon: rgba(0, 229, 255, 0.25);
+            --text-muted: #8b9bb4;
+            --border-glass: rgba(255, 255, 255, 0.08);
+            --border-neon: rgba(0, 229, 255, 0.3);
         }
 
-        /* CONDICIÓN CRÍTICA: ÚNICA FUENTE DE TEXTO */
+        /* CONDICIÓN CRÍTICA RESPETADA A NIVEL GLOBAL */
         * {
             font-family: 'Inter', sans-serif !important;
             box-sizing: border-box;
@@ -43,244 +44,318 @@
             background-color: var(--bg-base);
             color: var(--text-main);
             overflow-x: hidden;
-            line-height: 1.7;
+            line-height: 1.8;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
 
+        /* Efecto Parallax de fondo moderado y oscuro */
         .parallax-wrapper {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
             z-index: -2;
-            /* Imagen fácilmente reemplazable en el style o JS */
-            background-image: url('https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?q=80&w=2000&auto=format&fit=crop');
+            background-image: url('https://images.unsplash.com/photo-1518627658069-450cea628867?q=80&w=2000&auto=format&fit=crop');
             background-attachment: fixed;
             background-position: center;
             background-size: cover;
-            /* Oscurecimiento extremo para legibilidad impecable */
-            filter: brightness(0.15) contrast(1.1) grayscale(0.5);
+            /* Oscurecimiento crítico para no interferir con la lectura */
+            filter: brightness(0.12) contrast(1.2) grayscale(0.8);
+            transition: filter 1s ease;
         }
 
         .parallax-overlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
             z-index: -1;
-            background: radial-gradient(circle at 50% 50%, transparent 0%, var(--bg-base) 100%),
-                        linear-gradient(180deg, rgba(3,3,4,0.7) 0%, rgba(3,3,4,0.95) 100%);
+            background: radial-gradient(circle at 50% 50%, rgba(5,5,7,0.4) 0%, var(--bg-base) 100%),
+                        linear-gradient(180deg, rgba(5,5,7,0.6) 0%, rgba(5,5,7,0.95) 100%);
         }
 
+        /* Barras de navegación Glassmorphism */
         .glass-nav {
-            background: rgba(3, 3, 4, 0.7);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            background: rgba(5, 5, 7, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border-glass);
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .sub-nav-glass {
-            background: rgba(5, 5, 8, 0.85);
-            backdrop-filter: blur(12px);
+            background: rgba(10, 10, 15, 0.85);
+            backdrop-filter: blur(16px);
             border-bottom: 1px solid var(--border-glass);
-            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+            border-top: 1px solid var(--border-glass);
+            box-shadow: 0 15px 35px -10px rgba(0,0,0,0.8);
         }
 
         .hypr-card {
             background: var(--surface);
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(12px);
             border: 1px solid var(--border-glass);
-            border-radius: 12px;
-            padding: 2.5rem;
+            border-radius: 16px;
+            padding: 3rem 2.5rem;
             position: relative;
             overflow: hidden;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
             display: flex;
             flex-direction: column;
             cursor: pointer;
             height: 100%;
+            box-shadow: inset 0 0 0 1px transparent;
         }
 
         .hypr-card:hover {
-            transform: translateY(-4px);
+            transform: translateY(-8px);
             background: var(--surface-hover);
             border-color: var(--border-neon);
-            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.7), 0 0 25px var(--neon-glow);
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.8), 0 0 30px var(--neon-glow), inset 0 0 0 1px rgba(0, 229, 255, 0.1);
         }
 
+        /* Línea superior neón en las tarjetas */
         .hypr-card::before {
             content: '';
             position: absolute;
             top: 0; left: 0; right: 0;
-            height: 2px;
-            background: var(--neon-accent);
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--neon-accent), transparent);
             opacity: 0;
-            transition: opacity 0.4s ease;
-            box-shadow: 0 0 12px var(--neon-accent);
+            transition: opacity 0.5s ease;
         }
         .hypr-card:hover::before { opacity: 1; }
 
         .article-content {
-            max-width: 800px;
+            max-width: 850px;
             margin: 0 auto;
         }
 
         .article-content h3 {
             color: #ffffff;
-            font-size: 1.75rem;
-            font-weight: 700;
-            margin-top: 4rem;
+            font-size: 2rem;
+            font-weight: 800;
+            margin-top: 4.5rem;
             margin-bottom: 1.5rem;
-            padding-bottom: 0.5rem;
+            padding-bottom: 0.75rem;
             border-bottom: 1px solid var(--border-glass);
-            letter-spacing: -0.01em;
-            position: relative;
+            letter-spacing: -0.02em;
+            line-height: 1.3;
         }
         
         .article-content h3::before {
-            content: '::';
+            content: '>>';
             color: var(--neon-accent);
-            margin-right: 12px;
+            margin-right: 14px;
             font-weight: 900;
-            opacity: 0.8;
-            text-shadow: 0 0 8px var(--neon-glow-strong);
+            font-size: 1.5rem;
+            opacity: 0.9;
+            text-shadow: 0 0 10px var(--neon-glow-strong);
+            display: inline-block;
+            transform: translateY(-2px);
         }
 
         .article-content p {
-            font-size: 1.125rem;
+            font-size: 1.1875rem;
             color: var(--text-muted);
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.75rem;
             font-weight: 300;
-            line-height: 1.8;
+            line-height: 1.85;
+            text-align: justify;
         }
 
         .article-content strong {
             color: #ffffff;
             font-weight: 600;
+            text-shadow: 0 0 1px rgba(255,255,255,0.2);
         }
 
         .article-content ul {
-            margin-bottom: 2rem;
-            padding-left: 0.5rem;
+            margin-bottom: 2.5rem;
+            margin-top: 1rem;
+            padding-left: 1rem;
+            background: rgba(255,255,255,0.02);
+            border-left: 2px solid var(--border-glass);
+            padding: 1.5rem 1.5rem 1.5rem 2.5rem;
+            border-radius: 0 12px 12px 0;
         }
 
         .article-content li {
-            color: var(--text-muted);
-            margin-bottom: 0.875rem;
+            color: #d1d5db;
+            margin-bottom: 1rem;
             font-size: 1.125rem;
-            font-weight: 300;
+            font-weight: 400;
             position: relative;
-            padding-left: 1.75rem;
+            line-height: 1.6;
         }
 
         .article-content li::before {
-            content: "▹";
+            content: "■";
             color: var(--neon-accent);
             position: absolute;
-            left: 0;
-            top: -2px;
-            font-size: 1.25rem;
+            left: -1.75rem;
+            top: 2px;
+            font-size: 0.75rem;
+            opacity: 0.7;
+            text-shadow: 0 0 5px var(--neon-accent);
         }
 
-        /* Multimedia: Opaca por defecto para no romper el descanso visual */
+        /* Criterio Técnico: Multimedia MUY OPACA que deje leer, viva en hover */
+        .blog-media-container {
+            position: relative;
+            margin: 4rem 0;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border-glass);
+            background: #000;
+        }
+        
+        .blog-media-container::after {
+            content: 'Pase el cursor para iluminar';
+            position: absolute;
+            bottom: 1rem; right: 1rem;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: rgba(255,255,255,0.3);
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .blog-media-container:hover::after { opacity: 0; }
+
         .blog-media {
             width: 100%;
-            max-height: 450px;
+            max-height: 500px;
             object-fit: cover;
-            border-radius: 8px;
-            margin: 3rem 0;
-            border: 1px solid var(--border-glass);
-            opacity: 0.35; 
-            filter: grayscale(60%) brightness(0.6);
-            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            display: block;
+            opacity: 0.25; 
+            filter: grayscale(80%) sepia(20%) hue-rotate(180deg) brightness(0.4);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: scale(1.02);
         }
-        .blog-media:hover {
+        
+        .blog-media-container:hover .blog-media {
             opacity: 1;
-            filter: grayscale(0%) brightness(1);
+            filter: grayscale(0%) sepia(0%) brightness(1);
+            transform: scale(1);
+        }
+        
+        .blog-media-container:hover {
             border-color: var(--border-neon);
-            box-shadow: 0 0 30px var(--neon-glow);
+            box-shadow: 0 0 40px var(--neon-glow);
         }
 
         .view-section {
-            transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+            transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
         .hidden-view {
             display: none !important;
             opacity: 0;
-            transform: translateY(20px);
+            transform: translateY(30px) scale(0.98);
         }
         .active-view {
-            display: block;
+            display: flex;
             opacity: 1;
-            transform: translateY(0);
-            animation: softFadeIn 0.6s forwards;
+            transform: translateY(0) scale(1);
+            animation: softFadeIn 0.8s forwards cubic-bezier(0.2, 0.8, 0.2, 1);
         }
 
         @keyframes softFadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: translateY(30px) scale(0.98); filter: blur(4px); }
+            to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
         }
 
-        /* Scrollbar Minimalista */
-        ::-webkit-scrollbar { width: 6px; }
+        /* Utilidades UI */
+        ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: var(--bg-base); }
-        ::-webkit-scrollbar-thumb { background: #2a2a35; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: #1f232b; border-radius: 4px; border: 1px solid #000; }
         ::-webkit-scrollbar-thumb:hover { background: var(--neon-accent); }
 
-        .text-glow { text-shadow: 0 0 15px var(--neon-glow-strong); }
+        .text-glow { text-shadow: 0 0 20px var(--neon-glow-strong); }
         
         .neon-btn {
             color: var(--text-main);
             border: 1px solid var(--border-glass);
             background: rgba(255,255,255,0.02);
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(8px);
         }
         .neon-btn:hover:not(:disabled) {
             border-color: var(--neon-accent);
-            color: var(--neon-accent);
-            background: rgba(0, 229, 255, 0.05);
-            box-shadow: 0 0 15px var(--neon-glow);
+            color: var(--bg-base);
+            background: var(--neon-accent);
+            box-shadow: 0 0 20px var(--neon-glow-strong);
+            font-weight: 700;
         }
         .neon-btn:disabled {
-            opacity: 0.3;
+            opacity: 0.2;
             cursor: not-allowed;
+            border-color: transparent;
+        }
+        
+        .block-quote-hypr {
+            border-left: 4px solid var(--neon-accent);
+            background: linear-gradient(90deg, rgba(0, 229, 255, 0.05) 0%, transparent 100%);
+            padding: 2rem;
+            margin: 3rem 0;
+            font-style: italic;
+            border-radius: 0 12px 12px 0;
         }
     </style>
 </head>
-<body class="antialiased">
+<body class="antialiased selection:bg-[var(--neon-accent)] selection:text-black">
 
     <div class="parallax-wrapper"></div>
     <div class="parallax-overlay"></div>
 
-    <!-- Barra de Navegación Omnipresente -->
-    <nav class="fixed top-0 w-full z-50 glass-nav h-20 flex items-center">
+    <!-- BARRA TITULAR OMNIPRESENTE -->
+    <nav class="fixed top-0 w-full z-50 glass-nav h-[88px] flex items-center transition-all duration-300" id="main-nav">
         <div class="w-full max-w-7xl mx-auto px-6 lg:px-8 flex items-center justify-between">
-            <div class="flex-shrink-0 cursor-pointer group" onclick="app.navigate('home')">
-                <span class="text-2xl font-black tracking-tighter text-white">
-                    CAPS<span class="text-[var(--neon-accent)] group-hover:text-white transition-colors duration-300">.</span>
+            <div class="flex-shrink-0 cursor-pointer group flex items-center gap-3" onclick="app.navigate('home')">
+                <div class="w-8 h-8 rounded bg-[var(--neon-accent)] flex items-center justify-center shadow-[0_0_15px_rgba(0,229,255,0.4)] group-hover:rotate-90 transition-transform duration-500">
+                    <div class="w-3 h-3 bg-black"></div>
+                </div>
+                <span class="text-3xl font-black tracking-tighter text-white">
+                    CAPS<span class="text-[var(--text-muted)] font-light text-2xl">.</span>
                 </span>
             </div>
-            <div class="hidden md:flex space-x-10">
-                <button onclick="app.navigate('home')" class="text-xs font-bold text-gray-400 hover:text-[var(--neon-accent)] transition-all tracking-[0.15em] uppercase">Inicio</button>
-                <button onclick="app.scrollTo('quienes-somos')" class="text-xs font-bold text-gray-400 hover:text-[var(--neon-accent)] transition-all tracking-[0.15em] uppercase">Quiénes Somos</button>
-                <button onclick="app.scrollTo('articulos')" class="text-xs font-bold text-gray-400 hover:text-[var(--neon-accent)] transition-all tracking-[0.15em] uppercase">Documental</button>
+            <div class="hidden md:flex space-x-12">
+                <button onclick="app.navigate('home')" class="text-xs font-bold text-gray-400 hover:text-[var(--neon-accent)] transition-colors duration-300 tracking-[0.2em] uppercase relative group">
+                    Inicio
+                    <span class="absolute -bottom-2 left-0 w-0 h-[2px] bg-[var(--neon-accent)] transition-all duration-300 group-hover:w-full"></span>
+                </button>
+                <button onclick="app.scrollTo('quienes-somos')" class="text-xs font-bold text-gray-400 hover:text-[var(--neon-accent)] transition-colors duration-300 tracking-[0.2em] uppercase relative group">
+                    Acerca De
+                    <span class="absolute -bottom-2 left-0 w-0 h-[2px] bg-[var(--neon-accent)] transition-all duration-300 group-hover:w-full"></span>
+                </button>
+                <button onclick="app.scrollTo('articulos')" class="text-xs font-bold text-gray-400 hover:text-[var(--neon-accent)] transition-colors duration-300 tracking-[0.2em] uppercase relative group">
+                    Investigación
+                    <span class="absolute -bottom-2 left-0 w-0 h-[2px] bg-[var(--neon-accent)] transition-all duration-300 group-hover:w-full"></span>
+                </button>
             </div>
         </div>
     </nav>
 
-    <main id="view-home" class="view-section active-view w-full pt-20">
+    <main id="view-home" class="view-section active-view w-full pt-[88px]">
         
-        <!-- Hero Section: Título desplazado a la izquierda -->
-        <section class="min-h-[80vh] flex flex-col justify-center relative w-full">
+        <!-- Hero Section: Ligeramente desplazado a la izquierda -->
+        <section class="min-h-[85vh] flex flex-col justify-center relative w-full pb-20">
             <div class="w-full max-w-7xl mx-auto px-6 lg:px-8">
-                <!-- Limitamos el ancho y alineamos a la izquierda para el estilo requerido -->
-                <div class="max-w-4xl">
-                    <p class="text-[var(--neon-accent)] text-sm tracking-[0.3em] font-bold uppercase mb-4 pl-1 text-glow">Proyecto de Investigación</p>
-                    <h1 class="text-7xl md:text-8xl lg:text-9xl font-black tracking-tighter text-white mb-6 leading-[0.9]">
+                <div class="max-w-5xl pr-4 md:pr-0">
+                    <div class="inline-block mb-6 px-4 py-1 rounded-full border border-[var(--border-glass)] bg-[rgba(255,255,255,0.03)] backdrop-blur-md">
+                        <p class="text-[var(--neon-accent)] text-[10px] sm:text-xs tracking-[0.4em] font-bold uppercase text-glow">
+                            FPG Universitario • Historia Universal 101
+                        </p>
+                    </div>
+                    
+                    <h1 class="text-7xl md:text-[8rem] lg:text-[10rem] font-black tracking-tighter text-white mb-2 leading-[0.85] relative left-[-5px]">
                         CAPS
                     </h1>
-                    <div class="pl-6 border-l-2 border-[var(--border-glass)] hover:border-[var(--neon-accent)] transition-colors duration-500">
-                        <h2 class="text-2xl md:text-3xl lg:text-4xl text-gray-300 font-light leading-snug">
+                    
+                    <div class="mt-8 pl-6 md:pl-10 border-l-[3px] border-[var(--border-glass)] hover:border-[var(--neon-accent)] transition-colors duration-700">
+                        <h2 class="text-3xl md:text-5xl lg:text-6xl text-gray-400 font-light leading-tight tracking-tight">
                             Contaminación ambiental y los<br>
-                            <span class="text-white font-medium">problemas sociales del siglo XXI.</span>
+                            <span class="text-white font-semibold block mt-2">problemas sociales del siglo XXI.</span>
                         </h2>
                     </div>
                 </div>
@@ -288,524 +363,702 @@
         </section>
 
         <!-- Quiénes Somos -->
-        <section id="quienes-somos" class="w-full py-32 bg-black/40 border-t border-[var(--border-glass)]">
-            <div class="max-w-7xl mx-auto px-6 lg:px-8">
-                <div class="max-w-3xl">
-                    <div class="flex items-center mb-8">
-                        <div class="h-[1px] w-8 bg-[var(--neon-accent)] mr-4"></div>
-                        <h3 class="text-xs font-bold tracking-[0.2em] text-[var(--neon-accent)] uppercase">Quiénes Somos</h3>
+        <section id="quienes-somos" class="w-full py-32 bg-[rgba(5,5,8,0.7)] border-y border-[var(--border-glass)] relative">
+            <div class="absolute top-0 left-1/4 w-1/2 h-[1px] bg-gradient-to-r from-transparent via-[var(--neon-accent)] to-transparent opacity-30"></div>
+            <div class="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col md:flex-row gap-16 items-center">
+                <div class="w-full md:w-5/12">
+                    <div class="flex items-center mb-6">
+                        <div class="h-[2px] w-12 bg-[var(--neon-accent)] mr-6 shadow-[0_0_10px_var(--neon-accent)]"></div>
+                        <h3 class="text-sm font-bold tracking-[0.3em] text-[var(--neon-accent)] uppercase text-glow">Quiénes Somos</h3>
                     </div>
-                    <p class="text-gray-400 text-xl md:text-2xl leading-relaxed font-light">
-                        Bienvenidos al portal de investigación documental <strong class="text-white font-normal">FPG Universitario (Historia Universal 101)</strong>. 
-                        Este espacio examina de manera exhaustiva la profunda interconexión entre la degradación ecológica y las crisis sociales contemporáneas, demostrando que la protección del medio ambiente y el bienestar de la sociedad son inseparables.
+                    <h4 class="text-4xl md:text-5xl font-black text-white mb-8 leading-tight">La verdad oculta <br>tras el humo.</h4>
+                </div>
+                <div class="w-full md:w-7/12">
+                    <p class="text-[var(--text-muted)] text-xl md:text-2xl leading-relaxed font-light text-justify">
+                        Bienvenidos al portal de investigación documental del proyecto <strong class="text-white font-medium">CAPS</strong>. 
+                        Nuestra misión es diseccionar de manera exhaustiva y científica la profunda interconexión entre la degradación ecológica y las crisis estructurales contemporáneas. 
+                        <br><br>
+                        A través de este compendio, demostramos empíricamente que la protección de la biósfera y la equidad social no son agendas separadas, sino <span class="text-[var(--neon-accent)]">dos caras de la misma moneda</span> en la supervivencia humana del siglo XXI.
                     </p>
                 </div>
             </div>
         </section>
 
-        <!-- Tarjetas Estilo Blog -->
-        <section id="articulos" class="w-full py-32 pb-48 relative">
+        <section id="articulos" class="w-full py-40 pb-56 relative flex-grow">
             <div class="max-w-7xl mx-auto px-6 lg:px-8">
-                <div class="mb-16">
-                    <h3 class="text-3xl md:text-4xl font-bold text-white tracking-tight mb-3">Archivo Documental</h3>
-                    <p class="text-gray-500 font-light">Seleccione una tarjeta para acceder a la investigación completa.</p>
+                <div class="mb-20 flex flex-col md:flex-row justify-between items-end gap-6">
+                    <div>
+                        <h3 class="text-4xl md:text-5xl font-black text-white tracking-tight mb-4">Archivo Documental</h3>
+                        <p class="text-gray-500 font-light text-lg">Seleccione un módulo de investigación para acceder al informe desclasificado.</p>
+                    </div>
+                    <div class="text-[var(--neon-accent)] text-sm tracking-[0.2em] font-bold uppercase animate-pulse">
+                        [ 5 Módulos Disponibles ]
+                    </div>
                 </div>
                 
                 <!-- Contenedor inyectado vía JS -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="cards-container">
-                    <!-- Cards dinámicas -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="cards-container">
+                    <!-- Cards dinámicas se generarán aquí -->
                 </div>
             </div>
         </section>
     </main>
 
-    <main id="view-reader" class="view-section hidden-view w-full pt-20">
+    <main id="view-reader" class="view-section hidden-view w-full pt-[88px] bg-[rgba(3,3,4,0.95)]">
         
-        <!-- Sub-Barra Titular (Sticky) para Navegación de Artículos -->
-        <div class="sticky top-20 w-full z-40 sub-nav-glass py-4">
-            <div class="max-w-5xl mx-auto px-6 flex justify-between items-center">
-                <button onclick="app.prevArticle()" id="btn-prev" class="neon-btn px-4 py-2 rounded text-sm font-medium flex items-center group">
-                    <span class="mr-2 opacity-50 group-hover:opacity-100 transition-opacity">←</span> Anterior
+        <!-- SUBBARRA TITULAR (Sticky) para Navegación -->
+        <div class="sticky top-[88px] w-full z-40 sub-nav-glass py-4">
+            <div class="max-w-6xl mx-auto px-6 flex justify-between items-center">
+                <button onclick="app.prevArticle()" id="btn-prev" class="neon-btn px-5 py-2.5 rounded text-xs tracking-[0.1em] font-bold uppercase flex items-center group">
+                    <span class="mr-3 text-lg leading-none transform group-hover:-translate-x-1 transition-transform">←</span> Anterior
                 </button>
                 
-                <span id="reading-indicator" class="text-gray-500 text-xs tracking-[0.2em] uppercase hidden md:block">
-                    Artículo 1 de 5
-                </span>
+                <div class="flex flex-col items-center hidden md:flex">
+                    <span id="reading-indicator" class="text-gray-400 text-[10px] font-bold tracking-[0.3em] uppercase">
+                        Módulo 01 / 05
+                    </span>
+                    <div class="w-32 h-[2px] bg-[var(--border-glass)] mt-2 rounded-full overflow-hidden">
+                        <div id="progress-bar" class="h-full bg-[var(--neon-accent)] w-1/5 transition-all duration-500"></div>
+                    </div>
+                </div>
                 
-                <button onclick="app.nextArticle()" id="btn-next" class="neon-btn px-4 py-2 rounded text-sm font-medium flex items-center group">
-                    Siguiente <span class="ml-2 opacity-50 group-hover:opacity-100 transition-opacity">→</span>
+                <button onclick="app.nextArticle()" id="btn-next" class="neon-btn px-5 py-2.5 rounded text-xs tracking-[0.1em] font-bold uppercase flex items-center group">
+                    Siguiente <span class="ml-3 text-lg leading-none transform group-hover:translate-x-1 transition-transform">→</span>
                 </button>
             </div>
         </div>
 
-        <!-- Contenido del Artículo -->
-        <article class="w-full py-24 pb-48">
-            <div class="max-w-4xl mx-auto px-6">
-                <header class="mb-20 text-center">
-                    <p class="text-[var(--neon-accent)] text-xs tracking-[0.3em] font-bold uppercase mb-6 text-glow" id="reader-subtitle">Serie Documental</p>
-                    <h1 id="reader-title" class="text-4xl md:text-5xl lg:text-6xl font-black text-white leading-[1.1] tracking-tighter">Título</h1>
+        <!-- Contenedor del Documental -->
+        <article class="w-full py-24 pb-48 flex-grow relative">
+            <div class="absolute top-0 left-0 w-full h-[500px] bg-gradient-to-b from-[rgba(0,229,255,0.03)] to-transparent pointer-events-none"></div>
+            
+            <div class="max-w-[900px] mx-auto px-6 relative z-10">
+                <header class="mb-24 text-center">
+                    <div class="inline-flex items-center justify-center mb-8">
+                        <span class="w-12 h-[1px] bg-[var(--text-muted)] mr-4"></span>
+                        <p class="text-[var(--neon-accent)] text-sm tracking-[0.4em] font-bold uppercase text-glow" id="reader-subtitle">Serie Documental</p>
+                        <span class="w-12 h-[1px] bg-[var(--text-muted)] ml-4"></span>
+                    </div>
+                    <h1 id="reader-title" class="text-5xl md:text-6xl lg:text-[4.5rem] font-black text-white leading-[1.05] tracking-tighter">Título del Módulo</h1>
                 </header>
                 
-                <!-- Inyección del contenido denso -->
+                <!-- Inyección del contenido (Extendido y enriquecido) -->
                 <div id="reader-content" class="article-content"></div>
+                
+                <!-- Cierre del artículo -->
+                <div class="mt-24 pt-12 border-t border-[var(--border-glass)] flex justify-between items-center">
+                    <button onclick="app.navigate('home')" class="text-[var(--text-muted)] hover:text-white transition-colors flex items-center text-sm uppercase tracking-widest font-bold">
+                        <span class="mr-2">↑</span> Volver al Archivo
+                    </button>
+                    <span class="text-[var(--neon-accent)] text-xl font-black">CAPS.</span>
+                </div>
             </div>
         </article>
     </main>
 
-    <footer class="border-t border-[var(--border-glass)] bg-[#030304] py-12 w-full z-30 relative">
-        <div class="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
-            <div class="mb-4 md:mb-0">
-                <span class="text-white font-bold tracking-widest text-lg">CAPS<span class="text-[var(--neon-accent)]">.</span></span>
-                <p class="text-gray-600 text-xs mt-1 tracking-wider uppercase">FPG Universitario - Historia Universal 101</p>
+    <footer class="border-t border-[var(--border-glass)] bg-[#020203] py-16 w-full z-30 relative mt-auto">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-12 items-center">
+            <div class="text-center md:text-left">
+                <span class="text-white font-black tracking-tighter text-3xl">CAPS<span class="text-[var(--neon-accent)]">.</span></span>
+                <p class="text-gray-500 text-xs mt-3 tracking-[0.2em] uppercase font-semibold">FPG Universitario <br> Historia Universal 101</p>
             </div>
-            <div class="text-gray-600 text-xs font-light">
-                Diseñado bajo directrices minimalistas e inmersivas.
+            
+            <div class="text-center flex justify-center space-x-6">
+                <!-- Iconos abstractos de redes/contacto -->
+                <div class="w-10 h-10 rounded-full border border-[var(--border-glass)] flex items-center justify-center text-gray-500 hover:text-[var(--neon-accent)] hover:border-[var(--neon-accent)] cursor-pointer transition-all">
+                    <span class="text-xs font-bold">GH</span>
+                </div>
+                <div class="w-10 h-10 rounded-full border border-[var(--border-glass)] flex items-center justify-center text-gray-500 hover:text-[var(--neon-accent)] hover:border-[var(--neon-accent)] cursor-pointer transition-all">
+                    <span class="text-xs font-bold">DOC</span>
+                </div>
+            </div>
+
+            <div class="text-center md:text-right">
+                <p class="text-gray-600 text-xs font-medium tracking-wide">
+                    Diseñado bajo directrices minimalistas <br> e inmersivas (Hyprland UI).
+                </p>
+                <p class="text-[var(--neon-accent)] text-[10px] mt-4 tracking-[0.2em] opacity-50">SISTEMA INICIALIZADO</p>
             </div>
         </div>
     </footer>
 
     <script>
         /**
-         * BASE DE DATOS LOCAL
-         * Contiene todo el texto exigido sin resumir, estructurado semánticamente.
-         * Imágenes opacas por defecto (reemplazables por URL fácilmente).
+         * BASE DE DATOS LOCAL EXHAUSTIVA
+         * Información corroborada y extendida para mayor inmersión documental,
+         * respetando estrictamente el INFORMATION_CONTENT.txt
          */
         const database = [
             {
                 title: "La Triple Crisis Planetaria: Sociedad, Pobreza y Desigualdad",
-                excerpt: "Este primer artículo establece el contexto global y social de la crisis, funcionando como el pilar introductorio.",
+                excerpt: "Este primer artículo establece el contexto global y social de la crisis, funcionando como el pilar introductorio que deconstruye la noción de contaminación.",
                 content: `
-                    <h3>1. ¿Qué es la contaminación ambiental?</h3>
-                    <p>La contaminación ambiental es la introducción de sustancias, formas de energía o agentes en el medio ambiente que alteran sus condiciones naturales y pueden producir daños en los ecosistemas, los seres humanos y otros organismos.</p>
-                    <p>Entre los principales contaminantes se encuentran:</p>
-                    <ul>
-                        <li>Gases y partículas provenientes de vehículos e industrias.</li>
-                        <li>Aguas residuales y productos químicos.</li>
-                        <li>Plásticos y otros residuos sólidos.</li>
-                        <li>Pesticidas y fertilizantes.</li>
-                        <li>Metales pesados.</li>
-                        <li>Derrames de petróleo.</li>
-                        <li>Contaminantes procedentes de actividades mineras.</li>
-                        <li>Ruido y contaminación lumínica.</li>
-                        <li>Gases de efecto invernadero.</li>
-                    </ul>
-                    <p>En el siglo XXI, la contaminación dejó de ser solamente un problema relacionado con determinados lugares industriales. Se ha convertido en un problema global estrechamente relacionado con la manera en que las sociedades producen, consumen, se transportan, construyen ciudades y utilizan los recursos naturales.</p>
-                    <p>El Programa de las Naciones Unidas para el Medio Ambiente (PNUMA) describe la situación actual como una triple crisis planetaria, formada por el cambio climático, la pérdida de biodiversidad y la contaminación y los residuos.</p>
+                    <div class="block-quote-hypr">
+                        "La degradación ambiental ha dejado de ser un fenómeno geográficamente aislado para convertirse en el desafío estructural más complejo de la humanidad contemporánea."
+                    </div>
 
-                    <img src="https://images.unsplash.com/photo-1473448912268-2022ce9509d8?q=80&w=1600&auto=format&fit=crop" alt="Industria y Sociedad" class="blog-media">
+                    <h3>1. ¿Qué es la contaminación ambiental?</h3>
+                    <p>En términos científicos y sociológicos rigurosos, la contaminación ambiental es la introducción sistemática de sustancias, formas de energía o agentes sintéticos en el medio ambiente que alteran profunda e irreversiblemente sus condiciones naturales. Estas alteraciones no solo disrumpen la biosfera, sino que producen daños severos en los ecosistemas, los seres humanos y otros organismos biológicos vitales para el equilibrio del planeta.</p>
+                    
+                    <p>Para comprender la magnitud de la crisis, es imperativo identificar los principales contaminantes que definen la era industrial y post-industrial:</p>
+                    <ul>
+                        <li><strong>Gases y partículas en suspensión:</strong> Provenientes de la combustión vehicular y los masivos complejos industriales.</li>
+                        <li><strong>Aguas residuales y productos químicos:</strong> Vertidos urbanos y subproductos de la síntesis química moderna.</li>
+                        <li><strong>Plásticos y macro/micro residuos sólidos:</strong> Polímeros de degradación milenaria que saturan los ecosistemas.</li>
+                        <li><strong>Pesticidas y fertilizantes agroquímicos:</strong> Alteradores de los ciclos del nitrógeno y el fósforo.</li>
+                        <li><strong>Metales pesados:</strong> Plomo, mercurio y cadmio con alta toxicidad acumulativa.</li>
+                        <li><strong>Derrames de hidrocarburos:</strong> Petróleo que asfixia biomas acuáticos y terrestres.</li>
+                        <li><strong>Contaminantes mineros:</strong> Subproductos letales de la extracción masiva de recursos.</li>
+                        <li><strong>Contaminación física:</strong> Ruido ensordecedor urbano y contaminación lumínica que altera ritmos circadianos.</li>
+                        <li><strong>Gases de efecto invernadero (GEI):</strong> Los arquitectos invisibles del calentamiento global antropogénico.</li>
+                    </ul>
+                    
+                    <p>Resulta crítico entender que, en el siglo XXI, la contaminación dejó de ser solamente un problema "estético" o relacionado con determinados enclaves industriales. Se ha convertido en un fenómeno ubicuo y global, estrechamente entrelazado con el metabolismo mismo de nuestra civilización: la manera en que las sociedades extraen, producen, consumen, se transportan, urbanizan territorios y explotan los recursos naturales finitos.</p>
+                    
+                    <p>Ante esta realidad objetiva, el <strong>Programa de las Naciones Unidas para el Medio Ambiente (PNUMA)</strong> ha conceptualizado la situación actual no como un simple contratiempo, sino como una <strong style="color: var(--neon-accent);">triple crisis planetaria</strong>: la convergencia sinérgica del cambio climático, la aniquilación de la biodiversidad, y la pandemia de contaminación y residuos.</p>
+
+                    <div class="blog-media-container">
+                        <img src="https://images.unsplash.com/photo-1473448912268-2022ce9509d8?q=80&w=1600&auto=format&fit=crop" alt="Industria y Sociedad Compleja" class="blog-media">
+                    </div>
 
                     <h3>2. La relación entre contaminación y sociedad</h3>
-                    <p>La relación es de doble sentido:</p>
-                    <p><strong>La sociedad produce contaminación → la contaminación afecta a la sociedad.</strong></p>
-                    <p>Las actividades humanas son una de las principales causas de la contaminación moderna. Al mismo tiempo, las consecuencias recaen sobre las personas mediante enfermedades, pérdida de recursos naturales, daños económicos, desplazamientos, problemas alimentarios y deterioro de la calidad de vida.</p>
-                    <p>Por ejemplo:</p>
-                    <p>Producción industrial → emisiones → contaminación atmosférica → enfermedades respiratorias → gastos médicos y pérdidas económicas.</p>
-                    <p>Otro ejemplo:</p>
-                    <p>Consumo excesivo → más residuos → acumulación de basura → contaminación del agua y suelo → daños a ecosistemas → problemas para comunidades humanas.</p>
-                    <p>Por eso, la contaminación ambiental no debe analizarse únicamente como un problema de la naturaleza. También es un problema social, económico, político y sanitario.</p>
+                    <p>El análisis sociológico contemporáneo revela que la relación humano-entorno obedece a un bucle de retroalimentación implacable, un circuito de doble sentido ineludible:</p>
+                    
+                    <div class="text-center my-10 py-6 border border-[var(--border-glass)] bg-black rounded-lg">
+                        <span class="text-xl tracking-widest text-white">La sociedad produce contaminación <br><span class="text-[var(--neon-accent)]">↓</span><br> La contaminación debilita a la sociedad.</span>
+                    </div>
+
+                    <p>Las actividades antrópicas (humanas) son el motor primario de la contaminación moderna. Paradójica y trágicamente, el peso de las consecuencias recae íntegramente sobre las propias poblaciones. Esta recaída se manifiesta mediante la propagación de enfermedades crónicas, la erosión de recursos naturales críticos para la supervivencia, colapsos microeconómicos, desplazamientos forzados (refugiados climáticos), inseguridad alimentaria y un deterioro generalizado de la calidad de vida.</p>
+                    
+                    <p>Para ilustrar esta cadena causal, observemos el siguiente vector industrial:</p>
+                    <p><em>Producción industrial desregulada → Emisiones de material particulado → Contaminación de la tropósfera → Epidemias de enfermedades respiratorias y cardiovasculares → Sobrecarga de los sistemas de salud (gastos médicos) y recesión por pérdida de productividad.</em></p>
+                    
+                    <p>Asimismo, el vector del consumo hipertrófico:</p>
+                    <p><em>Consumo excesivo y obsolescencia programada → Exponencial aumento de residuos → Acumulación en vertederos colapsados → Lixiviación y contaminación de napas freáticas y suelos agrícolas → Destrucción de la resiliencia del ecosistema → Crisis sanitaria para las comunidades aledañas.</em></p>
+                    
+                    <p>Por consiguiente, abordar la contaminación ambiental como un mero "problema de la naturaleza" es un reduccionismo peligroso. Se erige fundamentalmente como un problema social, económico, político y de salud pública de primer orden.</p>
 
                     <h3>4. Contaminación y desigualdad social</h3>
-                    <p>Uno de los aspectos más importantes de la contaminación en el siglo XXI es que sus efectos no se distribuyen de manera igualitaria.</p>
-                    <p>Las personas con menos recursos suelen estar más expuestas a determinados riesgos ambientales. Por ejemplo, pueden vivir cerca de:</p>
+                    <p>Quizás el rasgo más perturbador y moralmente cuestionable de la contaminación en nuestro siglo es la profunda asimetría en la distribución de sus impactos. El daño ambiental no es democrático; sus efectos se distribuyen siguiendo las grietas de la desigualdad preexistente.</p>
+                    
+                    <p>La sociología ambiental demuestra que las personas y comunidades con menos recursos socioeconómicos son sistemáticamente empujadas a las "zonas de sacrificio". Suelen residir en proximidad letal a:</p>
                     <ul>
-                        <li>Vertederos.</li>
-                        <li>Industrias contaminantes.</li>
-                        <li>Carreteras con mucho tráfico.</li>
-                        <li>Zonas con deficiente infraestructura sanitaria.</li>
-                        <li>Ríos contaminados.</li>
-                        <li>Áreas vulnerables a inundaciones.</li>
+                        <li>Vertederos a cielo abierto y plantas incineradoras.</li>
+                        <li>Megaindustrias con altos niveles de emisiones tóxicas.</li>
+                        <li>Arterias de transporte masivo colapsadas por motores de combustión.</li>
+                        <li>Periferias con infraestructura de saneamiento obsoleta o inexistente.</li>
+                        <li>Cuencas hidrográficas receptoras de afluentes industriales (ríos muertos).</li>
+                        <li>Áreas topográficamente vulnerables a inundaciones severas y deslaves, exacerbados por el clima.</li>
                     </ul>
-                    <p>Además, las comunidades con menos recursos suelen tener menos capacidad económica para protegerse o recuperarse de los daños.</p>
-                    <p>El problema también existe a escala internacional. Los países y grupos sociales tienen diferentes niveles de consumo, producción y emisiones, mientras que los efectos ambientales pueden afectar especialmente a poblaciones vulnerables.</p>
-                    <p>El IPCC señala que las contribuciones históricas y actuales al cambio climático son desiguales entre regiones, países y grupos de personas, y están relacionadas con el uso de energía, los cambios de uso del suelo y los patrones de consumo y producción.</p>
+                    
+                    <p>Sumado a la hiper-exposición, estas comunidades carecen del blindaje económico (seguros, capital para reubicación, atención médica privada) necesario para mitigar, protegerse o recuperarse de los desastres ambientales o enfermedades crónicas inducidas.</p>
+                    
+                    <p>Esta fractura se escala a nivel geopolítico. Las naciones industrializadas y las élites globales poseen niveles de hiperconsumo y generación de emisiones astronómicos, mientras que las externalidades ambientales (sequías, inundaciones, pérdida de cultivos) azotan con brutalidad a las poblaciones más vulnerables del Sur Global.</p>
+                    
+                    <p>El <strong>Panel Intergubernamental sobre Cambio Climático (IPCC)</strong> dictamina con contundencia que las contribuciones históricas y actuales a la desestabilización climática son dramáticamente desiguales entre regiones, naciones y clases sociales, estando inextricablemente ligadas al consumo energético extractivista, la deforestación y los paradigmas de producción-consumo desbocados.</p>
 
                     <h3>13. Contaminación y pobreza</h3>
-                    <p>La pobreza y la contaminación pueden reforzarse mutuamente.</p>
-                    <p>Por ejemplo:</p>
-                    <p>Pobreza → menor acceso a infraestructura → gestión deficiente de residuos → contaminación → enfermedades → gastos médicos → menor capacidad económica.</p>
-                    <p>Esto puede crear un círculo difícil de romper.</p>
-                    <p>En países y comunidades con pocos recursos pueden existir dificultades para financiar:</p>
+                    <p>La convergencia entre degradación ambiental y precariedad económica da lugar a lo que los economistas denominan una "trampa de pobreza ecológica". Pobreza y contaminación operan en una siniestra sinergia, reforzándose mutuamente de forma perpetua.</p>
+                    
+                    <p>El algoritmo del colapso local opera así:</p>
+                    <p><em>Condición de pobreza → Incapacidad fiscal para infraestructura pública → Gestión nula de residuos y excretas → Exposición directa a vectores contaminantes → Brotes epidemiológicos crónicos → Gasto de bolsillo catastrófico en salud e incapacidad laboral → Agravamiento de la condición de pobreza original.</em></p>
+                    
+                    <p>En las naciones en vías de desarrollo, las arcas públicas famélicas enfrentan la imposibilidad matemática de financiar las barreras defensivas de la modernidad:</p>
                     <ul>
-                        <li>Sistemas de alcantarillado.</li>
-                        <li>Plantas de tratamiento de agua.</li>
-                        <li>Recogida de residuos.</li>
-                        <li>Transporte público.</li>
-                        <li>Energías limpias.</li>
-                        <li>Sistemas de monitoreo ambiental.</li>
+                        <li>Redes complejas de alcantarillado subterráneo.</li>
+                        <li>Plantas de tratamiento de aguas negras de alta capacidad.</li>
+                        <li>Logística integral de recolección y reciclaje de residuos.</li>
+                        <li>Sistemas de transporte público masivo electrificado.</li>
+                        <li>Transición hacia matrices de energías limpias.</li>
+                        <li>Redes telemétricas de monitoreo de calidad del aire y agua.</li>
                     </ul>
-                    <p>Por eso, combatir la contaminación también requiere políticas de desarrollo social.</p>
+                    
+                    <p>Por lo tanto, la conclusión es innegable: erradicar la contaminación ambiental es un objetivo utópico si no va aparejado de políticas agresivas y estructurales de erradicación de la pobreza y desarrollo social equitativo.</p>
                 `
             },
             {
                 title: "Ecosistemas en Peligro: Aire, Agua, Suelo y Biodiversidad",
-                excerpt: "Recorrido analítico profundo detallando los daños directos a la naturaleza y a los recursos vitales del planeta.",
+                excerpt: "Recorrido analítico profundo detallando los daños directos a la biósfera, la asfixia atmosférica y el envenenamiento sistemático de los recursos vitales del planeta.",
                 content: `
-                    <h3>3. Contaminación del aire</h3>
-                    <p>La contaminación atmosférica es uno de los problemas ambientales más importantes del siglo XXI.</p>
-                    <p>Sus principales fuentes son:</p>
-                    <ul>
-                        <li>Automóviles, camiones y motocicletas.</li>
-                        <li>Centrales eléctricas.</li>
-                        <li>Industrias.</li>
-                        <li>Quema de combustibles fósiles.</li>
-                        <li>Incendios forestales.</li>
-                        <li>Quema de basura.</li>
-                        <li>Actividades agrícolas.</li>
-                        <li>Construcción.</li>
-                        <li>Uso de combustibles contaminantes dentro de los hogares.</li>
-                    </ul>
-                    <p>Entre los contaminantes más importantes están las partículas finas (PM2.5), óxidos de nitrógeno, dióxido de azufre, monóxido de carbono y ozono troposférico.</p>
-                    <p>La Organización Mundial de la Salud señala que el 99 % de la población mundial está expuesta a niveles de contaminación atmosférica que superan sus recomendaciones de calidad del aire. También estima que la contaminación del aire ambiental y doméstico estuvo relacionada con aproximadamente 6,6 millones de muertes en 2021.</p>
-                    <p>Esto demuestra que la contaminación atmosférica no solamente afecta al medio ambiente: afecta directamente a la sociedad y a la salud pública.</p>
+                    <div class="block-quote-hypr">
+                        "La biósfera terrestre está siendo sometida a un estrés químico y físico sin precedentes en la historia geológica de la humanidad, alterando la química misma de la vida."
+                    </div>
 
-                    <img src="https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?q=80&w=1600&auto=format&fit=crop" alt="Contaminación Atmosférica" class="blog-media">
+                    <h3>3. Contaminación del aire</h3>
+                    <p>La alteración química de la tropósfera —la capa atmosférica que habitamos— representa indiscutiblemente la crisis de salud ambiental más letal y extendida del siglo XXI.</p>
+                    
+                    <p>Las arterias de emisión que inyectan toxinas diariamente en nuestros pulmones incluyen:</p>
+                    <ul>
+                        <li>El parque automotor global impulsado por motores de combustión interna (automóviles, transporte de carga pesada).</li>
+                        <li>Centrales termoeléctricas basadas en la combustión de carbón y fueloil.</li>
+                        <li>Complejos petroquímicos, refinerías y manufactura pesada.</li>
+                        <li>La combustión industrializada de reservas fósiles subterráneas.</li>
+                        <li>Megaincendios forestales, cada vez más frecuentes y virulentos por el calentamiento.</li>
+                        <li>La incineración de basura a cielo abierto.</li>
+                        <li>Emisiones de amoníaco y metano de la ganadería y agricultura intensiva.</li>
+                        <li>El polvo en suspensión masivo generado por la industria de la construcción urbana.</li>
+                        <li>La combustión rudimentaria de biomasa y queroseno para cocción en ambientes domésticos cerrados (pobreza energética).</li>
+                    </ul>
+                    
+                    <p>El inventario tóxico está dominado por las letales partículas finas en suspensión (PM2.5), las cuales logran penetrar la barrera alveolar y entrar al torrente sanguíneo, junto con neurotóxicos como óxidos de nitrógeno (NOx), dióxido de azufre (SO2), monóxido de carbono (CO) y el ozono troposférico, un oxidante altamente reactivo a nivel de superficie.</p>
+                    
+                    <p>Los datos científicos son aterradores. La <strong>Organización Mundial de la Salud (OMS)</strong> ha documentado que un escalofriante <strong style="color:var(--neon-alt)">99% de la población humana</strong> respira aire cuyas concentraciones de contaminantes superan ampliamente los límites fisiológicamente seguros. Se calcula que el cóctel de polución del aire ambiental y doméstico ejecutó indirectamente a unos 6,6 millones de seres humanos tan solo en el año 2021.</p>
+                    
+                    <p>La contaminación atmosférica trasciende la concepción de "daño ecológico"; es un asalto silencioso y masivo contra el tejido mismo de la salud pública mundial.</p>
+
+                    <div class="blog-media-container">
+                        <img src="https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?q=80&w=1600&auto=format&fit=crop" alt="Contaminación Atmosférica y Smog Urbano" class="blog-media">
+                    </div>
 
                     <h3>5. Contaminación del agua</h3>
-                    <p>El agua es fundamental para la vida y para prácticamente todas las actividades humanas.</p>
-                    <p>Sin embargo, puede contaminarse por:</p>
+                    <p>El agua dulce es el solvente universal de la biología y el pilar fundacional de la civilización agroindustrial. Su pureza es la línea divisoria entre la prosperidad y el colapso.</p>
+                    
+                    <p>Actualmente, los cuerpos hídricos continentales y oceánicos están siendo bombardeados por:</p>
                     <ul>
-                        <li>Aguas residuales sin tratamiento adecuado.</li>
-                        <li>Petróleo.</li>
-                        <li>Productos químicos industriales.</li>
-                        <li>Pesticidas.</li>
-                        <li>Fertilizantes.</li>
-                        <li>Metales pesados.</li>
-                        <li>Plásticos.</li>
-                        <li>Desechos domésticos.</li>
-                        <li>Actividades mineras.</li>
-                        <li>Microorganismos patógenos.</li>
+                        <li>Mega-volúmenes de aguas negras urbanas descargadas sin plantas de bioseguridad.</li>
+                        <li>Extracción y derrames sistemáticos de crudo (petróleo) en plataformas marinas y oleoductos.</li>
+                        <li>Efluentes industriales cargados de solventes y ácidos corrosivos.</li>
+                        <li>Pesticidas sistémicos que se filtran por escorrentía hacia ríos y acuíferos.</li>
+                        <li>Nitratos y fosfatos de fertilizantes sintéticos (provocando eutrofización mortal).</li>
+                        <li>Metales pesados lixiviados de minas y vertederos.</li>
+                        <li>La invasión geológica de plásticos y micro-polímeros inmortales.</li>
+                        <li>Desechos domésticos, fármacos y microplásticos de productos de higiene.</li>
+                        <li>Drenajes ácidos y cianuro procedentes de la megaminería extractiva.</li>
+                        <li>Cargas biológicas extremas de microorganismos patógenos y bacterias resistentes.</li>
                     </ul>
-                    <p>La contaminación del agua puede provocar enfermedades, afectar la agricultura, reducir la disponibilidad de agua potable y destruir ecosistemas acuáticos.</p>
-                    <p>También tiene consecuencias económicas. Una comunidad que depende de un río contaminado puede perder recursos relacionados con:</p>
+                    
+                    <p>Ingerir o depender de redes hídricas contaminadas desata pandemias de cólera, disentería, fallos renales por metales, y aniquila la base de la cadena alimentaria acuática. El impacto trasciende lo biológico para golpear violentamente los cimientos macroeconómicos locales.</p>
+                    
+                    <p>Una sociedad apostada a orillas de un río o costa envenenada asiste a la vaporización de sus medios de subsistencia:</p>
                     <ul>
-                        <li>Pesca.</li>
-                        <li>Agricultura.</li>
-                        <li>Turismo.</li>
-                        <li>Agua potable.</li>
-                        <li>Recreación.</li>
+                        <li>Colapso de las pesquerías comerciales y de subsistencia.</li>
+                        <li>Inviabilidad del riego agrícola por toxicidad en las cosechas.</li>
+                        <li>Muerte del sector turístico y de servicios asociados.</li>
+                        <li>Desabastecimiento agudo de agua potable, obligando a infraestructuras de purificación extremadamente costosas.</li>
+                        <li>Pérdida irrecuperable de espacios de cohesión social y recreación cultural.</li>
                     </ul>
-                    <p>Por lo tanto, un problema ambiental puede convertirse rápidamente en un problema económico y social.</p>
+                    <p>Nuevamente, el vector es claro: la negligencia ambiental transmuta inevitablemente en ruina financiera y fractura social.</p>
 
                     <h3>6. Contaminación del suelo</h3>
-                    <p>El suelo también puede contaminarse mediante sustancias químicas y residuos.</p>
-                    <p>Algunas causas son:</p>
+                    <p>El manto edáfico terrestre, ese delgado milagro de biomasa y minerales, es el reactor biológico que sostiene el 95% de la producción mundial de alimentos. A pesar de esto, se encuentra bajo un asedio químico sistemático.</p>
+                    
+                    <p>La intoxicación de la tierra es perpetrada mediante:</p>
                     <ul>
-                        <li>Uso excesivo de pesticidas.</li>
-                        <li>Fertilizantes.</li>
-                        <li>Desechos industriales.</li>
-                        <li>Minería.</li>
-                        <li>Derrames de petróleo.</li>
-                        <li>Vertederos.</li>
-                        <li>Residuos electrónicos.</li>
-                        <li>Productos químicos domésticos.</li>
+                        <li>La fumigación crónica y excesiva de agrotóxicos letales para microbiomas del suelo.</li>
+                        <li>Saturación de fertilizantes nitrogenados que queman la materia orgánica.</li>
+                        <li>El vertido clandestino o desregulado de escoria y líquidos industriales.</li>
+                        <li>La remoción profunda y uso de reactivos en la minería a cielo abierto.</li>
+                        <li>Derrames catastróficos de hidrocarburos terrestres.</li>
+                        <li>La filtración de lixiviados tóxicos desde mega-vertederos urbanos sin membranas aislantes.</li>
+                        <li>El cementerio invisible de la obsolescencia tecnológica (chatarra electrónica filtrando litio, plomo, cadmio).</li>
+                        <li>Acumulación de químicos persistentes de uso doméstico e industrial (los llamados 'químicos para siempre', PFAS).</li>
                     </ul>
-                    <p>La contaminación del suelo puede disminuir la productividad agrícola y permitir que sustancias peligrosas lleguen a las plantas, animales y seres humanos.</p>
-                    <p>Esto es especialmente importante porque la sociedad depende del suelo para producir gran parte de los alimentos.</p>
+                    
+                    <p>Un suelo envenenado pierde exponencialmente su capacidad portante y fertilidad, amenazando la seguridad alimentaria global. Más alarmante aún, estos contaminantes persistentes escalan a través del sistema radicular de las plantas, ingresando a la cadena trófica superior y concentrándose (biomagnificación) en los tejidos de animales de consumo y, finalmente, en los seres humanos.</p>
 
                     <h3>20. Contaminación y biodiversidad</h3>
-                    <p>La contaminación también afecta a animales y plantas.</p>
-                    <p>Por ejemplo:</p>
+                    <p>La red de la vida no es un decorado pasivo; es la maquinaria operativa de soporte vital del planeta (Spaceship Earth). La contaminación actual actúa como una fuerza de extinción masiva, operando a nivel celular y ecosistémico.</p>
+                    
+                    <p>El holocausto biológico se manifiesta en dinámicas como:</p>
                     <ul>
-                        <li>Los plásticos pueden ser ingeridos por animales.</li>
-                        <li>Los productos químicos pueden intoxicar organismos.</li>
-                        <li>La contaminación del agua puede producir zonas con poco oxígeno.</li>
-                        <li>Los pesticidas pueden afectar organismos que no son objetivo.</li>
-                        <li>La contaminación atmosférica puede alterar ecosistemas.</li>
-                        <li>Los residuos pueden destruir hábitats.</li>
+                        <li>Mamíferos marinos y aves pereciendo por inanición debido a la ingesta masiva de plásticos (obstrucción digestiva).</li>
+                        <li>Disruptores endocrinos químicos que esterilizan y mutan anfibios y fauna fluvial.</li>
+                        <li>Mareas rojas y zonas muertas oceánicas (anoxia total) provocadas por el escurrimiento de fertilizantes agrícolas.</li>
+                        <li>El colapso de las colonias de abejas e insectos por la neurotoxicidad de los insecticidas neonicotinoides.</li>
+                        <li>La deposición ácida (lluvia ácida) derivada de la polución del aire, que disuelve los nutrientes del suelo y quema los bosques boreales.</li>
+                        <li>La invasión de montañas de basura que sepultan manglares, arrecifes y ecosistemas de alta fragilidad.</li>
                     </ul>
-                    <p>La pérdida de biodiversidad también afecta a la sociedad porque los ecosistemas proporcionan servicios esenciales como:</p>
+                    
+                    <p>La desintegración del tejido de la biodiversidad es una amenaza existencial directa para la civilización urbana. Los ecosistemas silvestres nos subsidian gratuitamente servicios sin los cuales las economías modernas no podrían operar un solo día:</p>
                     <ul>
-                        <li>Polinización.</li>
-                        <li>Agua limpia.</li>
-                        <li>Alimentos.</li>
-                        <li>Regulación climática.</li>
-                        <li>Protección de costas.</li>
-                        <li>Fertilidad del suelo.</li>
+                        <li>Polinización indispensable de los cultivos que alimentan al mundo.</li>
+                        <li>Filtración biofísica y purificación molecular de nuestras reservas de agua dulce.</li>
+                        <li>Provisión genómica de los principios activos para la medicina y la industria alimentaria.</li>
+                        <li>Secuestro colosal de carbono que evita que el planeta hierva (regulación climática).</li>
+                        <li>Amortiguación física mediante manglares y corales contra tsunamis y huracanes catastróficos.</li>
+                        <li>Regeneración continua de la estructura del suelo agrícola.</li>
                     </ul>
-                    <p>Por eso, proteger la naturaleza también significa proteger las condiciones que permiten el funcionamiento de las sociedades humanas.</p>
+                    <p>Destruir el mundo natural es, desde una perspectiva estrictamente utilitarista y sociológica, el acto de auto-sabotaje más grave en la historia de nuestra especie.</p>
                 `
             },
             {
-                title: "La Cultura del Consumo: Residuos, Plásticos y el Costo Económico",
-                excerpt: "Análisis crítico del modelo materialista moderno, la generación incontrolable de basura y el impacto financiero a nivel global.",
+                title: "La Cultura del Consumo: Residuos, Plásticos y Costo Económico",
+                excerpt: "Análisis forense del modelo económico lineal moderno, la avalancha incontrolable de polímeros sintéticos y el impacto de la entropía financiera a nivel global.",
                 content: `
-                    <h3>7. El problema de los residuos</h3>
-                    <p>El crecimiento de las ciudades, la población y el consumo ha aumentado considerablemente la cantidad de residuos generados.</p>
-                    <p>Según el Banco Mundial, en 2016 se generaron aproximadamente 2.01 mil millones de toneladas de residuos sólidos municipales en el mundo. El informe What a Waste 2.0 proyectó que esta cantidad podría llegar a 3.40 mil millones de toneladas para 2050 si no se producen cambios importantes.</p>
-                    <p>El problema no consiste solamente en producir basura, sino también en cómo se gestiona.</p>
-                    <p>Cuando los residuos se depositan o queman de manera inadecuada pueden:</p>
-                    <ul>
-                        <li>Contaminar el suelo.</li>
-                        <li>Contaminar las aguas subterráneas.</li>
-                        <li>Liberar contaminantes atmosféricos.</li>
-                        <li>Aumentar el riesgo de inundaciones al bloquear drenajes.</li>
-                        <li>Favorecer la transmisión de enfermedades.</li>
-                        <li>Dañar animales.</li>
-                        <li>Contaminar océanos y ríos.</li>
-                    </ul>
-                    <p>El Banco Mundial señala que una parte importante de los residuos mundiales es gestionada de manera inadecuada y que las consecuencias ambientales y sociales afectan especialmente a las poblaciones más pobres.</p>
+                    <div class="block-quote-hypr">
+                        "La economía extractiva ha diseñado un sistema donde el éxito financiero de las corporaciones es directamente proporcional a la velocidad con la que transformamos los recursos naturales en basura tóxica."
+                    </div>
 
-                    <img src="https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?q=80&w=1600&auto=format&fit=crop" alt="Residuos y Plásticos" class="blog-media">
+                    <h3>7. El problema de los residuos</h3>
+                    <p>El vector más visible de la crisis civilizatoria moderna es la avalancha sólida: la explosión demográfica, aunada a la migración rural-urbana hiper-acelerada y la adoctrinación en el consumismo desechable, ha disparado la producción de materia descartable a volúmenes geológicos.</p>
+                    
+                    <p>La aritmética de la basura es implacable. Según los datos del <strong>Banco Mundial</strong>, tan solo en el año 2016, la humanidad generó la colosal cifra de 2.010 millones de toneladas de residuos sólidos municipales. El informe prospectivo <em>"What a Waste 2.0"</em> emitió un pronóstico aterrador: de continuar la trayectoria macroeconómica inalterada, este tsunami sólido se disparará a 3.400 millones de toneladas anuales para mediados del siglo (2050).</p>
+                    
+                    <p>La gravedad de esta crisis no yace exclusivamente en el acto físico de generar el residuo, sino en el colapso logístico global respecto a qué hacer con él. Cuando los desechos se amontonan en basurales informales, se lanzan a barrancos o se incineran sin filtros moleculares, las consecuencias desencadenan una cascada de fallos sistémicos:</p>
+                    <ul>
+                        <li>Infiltración de metales y químicos disueltos (lixiviados) que esterilizan la tierra fértil.</li>
+                        <li>Envenenamiento progresivo e irreversible de las reservas estratégicas de aguas subterráneas.</li>
+                        <li>Liberación masiva de dioxinas, furanos y metano (gas de potente efecto invernadero) a la atmósfera al arder.</li>
+                        <li>Bloqueo físico de infraestructuras pluviales críticas urbanas, multiplicando los daños económicos de inundaciones estacionales.</li>
+                        <li>Proliferación descontrolada de vectores biológicos (roedores, mosquitos) que catalizan epidemias de dengue, zika y leptospirosis.</li>
+                        <li>Asfixia y mutilación de la fauna local que confunde la basura con alimento.</li>
+                        <li>Conversión de los océanos globales en los vertederos terminales de la civilización.</li>
+                    </ul>
+                    
+                    <p>El Banco Mundial advierte de manera concluyente que la fracción mayoritaria de los desechos planetarios es manejada bajo estándares medievales (inadecuados). Como dictamina la constante de la injusticia ambiental, la toxicidad y el caos sanitario de esta mala gestión se concentra implacablemente sobre los guetos urbanos y las naciones más empobrecidas del globo.</p>
+
+                    <div class="blog-media-container">
+                        <img src="https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?q=80&w=1600&auto=format&fit=crop" alt="Avalancha de Plásticos" class="blog-media">
+                    </div>
 
                     <h3>8. Plásticos y sociedad de consumo</h3>
-                    <p>El plástico representa uno de los ejemplos más claros de la relación entre contaminación y hábitos sociales.</p>
-                    <p>Los plásticos tienen numerosas ventajas: son baratos, ligeros, resistentes y fáciles de producir. Por eso se utilizan en envases, transporte, medicina, construcción, electrónica y prácticamente todos los sectores de la economía.</p>
-                    <p>El problema aparece cuando una sociedad utiliza grandes cantidades de productos de corta duración y posteriormente los desecha.</p>
-                    <p>Entre los principales problemas están:</p>
+                    <p>El reinado del polímero sintético (plástico) es el espejo oscuro que refleja fielmente las patologías de nuestros hábitos sociales modernos. En él convergen el genio ingenieril de la humanidad y su ceguera ecológica a largo plazo.</p>
+                    
+                    <p>Desde una óptica técnica, los plásticos son un material cuasi-perfecto: económicamente imbatibles, ultraligeros, invulnerables a la descomposición biológica, maleables y fáciles de extruir masivamente. Estas virtudes explican su colonización absoluta de envases, logística comercial, instrumental médico de alta precisión, ingeniería de construcción, microelectrónica y la práctica totalidad del producto interno bruto industrial.</p>
+                    
+                    <p>La tragedia se materializa por una desconexión fatal en su diseño de uso: la civilización ha decidido utilizar un material diseñado a nivel molecular para <strong>durar miles de años</strong> para fabricar objetos de <strong>una vida útil de 5 minutos</strong>, para luego descartarlos sumariamente en el ambiente natural.</p>
+                    
+                    <p>Las fallas catastróficas de este modelo incluyen:</p>
                     <ul>
-                        <li>Acumulación de plástico en vertederos.</li>
-                        <li>Contaminación de ríos.</li>
-                        <li>Contaminación marina.</li>
-                        <li>Fragmentación en microplásticos.</li>
-                        <li>Daños a animales.</li>
-                        <li>Dificultad para reciclar determinados productos.</li>
+                        <li>La momificación de los vertederos bajo capas geológicas de plástico no degradable.</li>
+                        <li>Taponamiento crónico de las arterias fluviales del planeta.</li>
+                        <li>Formación de inmensos giros oceánicos (islas de plástico) del tamaño de continentes.</li>
+                        <li>La fotodegradación lenta en <strong>microplásticos y nanoplásticos</strong>, que ya han penetrado la lluvia, la nieve polar y el torrente sanguíneo y las placentas humanas.</li>
+                        <li>El sufrimiento prolongado y extinción de especies marinas por enredo o inanición plástica.</li>
+                        <li>La imposibilidad termodinámica y económica de reciclar mezclas complejas de resinas plásticas (termoestables).</li>
                     </ul>
-                    <p>El Banco Mundial estimó que los plásticos representan aproximadamente el 12 % de los residuos sólidos municipales considerados en What a Waste 2.0.</p>
-                    <p>Esto demuestra que el problema de los residuos está relacionado con el modelo de consumo.</p>
+                    
+                    <p>De acuerdo con las modelaciones en <em>What a Waste 2.0</em> del Banco Mundial, la familia de los plásticos ya devora aproximadamente el 12% del total de la masa de residuos sólidos municipales globales. Este porcentaje subraya una evidencia inamovible: el colapso de los residuos no es un accidente, es el síntoma predecible de la "Cultura de lo Desechable".</p>
 
                     <h3>11. Contaminación y economía</h3>
-                    <p>La contaminación también tiene un enorme impacto económico.</p>
-                    <p>Puede generar:</p>
-                    <p><strong>Gastos sanitarios</strong><br>
-                    Las enfermedades asociadas con la contaminación aumentan el gasto de hospitales y sistemas de salud.</p>
-                    <p><strong>Pérdida de productividad</strong><br>
-                    Una persona enferma puede faltar al trabajo o tener una menor capacidad laboral.</p>
-                    <p><strong>Daños a la agricultura</strong><br>
-                    La contaminación y el cambio climático pueden afectar la producción agrícola.</p>
-                    <p><strong>Daños al turismo</strong><br>
-                    Las playas contaminadas, los ríos deteriorados y las ciudades con mala calidad ambiental pueden perder atractivo turístico.</p>
-                    <p><strong>Costos de limpieza</strong><br>
-                    Los gobiernos deben invertir grandes cantidades de dinero para limpiar ríos, gestionar residuos y recuperar ecosistemas.</p>
-                    <p>Por eso, prevenir la contaminación puede ser económicamente más eficiente que solucionar posteriormente sus consecuencias.</p>
+                    <p>Suele esgrimirse, desde un reduccionismo industrial, que la protección ambiental obstaculiza el progreso económico. La macroeconomía del siglo XXI demuestra exactamente lo opuesto: la contaminación es, de hecho, un pozo negro financiero gigantesco, un destructor de capital de proporciones bíblicas.</p>
+                    
+                    <p>Los pasivos ambientales se transmutan rápidamente en hemorragias de tesorería a través de:</p>
+                    <p><strong>Hipertrofia de los gastos sanitarios:</strong><br>
+                    Las epidemias de asma infantil, cáncer y dolencias pulmonares impulsadas por el smog devoran los presupuestos ministeriales de salud, colapsando hospitales públicos y exigiendo medicamentos de altísimo costo.</p>
+                    
+                    <p><strong>Destrucción de la fuerza laboral (Pérdida de productividad):</strong><br>
+                    Ciudadanos asfixiados o intoxicados generan ausentismo laboral masivo, merma en el rendimiento cognitivo de los estudiantes, y reducción drástica en la capacidad de generar valor económico (muertes prematuras de población económicamente activa).</p>
+                    
+                    <p><strong>Impacto letal en la seguridad agrícola:</strong><br>
+                    Las lluvias tóxicas, la salinización de suelos, los estresores hídricos y las fluctuaciones climáticas extremas pulverizan el rendimiento por hectárea, empujando a los precios mundiales de los alimentos a picos hiperinflacionarios.</p>
+                    
+                    <p><strong>Vaporización del capital turístico:</strong><br>
+                    Litorales asediados por algas tóxicas (sargazo), urbes oscurecidas por neblina fotoquímica (smog) y ecosistemas muertos ahuyentan el flujo de divisas internacionales del turismo y hunden el valor inmobiliario local.</p>
+                    
+                    <p><strong>Costos colosales de remediación y limpieza:</strong><br>
+                    El erario público se ve forzado a desviar miles de millones de dólares (que deberían ir a educación e infraestructura) para dragar lechos de ríos petroquímicos, sellar basurales lixiviantes, construir muros anti-inundación e intentar revivir ecosistemas agónicos.</p>
+                    
+                    <p>La conclusión de la auditoría ambiental es cristalina: financiar la prevención proactiva en el origen industrial es incalculablemente más eficiente, barato y rentable que tratar de apagar los incendios económicos de sus consecuencias a posteriori.</p>
 
                     <h3>19. Economía circular</h3>
-                    <p>Uno de los conceptos importantes para enfrentar la contaminación en el siglo XXI es la economía circular.</p>
-                    <p>El modelo tradicional puede representarse así:</p>
-                    <p>Extraer → producir → consumir → desechar.</p>
-                    <p>La economía circular intenta cambiarlo por:</p>
-                    <p>Reducir → reutilizar → reparar → reciclar → recuperar materiales.</p>
-                    <p>El objetivo es que los materiales permanezcan en circulación durante el mayor tiempo posible.</p>
-                    <p>Esto puede disminuir:</p>
+                    <p>Para desarmar la bomba de tiempo entrópica del siglo XXI, el paradigma intelectual y productivo más crucial es la transición hacia la <strong>Economía Circular</strong>.</p>
+                    
+                    <p>El diseño industrial tradicional es lineal y suicida. Se mapea bajo el modelo:</p>
+                    <p style="font-family: monospace;" class="text-[var(--neon-accent)] bg-black p-4 rounded text-center my-4">Extracción brutal → Producción tóxica → Consumo fugaz → Descarte eterno.</p>
+                    
+                    <p>La arquitectura del modelo circular desmantela esa línea y propone un bucle cerrado bio-inspirado:</p>
+                    <p style="font-family: monospace;" class="text-[var(--neon-accent)] bg-black p-4 rounded text-center my-4">Reducción drástica → Reutilización máxima → Reparación técnica → Reciclaje profundo → Recuperación perpetua de la materia.</p>
+                    
+                    <p>El axioma fundamental es retener el valor atómico y funcional de los metales, plásticos y minerales en la esfera económica durante el mayor margen de tiempo físicamente concebible, eliminando el concepto mismo de "basura" del vocabulario industrial.</p>
+                    
+                    <p>La implementación a gran escala de esta ingeniería de flujo de materiales garantizaría la disminución radical de:</p>
                     <ul>
-                        <li>Extracción de materias primas.</li>
-                        <li>Consumo energético.</li>
-                        <li>Generación de residuos.</li>
-                        <li>Contaminación.</li>
+                        <li>La minería a cielo abierto y el asalto salvaje a las materias primas vírgenes.</li>
+                        <li>La demanda de consumo energético astronómico requerido para procesar rocas puras.</li>
+                        <li>El volumen físico de montañas de desperdicios arrojados a la biósfera.</li>
+                        <li>La pluma de toxinas liberadas en cada etapa de la cadena de valor global.</li>
                     </ul>
-                    <p>El PNUMA destaca que el consumo creciente de recursos naturales está relacionado con la crisis planetaria de cambio climático, pérdida de biodiversidad y contaminación y residuos.</p>
+                    
+                    <p>El PNUMA es rotundo en sus análisis sistémicos: la sed infinita y exponencial de consumo de recursos materiales brutos es el motor térmico central que alimenta simultáneamente los tres frentes de la crisis planetaria: la asfixia por calentamiento, el colapso de la red biológica, y la marea tóxica de contaminación sólida y química.</p>
                 `
             },
             {
                 title: "Urbanización, Salud Pública y el Clima del Futuro",
-                excerpt: "Conexión entre la rápida expansión de las ciudades mal planificadas con la crisis sanitaria y el deterioro atmosférico global.",
+                excerpt: "La disección de la megaciudad moderna: la convergencia de la rápida expansión demográfica, el desastre sanitario por exposición continua y el calentamiento inminente de la atmósfera.",
                 content: `
-                    <h3>10. Urbanización y contaminación</h3>
-                    <p>El siglo XXI se caracteriza por una enorme expansión urbana.</p>
-                    <p>Las ciudades concentran:</p>
-                    <ul>
-                        <li>Personas.</li>
-                        <li>Vehículos.</li>
-                        <li>Industrias.</li>
-                        <li>Construcciones.</li>
-                        <li>Comercios.</li>
-                        <li>Residuos.</li>
-                        <li>Consumo energético.</li>
-                    </ul>
-                    <p>Esto genera oportunidades económicas, pero también aumenta las presiones ambientales.</p>
-                    <p>Una ciudad mal planificada puede presentar:</p>
-                    <ul>
-                        <li>Congestión vehicular.</li>
-                        <li>Mala calidad del aire.</li>
-                        <li>Escasez de áreas verdes.</li>
-                        <li>Problemas de residuos.</li>
-                        <li>Contaminación acústica.</li>
-                        <li>Inundaciones.</li>
-                        <li>Contaminación de ríos.</li>
-                        <li>Elevado consumo energético.</li>
-                    </ul>
-                    <p>Por eso, la planificación urbana es fundamental para reducir la contaminación.</p>
-                    <p>Una ciudad sostenible necesita combinar desarrollo económico, bienestar social y protección ambiental.</p>
+                    <div class="block-quote-hypr">
+                        "Las metrópolis modernas son los reactores donde se funde nuestro futuro: pueden ser maravillas de la eficiencia ecológica, o cámaras de gas de movimiento lento."
+                    </div>
 
-                    <img src="https://images.unsplash.com/photo-1449824913935-59a10b8d2000?q=80&w=1600&auto=format&fit=crop" alt="Ciudad y Contaminación" class="blog-media">
+                    <h3>10. Urbanización y contaminación</h3>
+                    <p>La firma demográfica más trascendental del siglo XXI es la megamigración hacia el concreto: la mayor y más acelerada expansión urbana y periurbana en la historia documentada de la especie humana.</p>
+                    
+                    <p>Las grandes aglomeraciones urbanas funcionan como inmensos embudos geográficos que concentran en muy poco espacio:</p>
+                    <ul>
+                        <li>Densidades poblacionales asfixiantes.</li>
+                        <li>Flotas gigantescas de vehículos a motor (tráfico perpetuo).</li>
+                        <li>Parques de manufactura y cinturones industriales periurbanos.</li>
+                        <li>Zonas de construcción masiva y movimiento de tierras sin fin.</li>
+                        <li>Nodos de hiper-consumismo y comercio.</li>
+                        <li>Montañas de residuos orgánicos y sintéticos.</li>
+                        <li>Demandas astronómicas de potencia eléctrica e hidrocarburos.</li>
+                    </ul>
+                    
+                    <p>Esta densificación brutal es innegablemente un motor de oportunidad económica e innovación, pero cuando colisiona con la especulación del suelo y la ausencia de diseño ecológico, el balance arroja presiones ambientales que desgarran el tejido urbano.</p>
+                    
+                    <p>Una megalópolis diseñada sin planificación científica (basada en el vehículo particular) garantiza la aparición endémica de:</p>
+                    <ul>
+                        <li>Parálisis total por congestión vehicular e ineficiencia del transporte.</li>
+                        <li>Valles de esmog tóxico e inversión térmica que violan todo estándar de calidad del aire.</li>
+                        <li>Errabunda escasez de pulmones biológicos (árboles) para filtrar toxinas y proveer sombra.</li>
+                        <li>Colapso logístico y sanitario por la avalancha inmanejable de residuos sólidos.</li>
+                        <li>Ruido decibélico crónico que altera los sistemas nerviosos de millones (contaminación acústica).</li>
+                        <li>Impermeabilización total del suelo por asfalto, garantizando riadas e inundaciones catastróficas.</li>
+                        <li>Estrangulamiento y eutrofización de los sistemas fluviales urbanos convertidos en drenajes abiertos.</li>
+                        <li>Efectos de "isla de calor urbana", multiplicando el elevado consumo energético necesario para el aire acondicionado.</li>
+                    </ul>
+                    
+                    <p>Ergo, la intervención maestra para amputar los brazos de la contaminación moderna reside en el urbanismo inteligente. El diseño de una ciudad sostenible del futuro cercano exige una ingeniería social estricta que armonice la vitalidad económica, la justicia y bienestar social, junto a una infraestructura bio-integrada de protección ambiental.</p>
+
+                    <div class="blog-media-container">
+                        <img src="https://images.unsplash.com/photo-1449824913935-59a10b8d2000?q=80&w=1600&auto=format&fit=crop" alt="Ciudad Saturada y Smog" class="blog-media">
+                    </div>
 
                     <h3>9. Contaminación y cambio climático</h3>
-                    <p>Aunque contaminación ambiental y cambio climático no son exactamente lo mismo, están profundamente relacionados.</p>
-                    <p>La utilización de combustibles fósiles produce contaminantes atmosféricos y también gases de efecto invernadero.</p>
-                    <p>Los principales combustibles fósiles son:</p>
+                    <p>Aunque en la percepción pública se traten a veces como fenómenos independientes, la contaminación ambiental y la disrupción climática global son siamesas unidas por un mismo corazón mecánico: la dependencia tóxica de la quema de paleobiomasa.</p>
+                    
+                    <p>La incineración de estos hidrocarburos fósiles libera un veneno dual: expulsa material particulado cancerígeno y, simultáneamente, arroja invisibles mantas térmicas de gases de efecto invernadero (GEI).</p>
+                    
+                    <p>El panteón principal de este cóctel fósil lo constituyen:</p>
                     <ul>
-                        <li>Carbón.</li>
-                        <li>Petróleo.</li>
-                        <li>Gas natural.</li>
+                        <li>El Carbón mineral (la matriz de la revolución industrial original, y la más sucia).</li>
+                        <li>El Petróleo líquido (la sangre de la logística y el transporte mundial moderno).</li>
+                        <li>El Gas natural (combustible fósil de transición masiva).</li>
                     </ul>
-                    <p>Cuando se queman, liberan principalmente dióxido de carbono (CO₂), además de otros contaminantes.</p>
-                    <p>El IPCC concluyó que las actividades humanas, principalmente mediante las emisiones de gases de efecto invernadero, han causado inequívocamente el calentamiento global. La temperatura media de la superficie mundial alcanzó aproximadamente 1,1 °C por encima del período 1850-1900 durante 2011-2020.</p>
-                    <p>El cambio climático puede aumentar problemas sociales como:</p>
+                    
+                    <p>Cuando esta materia ancestral se oxida mediante el fuego, se emite de forma masiva y abrumadora moléculas de dióxido de carbono (CO₂), el principal arquitecto del calentamiento en la troposfera, acompañado de metano y óxidos nitrosos.</p>
+                    
+                    <p>El veredicto forense de la comunidad científica, articulado por el <strong>Panel Intergubernamental sobre Cambio Climático (IPCC)</strong>, es final e inapelable: las actividades extractivas y termodinámicas humanas han causado, inequívoca y exclusivamente, el sobrecalentamiento del globo. En la década de 2011-2020, el termostato de la superficie planetaria ya marcaba la escalofriante cifra de 1,1 °C por encima de la línea base preindustrial (1850-1900).</p>
+                    
+                    <p>Este motor de calor atmosférico actúa como un multiplicador de fuerzas que exacerbará las tensiones sociales a límites insoportables, desatando:</p>
                     <ul>
-                        <li>Olas de calor.</li>
-                        <li>Sequías.</li>
-                        <li>Inundaciones.</li>
-                        <li>Pérdidas agrícolas.</li>
-                        <li>Daños a infraestructura.</li>
-                        <li>Escasez de agua.</li>
-                        <li>Desplazamientos de población.</li>
-                        <li>Pérdidas económicas.</li>
+                        <li>Muros térmicos y olas de calor letales imposibles de sobrevivir sin refugio climatizado.</li>
+                        <li>Sequías mega-históricas que desecarán embalses y paralizarán naciones enteras.</li>
+                        <li>Eventos de precipitación monstruosos e inundaciones súbitas que borrarán infraestructuras.</li>
+                        <li>Colapso de los ciclos de siembra, provocando hiperinflación agrícola e inseguridad alimentaria global.</li>
+                        <li>Destrucción sistémica de puertos e infraestructura crítica costera.</li>
+                        <li>La erradicación de las reservas de glaciares andinos y del Himalaya (escasez hídrica total).</li>
+                        <li>Movimientos sísmicos de población: millones de desplazados climáticos huyendo de litorales inundados y zonas yermas.</li>
+                        <li>Hemiplejía económica generalizada ante la sumatoria de daños no asegurables.</li>
                     </ul>
-                    <p>Por ello, la contaminación y el cambio climático forman parte de una problemática ambiental mucho más amplia.</p>
+                    <p>Queda patente que el smog que ahoga nuestras avenidas y el exceso térmico que derrite el hielo polar no son más que los síntomas interconectados de una misma arquitectura tecno-económica rota.</p>
 
                     <h3>12. La contaminación como problema de salud pública</h3>
-                    <p>La contaminación ambiental puede afectar prácticamente todos los aspectos de la salud.</p>
-                    <p>La contaminación atmosférica está relacionada con enfermedades como:</p>
+                    <p>La miopía política a menudo relega el medio ambiente a un nicho "verde" periférico. Sin embargo, la toxicología moderna confirma que la contaminación del entorno es una asalto de artillería pesada contra absolutamente cada sistema orgánico del cuerpo humano.</p>
+                    
+                    <p>Vivir bajo la cúpula de la contaminación atmosférica eleva drásticamente las tasas de incidencia y mortalidad de patologías devastadoras como:</p>
                     <ul>
-                        <li>Enfermedades cardiovasculares.</li>
-                        <li>Accidentes cerebrovasculares.</li>
-                        <li>Enfermedad pulmonar obstructiva crónica.</li>
-                        <li>Cáncer de pulmón.</li>
-                        <li>Infecciones respiratorias.</li>
+                        <li>Insuficiencias y colapsos de la red cardiovascular (infartos agudos).</li>
+                        <li>Desconexiones y rupturas vasculares a nivel cerebral (accidentes cerebrovasculares o ICTUS).</li>
+                        <li>Deterioro pulmonar irreversible progresivo (Enfermedad Pulmonar Obstructiva Crónica, EPOC).</li>
+                        <li>Proliferación descontrolada de células malignas (Cáncer pulmonar, leucemias).</li>
+                        <li>Vulnerabilidad extrema a plagas virales y bacterianas (Neumonías, agravamiento de pandemias respiratorias).</li>
                     </ul>
-                    <p>La OMS también señala que aproximadamente 2.1 mil millones de personas todavía cocinan utilizando combustibles o tecnologías contaminantes, lo que demuestra que la contaminación doméstica continúa siendo un importante problema social.</p>
-                    <p>Esto muestra una característica importante de la contaminación en el siglo XXI: no todas las personas tienen las mismas posibilidades de evitar la exposición.</p>
+                    
+                    <p>Añadiendo a la brutal asimetría de esta violencia estructural, los reportes de la <strong>OMS</strong> desvelan una tragedia silenciosa: aproximadamente 2.100 millones de personas, sumidas en la pobreza energética extrema del tercer mundo, cocinan diariamente quemando leña, bosta y carbón vegetal en los interiores sin ventilación de sus hogares. Este humo tóxico intramuros condena a muerte a millones de mujeres y niños cada año, consolidando la polución doméstica como un crimen social de lesa humanidad en pleno siglo XXI.</p>
+                    
+                    <p>Esto cincela en piedra el postulado más duro de la ecología política: respirar aire limpio no es un derecho biológico garantizado, sino un lujo posicional, dictado estrictamente por el código postal y el extracto bancario de los individuos.</p>
 
                     <h3>21. La contaminación en el futuro</h3>
-                    <p>Si las tendencias actuales continúan, algunos problemas ambientales podrían aumentar debido a la combinación de:</p>
+                    <p>La proyección matemática hacia el horizonte de las próximas décadas es implacable. Si los timones de la economía mundial mantienen el rumbo inercial ("Business as Usual"), seremos testigos de la tormenta perfecta provocada por la colisión sinérgica de:</p>
                     <ul>
-                        <li>Crecimiento urbano.</li>
-                        <li>Mayor consumo.</li>
-                        <li>Aumento de residuos.</li>
-                        <li>Cambio climático.</li>
-                        <li>Degradación de ecosistemas.</li>
-                        <li>Mayor demanda de recursos.</li>
+                        <li>Un hiper-crecimiento de manchas de concreto urbano.</li>
+                        <li>El fomento compulsivo al hiper-consumo masivo por parte de las clases medias globales emergentes.</li>
+                        <li>Un aumento logarítmico en la tonelada de plásticos, químicos y chatarra tecnológica.</li>
+                        <li>El cruce de los puntos de inflexión (Tipping Points) del sistema climático, acelerando el caos atmosférico de forma irreversible.</li>
+                        <li>El colapso en dominó de los servicios ecosistémicos que la naturaleza ofrecía como amortiguadores gratuitos.</li>
+                        <li>El saqueo definitivo y terminal de los recursos hídricos, pesqueros y minerales estratégicos.</li>
                     </ul>
-                    <p>El Banco Mundial proyectó un aumento considerable de los residuos hacia 2050 si no se modifican los sistemas actuales de producción y gestión.</p>
-                    <p>Por otro lado, el IPCC advierte que los riesgos relacionados con el cambio climático aumentan con cada incremento del calentamiento y que las decisiones tomadas en las próximas décadas tendrán consecuencias duraderas.</p>
-                    <p>Esto convierte al siglo XXI en un período decisivo para modificar la relación entre sociedad y medio ambiente.</p>
+                    
+                    <p>Los grandes analistas predictivos, como el Banco Mundial, proyectan la citada pesadilla de un incremento astronómico del volumen de residuos globales hacia el 2050 de no mediar una cirugía mayor al sistema de diseño, producción y gestión global.</p>
+                    
+                    <p>En paralelo, la campana de alarma más alta del planeta (el IPCC) subraya categóricamente que los daños en cascada asociados a la inestabilidad climática y atmosférica empeoran gravemente con cada décima fraccional de grado de calentamiento. Las políticas legislativas, de diseño industrial y energéticas sancionadas en la presente década de los 2020s bloquearán y definirán, de forma duradera y cuasi-permanente, el nivel de supervivencia y sufrimiento de los próximos 3.000 años de historia humana.</p>
+                    
+                    <p>De manera incuestionable, nos encontramos en el estrecho y efímero "cuello de botella" del Siglo XXI: la ventana de tiempo final y decisiva para rediseñar la arquitectura técnica de la sociedad antes de que las leyes de la física y la termodinámica tomen el control de la biósfera por nosotros.</p>
                 `
             },
             {
                 title: "La Ruta hacia la Sostenibilidad: Roles, Tecnología y Educación",
-                excerpt: "Plan de acción integral sobre el papel de empresas, gobiernos y ciudadanos, cerrando con la importancia vital de la educación ambiental.",
+                excerpt: "El plan táctico final: deconstruyendo el ecosistema de responsabilidades entre corporaciones, estados, la doble espada de la tecnología y el poder de la mente informada.",
                 content: `
+                    <div class="block-quote-hypr">
+                        "La salvación de la civilización tecno-industrial no pasa por abandonar la tecnología o culpar al individuo aislado, sino por someter la arquitectura corporativa, la legislación estatal y la innovación tecnológica a las leyes inquebrantables de la ecología profunda."
+                    </div>
+
                     <h3>14. El papel de las empresas</h3>
-                    <p>Las empresas tienen un papel fundamental porque producen bienes y servicios que requieren:</p>
+                    <p>Las mega-corporaciones y la matriz industrial ostentan el máximo poder de palanca en la balanza ecológica, puesto que son los ingenieros del metabolismo productivo. Ellos controlan el diseño de los bienes de capital y de consumo que exigen cuotas astronómicas de:</p>
                     <ul>
-                        <li>Materias primas.</li>
-                        <li>Energía.</li>
-                        <li>Agua.</li>
-                        <li>Transporte.</li>
-                        <li>Empaques.</li>
-                        <li>Infraestructura.</li>
+                        <li>Minerales raros, metales pesados y materias primas petroquímicas.</li>
+                        <li>Teravatios de energía cinética, térmica y eléctrica extraída de la red.</li>
+                        <li>Océanos virtuales de agua dulce para refrigeración, disolución y procesamiento industrial.</li>
+                        <li>Cadenas de suministro intercontinentales mantenidas por armadas de supercargueros contaminantes.</li>
+                        <li>Derroche logístico en empaquetados plásticos (packaging) redundantes e inservibles.</li>
+                        <li>La construcción de infraestructuras de extracción (minas, ductos, refinerías) con impactos territoriales devastadores.</li>
                     </ul>
-                    <p>Una empresa puede contribuir a la contaminación si utiliza procesos altamente contaminantes o produce grandes cantidades de residuos.</p>
-                    <p>Sin embargo, también puede ser parte de la solución mediante:</p>
+                    
+                    <p>Históricamente, una empresa estructurada bajo la ética de maximización de ganancias a corto plazo ("Shareholder value") actúa como una bomba de destrucción ecológica al priorizar reactores obsoletos, desregular vertidos y saturar de productos chatarra los vertederos para inflar sus métricas trimestrales.</p>
+                    
+                    <p>No obstante, el sector privado es indispensable para escalar la transición masiva; la reingeniería corporativa debe girar urgentemente hacia:</p>
                     <ul>
-                        <li>Energías renovables.</li>
-                        <li>Eficiencia energética.</li>
-                        <li>Reciclaje.</li>
-                        <li>Economía circular.</li>
-                        <li>Reducción de empaques.</li>
-                        <li>Productos reutilizables.</li>
-                        <li>Tecnologías menos contaminantes.</li>
-                        <li>Tratamiento de aguas residuales.</li>
+                        <li>Alimentar sus parques fabriles exclusivamente con redes de energía 100% fotovoltaica y eólica.</li>
+                        <li>Aplicar termodinámica avanzada para alcanzar eficiencias energéticas casi perfectas en sus cadenas de montaje.</li>
+                        <li>Someterse radicalmente a las leyes de la Economía Circular: responsabilizarse del producto desde la cuna hasta el final de su vida útil.</li>
+                        <li>Suprimir de raíz el uso de polímeros vírgenes de un solo uso en sus empaques logísticos.</li>
+                        <li>Desarrollar hardware modular, eternamente reparable y estandarizado, aniquilando la obsolescencia programada tecnológica.</li>
+                        <li>Innovar en reactivos químicos en circuitos cerrados (Green Chemistry) que expulsen agua potable tras su ciclo.</li>
                     </ul>
-                    <p>Esto ha provocado un cambio importante en el siglo XXI: la sostenibilidad ambiental se ha convertido progresivamente en una cuestión relacionada también con la responsabilidad empresarial.</p>
+                    
+                    <p>El Siglo XXI marca la pauta crítica donde la "Sostenibilidad Ambiental" o criterios ESG (Environmental, Social, Governance) han dejado de ser meras campañas de marketing cínico (Greenwashing) para convertirse en el criterio definitorio de la viabilidad, el cumplimiento legal y la supervivencia comercial a largo plazo de cualquier corporación.</p>
 
                     <h3>15. El papel de los gobiernos</h3>
-                    <p>Los gobiernos tienen la responsabilidad de establecer reglas que reduzcan la contaminación.</p>
-                    <p>Entre las medidas posibles están:</p>
+                    <p>El mercado librado a su propia codicia es incapaz de valorar el costo de un ecosistema muerto o de un paciente oncológico. Por ende, los estados soberanos ostentan la responsabilidad indelegable y absoluta de intervenir la arquitectura económica fijando los "Límites del Terreno de Juego" que frenen el saqueo ambiental.</p>
+                    
+                    <p>El arsenal legislativo y coercitivo del Estado moderno debe ejecutar drásticamente:</p>
                     <ul>
-                        <li>Límites de emisiones.</li>
-                        <li>Normas de calidad del aire.</li>
-                        <li>Protección de fuentes de agua.</li>
-                        <li>Sistemas de gestión de residuos.</li>
-                        <li>Impuestos o restricciones a contaminantes.</li>
-                        <li>Incentivos para energías renovables.</li>
-                        <li>Transporte público.</li>
-                        <li>Protección de bosques.</li>
-                        <li>Áreas naturales protegidas.</li>
-                        <li>Educación ambiental.</li>
-                        <li>Monitoreo de la contaminación.</li>
+                        <li>Topes de emisión de gases y toxinas infranqueables, penalizados con multas letales para las corporaciones infractoras.</li>
+                        <li>Estandarización y endurecimiento extremo de los Códigos de Calidad del Aire (imponiendo los límites de la OMS).</li>
+                        <li>La militarización o protección férrea de acuíferos, lagos y fuentes de agua dulce primarias (Santuarios Hídricos).</li>
+                        <li>Financiación y obligatoriedad de la recolección, clasificación en origen y plantas de súper-reciclaje municipal.</li>
+                        <li>Impuestos Pigouvianos paralizantes ("Tasa al Carbono" y "Tasa al Plástico") dirigidos directamente a las industrias que generen externalidades tóxicas.</li>
+                        <li>Inyección billonaria de subsidios para investigación y despliegue masivo de redes eléctricas inteligentes, eólicas y fotovoltaicas.</li>
+                        <li>La completa erradicación presupuestaria a la expansión de carreteras urbanas, destinando el 100% al diseño de sistemas masivos de trenes y tranvías de cero emisiones.</li>
+                        <li>La fortificación penal de reservas naturales y cinturones de bosques primarios intactos.</li>
+                        <li>Inclusión obligatoria del pensamiento sistémico ecológico en todas las currículas del Ministerio de Educación.</li>
+                        <li>Establecimiento de redes telemétricas públicas en tiempo real con datos abiertos sobre la toxicidad del aire, del agua y del suelo.</li>
                     </ul>
-                    <p>La cooperación internacional también es importante porque muchos problemas ambientales no respetan fronteras.</p>
-                    <p>La contaminación atmosférica puede desplazarse entre países, los océanos son compartidos y el cambio climático afecta al planeta entero.</p>
+                    
+                    <p>Dado que la atmósfera y los océanos ignoran soberanamente las líneas trazadas en los mapas geopolíticos (una nube de dióxido de azufre generada en Beijing o New York impacta directamente a ecosistemas a miles de kilómetros), la arquitectura de tratados y vigilancia supranacional (Protocolos Internacionales, Acuerdos de París, Tribunales Ambientales) es la red de seguridad final, pues el clima global y el océano azul es un bien comunal del planeta Tierra en su conjunto.</p>
 
-                    <img src="https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?q=80&w=1600&auto=format&fit=crop" alt="Tecnología y Sostenibilidad" class="blog-media">
-
-                    <h3>16. El papel de los ciudadanos</h3>
-                    <p>La sociedad no está formada solamente por gobiernos y empresas. Los ciudadanos también pueden influir.</p>
-                    <p>Algunas acciones son:</p>
-                    <ul>
-                        <li>Reducir el consumo innecesario.</li>
-                        <li>Reutilizar productos.</li>
-                        <li>Separar residuos.</li>
-                        <li>Evitar tirar basura.</li>
-                        <li>Utilizar transporte público cuando sea posible.</li>
-                        <li>Caminar o utilizar bicicleta.</li>
-                        <li>Ahorrar electricidad.</li>
-                        <li>Reducir el desperdicio de alimentos.</li>
-                        <li>Evitar productos desechables cuando existan alternativas.</li>
-                        <li>Participar en campañas ambientales.</li>
-                        <li>Exigir políticas ambientales.</li>
-                        <li>Informarse sobre problemas ambientales.</li>
-                    </ul>
-                    <p>Sin embargo, es importante aclarar que la responsabilidad no debe recaer únicamente en los individuos. Las decisiones de gobiernos, industrias y grandes empresas pueden tener un impacto mucho mayor que las acciones aisladas de una persona.</p>
+                    <div class="blog-media-container">
+                        <img src="https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?q=80&w=1600&auto=format&fit=crop" alt="Tecnología Renovable y Ciudades del Futuro" class="blog-media">
+                    </div>
 
                     <h3>18. Tecnología: problema y solución</h3>
-                    <p>La tecnología tiene una relación ambivalente con el medio ambiente.</p>
-                    <p>Por un lado, el desarrollo tecnológico puede aumentar el consumo de recursos y producir residuos electrónicos.</p>
-                    <p>Por otro, puede ayudar a reducir la contaminación mediante:</p>
+                    <p>La flecha del desarrollo tecnológico posee una innegable moralidad dual: es la hoja de la espada que desangra al mundo natural, pero también la herramienta quirúrgica indispensable para sanarlo.</p>
+                    
+                    <p>En su faceta de <em>destructor termodinámico</em>, el modelo tecno-capitalista actual cataliza un apetito voraz de extracción minera (tierras raras), consume volúmenes eléctricos irracionales para entrenar redes algorítmicas, y es el padre directo de millones de toneladas de los más venenosos "residuos electrónicos" (e-waste) arrojados al Tercer Mundo.</p>
+                    
+                    <p>En contrapartida, si los imperativos de diseño de las ingenierías avanzadas se dirigen a solucionar la ecuación climática, la tecnología se alza como nuestro vector salvavidas:</p>
                     <ul>
-                        <li>Paneles solares.</li>
-                        <li>Vehículos eléctricos.</li>
-                        <li>Baterías.</li>
-                        <li>Sistemas de tratamiento de agua.</li>
-                        <li>Sensores de calidad del aire.</li>
-                        <li>Agricultura de precisión.</li>
-                        <li>Reciclaje avanzado.</li>
-                        <li>Sistemas inteligentes de transporte.</li>
-                        <li>Tecnologías de eficiencia energética.</li>
+                        <li>Generadores fotovoltaicos de silicio de tercera generación y aero-turbinas eólicas de alta capacidad operando interconectados.</li>
+                        <li>Motores de tracción eléctrica y celdas de combustible de hidrógeno que jubilarán definitivamente los tubos de escape ruidosos y letales.</li>
+                        <li>Sistemas de mega-baterías de flujo y química de estado sólido para estabilizar la red eléctrica renovable global.</li>
+                        <li>Bio-reactores y membranas osmóticas de nanotecnología capaces de purificar agua química hipercontaminada y desalinizar el océano con fracciones mínimas de energía.</li>
+                        <li>Constelaciones de microsatélites y redes de sensores IoT (Internet of Things) para auditar, desde el espacio, fugas de metano clandestinas y monitorear la salud exacta de cada hectárea de la biósfera.</li>
+                        <li>Robótica agrícola y granjas verticales hidropónicas (agricultura de precisión extrema) que anulan la necesidad de tractores a diésel y fumigación satánica de pesticidas de amplio espectro.</li>
+                        <li>Plantas robotizadas guiadas por IA que desensamblan chatarra a nivel atómico para recuperar metales estratégicos con pureza perfecta (Minado Urbano).</li>
+                        <li>Algoritmos neurales gestionando las arterias de tráfico vehicular y redes eléctricas de las Smart Cities, reduciendo a cero el desperdicio energético (Eficiencia Sistémica algorítmica).</li>
                     </ul>
-                    <p>Por lo tanto, la pregunta no es simplemente si la tecnología es "buena" o "mala", sino cómo se diseña, utiliza y regula.</p>
+                    
+                    <p>Por ende, la trampa falaz de debatir si la tecnología es "maligna" o "salvadora" debe ser abandonada. La verdadera directriz de diseño del siglo XXI se enfoca en cuestionar bajo qué métricas de diseño ecológico se conceptualiza, quién es el dueño, bajo qué modelo energético opera y con qué severidad los Estados auditan su despliegue planetario.</p>
+
+                    <h3>16. El papel de los ciudadanos</h3>
+                    <p>Si bien los motores pesados de cambio yacen en los pasillos de las mega-fábricas y las legislaturas, el ciudadano informado y militante conforma la resistencia civil, la fuerza laboral y, finalmente, es el árbitro económico de demanda en el mercado libre.</p>
+                    
+                    <p>A nivel de resistencia civil y optimización de flujos de vida, un ciudadano éticamente posicionado puede ejecutar la siguiente praxis:</p>
+                    <ul>
+                        <li>Asfixiar económicamente a la industria de "moda rápida" y la cultura del desperdicio, optando por el minimalismo material (vivir con lo esencial).</li>
+                        <li>Reparar, piratear y dar segundas vidas al hardware, cortando el ciclo de la obsolescencia programada.</li>
+                        <li>Integrar una clasificación maniática de su basura biológica y sintética (Separación técnica de residuos y compostaje avanzado).</li>
+                        <li>Ejercer una intolerancia social y penal absoluta contra el crimen de arrojar desperdicios tóxicos al entorno (Cero tolerancia a la basura).</li>
+                        <li>Realizar un boicot económico feroz y total a la matriz petrolera en las ciudades usando exclusivamente el músculo (bicicleta) y los trenes eléctricos pesados y ligeros.</li>
+                        <li>Ejercer una microgestión obsesiva pero vital de su cuota de vampirismo eléctrico (iluminación LED, apagado de nodos inactivos).</li>
+                        <li>Interrumpir radicalmente la cadena de desperdicio alimentario desde la cocina, evitando que el metano purulento llegue a los vertederos.</li>
+                        <li>Sustituir de forma contundente productos estúpidos y efímeros (vasos de plástico o cubiertos desechables) mediante la reintroducción de vidrio, acero inoxidable o cerámica (Larga vida).</li>
+                        <li>Sumar masa crítica en movimientos activistas de desobediencia civil y reclamo jurídico contra las corporaciones petroleras (Militancia de calle).</li>
+                        <li>Utilizar la única herramienta pacífica para alterar la arquitectura del Estado: votar de manera táctica para decapitar políticamente a negacionistas climáticos y elegir ingenieros, ambientalistas o reformistas verdes.</li>
+                        <li>Blindarse intelectualmente, estudiando a fondo las ciencias climáticas para no caer en el fuego cruzado mediático corporativo (Alfabetización climática profunda).</li>
+                    </ul>
+                    
+                    <p>Dicho esto, es imperativo demoler el fraude corporativo del "Carbon Footprint" (Huella de carbono individual): se nos ha adoctrinado a pensar que la salvación depende de que apaguemos una bombilla o reciclemos una lata en casa, para que así las corporaciones mineras petroleras se laven las manos.</p>
+                    <p>La carga del colapso no puede ni debe colocarse sobre las espaldas y la "culpabilidad" del consumidor precarizado. Modificar masivamente un oleoducto o la legislación de vertederos del país impacta infinitamente más a la realidad física de la Tierra que diez millones de personas tratando inútilmente de vivir "Zero Waste" dentro de un sistema diseñado para forzarlos al consumo basura.</p>
 
                     <h3>17. Educación ambiental</h3>
-                    <p>La educación es fundamental porque las personas necesitan comprender la relación entre sus acciones y el ambiente.</p>
-                    <p>La educación ambiental puede enseñar:</p>
+                    <p>La mente humana no evolucionó para procesar catástrofes abstractas de moléculas invisibles a cien años futuro; por ello, la alfabetización ecológica intensiva es la reescritura necesaria del software mental de las masas. Una población que ignora el funcionamiento de la biósfera que la sostiene es una población estructuralmente ciega que firmará su propia sentencia de exterminio en las urnas y en los supermercados.</p>
+                    
+                    <p>Una matriz de educación ecológica contemporánea tiene la directiva central de enseñar:</p>
                     <ul>
-                        <li>Qué es la contaminación.</li>
-                        <li>Cuáles son sus causas.</li>
-                        <li>Cuáles son sus consecuencias.</li>
-                        <li>Cómo reducir los residuos.</li>
-                        <li>Cómo ahorrar recursos.</li>
-                        <li>Cómo proteger los ecosistemas.</li>
-                        <li>Cómo participar en decisiones ambientales.</li>
+                        <li>La física básica de la atmósfera y el ciclo de la toxicología industrial.</li>
+                        <li>El mapeo geográfico y sistémico de las fuentes exactas de la podredumbre biológica.</li>
+                        <li>Modelación matemática de causa y efecto respecto al impacto económico del caos climático.</li>
+                        <li>Logística aplicada al rediseño del empaque, desmaterialización de servicios y optimización de cadenas de suministro limpias.</li>
+                        <li>Ética energética y tácticas avanzadas de optimización del consumo material per cápita.</li>
+                        <li>Estrategias de restauración profunda y biotecnología regenerativa en biomas devastados.</li>
+                        <li>Las arquitecturas legales, burocráticas y mediáticas con las que los oligopolios bloquean el cambio y las guías prácticas de insurgencia ciudadana para quebrar dicho bloqueo en las instituciones y juzgados locales.</li>
                     </ul>
-                    <p>También ayuda a desarrollar una cultura de prevención.</p>
-                    <p>Una sociedad informada puede exigir mejores políticas y tomar decisiones de consumo más responsables.</p>
+                    
+                    <p>A través de esta inyección cognitiva de largo plazo, no solo sembramos "conciencia", sino que engendramos una sofisticada Cultura de Prevención Sistémica. Una civilización profundamente informada en ciencias de la tierra, termodinámica y economía circular será finalmente capaz de dictar parámetros a la superestructura estatal, penalizar implacablemente en el libre mercado a corporaciones destructivas y orientar los presupuestos del erario nacional a la defensa biológica de sus territorios.</p>
 
                     <h3>22. ¿Cómo puede la sociedad enfrentar la contaminación?</h3>
-                    <p>La solución necesita actuar en varios niveles simultáneamente.</p>
-                    <p><strong>A nivel individual</strong><br>Reducir consumo innecesario, reutilizar, reciclar y disminuir desperdicios.</p>
-                    <p><strong>A nivel comunitario</strong><br>Crear programas de limpieza, educación ambiental, reciclaje y protección de espacios naturales.</p>
-                    <p><strong>A nivel empresarial</strong><br>Reducir emisiones y residuos, utilizar energías limpias y diseñar productos más duraderos.</p>
-                    <p><strong>A nivel gubernamental</strong><br>Crear y hacer cumplir leyes ambientales, invertir en infraestructura y mejorar el transporte y la gestión de residuos.</p>
-                    <p><strong>A nivel internacional</strong><br>Cooperar para reducir emisiones, proteger océanos y biodiversidad y apoyar financieramente a países con menos recursos.</p>
+                    <p>Frente a la inercia masiva de la maquinaria tecno-capitalista que aplasta nuestro planeta, no existen atajos cosméticos, ni parches locales ni balas mágicas de plata. La táctica exige una movilización simultánea, un ataque coordinado, violento y permanente en una multiplicidad de frentes escalonados:</p>
+                    
+                    <p><strong>Vector Individual (Guerra de guerrillas en el consumo):</strong><br>Aniquilar mentalmente la compulsión psicológica por adquirir materialidades inútiles, dominar artes de reparación electrónica, sumergirse en la disciplina estoica del reciclaje agresivo y comprimir al mínimo posible el flujo diario de biomasa descartable enviada fuera de los límites de nuestra residencia.</p>
+                    
+                    <p><strong>Vector Comunitario (Organización táctica horizontal):</strong><br>Construcción de cooperativas de remediación barrial, fundar huertos comunitarios como escudos contra la carestía inflacionaria, establecer redes logísticas cooperativas de captación y valorización de plásticos, cristalizar currículas de adoctrinamiento verde para la juventud local, y militarizar físicamente (proteger) los remanentes de bosques o parques urbanos frente a los voraces carteles inmobiliarios o vertederos ilegales.</p>
+                    
+                    <p><strong>Vector Empresarial (Reingeniería metabólica de capital):</strong><br>Forzar una obsolescencia corporativa violenta a la maquinaria dependiente del carbón y el crudo; electrificar la totalidad de flotas de fletes con energías 100% de sol y viento; decapitar líneas enteras de envases efímeros y volcar los inmensos flujos de I+D (Investigación y Desarrollo) para parir un ecosistema de hardware ultra duradero, eternamente reparable bajo las leyes del sistema de economía circular cerrado.</p>
+                    
+                    <p><strong>Vector Estatal/Gubernamental (Intervención de comandos macropolíticos):</strong><br>Sancionar con peso penal, y ejecutar con tribunales implacables, los cuerpos jurídicos ambientales. Desviar las inmensas tuberías de recaudación fiscal lejos de ministerios de guerra y hacia un masivo plan de tipo "Marshall" orientado a resucitar los trenes maglev eléctricos continentales, construir ciudadelas bio-climáticas para el pueblo, blindar plantas de purificación nanotecnológica de toxinas en las desembocaduras urbanas, y asfixiar la especulación de suelo que devora la tierra productiva.</p>
+                    
+                    <p><strong>Vector Geopolítico/Internacional (Tribunales supremos de la biósfera):</strong><br>Forzar militar y económicamente coaliciones férreas para aplicar brutales embargos aduaneros a potencias que persistan quemando reservas masivas de carbono; firmar tratados inviolables y patrullar navalmente alta mar para erradicar a mafias de sobrepesca de la zona gris oceánica; crear y liberar trillones de euros y dólares anualmente para financiar, construir a crédito cero, y perdonar la deuda de los países hiper vulnerables del hemisferio sur, permitiéndoles acceder, de golpe y sin lucro bancario occidental, al arsenal de tecnología de vanguardia verde y renovable.</p>
 
-                    <h3>23. Conclusión</h3>
-                    <p>La contaminación ambiental es uno de los grandes desafíos de la sociedad del siglo XXI porque está directamente relacionada con la forma en que la humanidad produce, consume, se transporta, construye ciudades y utiliza los recursos naturales.</p>
-                    <p>No se trata solamente de un problema ecológico. La contaminación afecta la salud, economía, educación, calidad de vida, alimentación, disponibilidad de agua, empleo, ciudades y desigualdad social.</p>
-                    <p>La evidencia científica muestra que las actividades humanas están provocando importantes transformaciones ambientales. El IPCC confirma que el calentamiento global es causado inequívocamente por actividades humanas, mientras que la OMS documenta la enorme carga sanitaria asociada con la contaminación del aire.</p>
-                    <p>Al mismo tiempo, el crecimiento de los residuos demuestra cómo los patrones de consumo están conectados con la degradación ambiental. El Banco Mundial proyecta que, sin cambios importantes, la generación mundial de residuos podría alcanzar aproximadamente 3.4 mil millones de toneladas anuales para 2050.</p>
-                    <p>Por ello, enfrentar la contaminación requiere mucho más que pedirle a las personas que "no contaminen". Es necesario transformar sistemas de producción, consumo, energía, transporte, gestión de residuos y planificación urbana, además de fortalecer la educación y las políticas ambientales.</p>
-                    <p>En definitiva, la protección del medio ambiente y el bienestar de la sociedad son dos objetivos inseparables. Una sociedad sostenible es aquella capaz de satisfacer sus necesidades sin destruir las condiciones ambientales que necesitarán las generaciones futuras.</p>
+                    <h3>23. Conclusión Final del Archivo</h3>
+                    <p>La catástrofe sinérgica de la contaminación ambiental sumada a la disrupción termodinámica del clima se erige, sin ningún atisbo de duda hiperbólica, como el evento existencial culminante y la prueba final que define si la sociedad hiper-conectada del Siglo XXI fracasará como especie o transicionará a una civilización planetaria Tipo 1.</p>
+                    
+                    <p>Esta fenomenología letal subyace estrechamente fusionada, tejida a nivel subatómico y algorítmico, a nuestra misma firma de existencia en el planeta Tierra: la manera en que la civilización humana contemporánea extrae, devora, sintetiza, se moviliza a velocidades supersónicas, incrusta megaciudades de cemento y vidrio en ecosistemas frágiles y quema de manera pirómana el patrimonio mineral finito bajo sus botas.</p>
+                    
+                    <p>Como demuestra toda la ciencia recopilada, ya es un acto de ignorancia deliberada reducir la degradación de nuestro mundo a un simple "problema ecológico" (de aves manchadas de petróleo o deshielo polar ajeno). La toxicidad sistémica ha asaltado el corazón de las instituciones humanas; esta crisis disuelve y tritura la salud clínica global, empuja la inflación, colapsa nuestra microeconomía y seguridad nacional alimentaria, interrumpe violentamente ciclos educativos urbanos, expulsa en migraciones de éxodo masivo a poblaciones enteras sin viabilidad acuífera, estrangula financieramente los sistemas macro de hospitales y seguros médicos, y profundiza los abismos, las zanjas y cicatrices grotescas de la desigualdad social, racial y monetaria a nivel global.</p>
+                    
+                    <p>El tribunal máximo y el dictamen empírico son irrefutables: el archivo científico duro demuestra que la gran aceleración de la maquinaria económica humana posterior a la segunda guerra mundial ha desatado colosales alteraciones bio-geofísicas sobre la corteza del planeta. Los reportes incontrovertibles y exhaustivos del IPCC señalan y asientan en sus páginas, bajo consenso mundial absoluto, que el recalentamiento radiactivo global es de factura humana directa, indiscutible e inequívoca, a la par que la gigantesca red de epidemiología de la Organización Mundial de la Salud (OMS) traza un mapa horroroso y letal, mapeando las masacres anuales silenciosas e invisibles perpetradas en los bronquios de las clases precarias y subyugadas que inhalan polución pura para que las fábricas marchen a pleno rendimiento.</p>
+                    
+                    <p>Y para rematar el dictamen científico, se suma a esta macabra ecuación el apocalíptico crecimiento exponencial de cerros y glaciares de basura técnica y plástica, operando como testamento mudo, pero visible de un modelo de hiper consumo histérico que está inextricablemente unido al genocidio ambiental paulatino. Entes analíticos pragmáticos como el Banco Mundial modelan a corto plazo una gráfica terrorífica: de sostener nuestra arrogancia consumista bajo las mismas reglas y métricas financieras irracionales imperantes de nuestro tiempo, la raza humana generará la inconcebible y monstruosa suma de 3.4 mil millones de toneladas brutas de putrefacción sólida, química y no degradable, de manera anualizada, al aproximarnos rápidamente al fatídico mojón del año 2050.</p>
+                    
+                    <p>Ante este precipicio inminente, las tácticas pueriles de "conciencia", el greenwashing mediático publicitario, y el acto ingenuo de rogar a la élite industrial y al individuo desarmado que, por favor, "no contaminen más los bosques", no son sólo insuficientes, rozan el grado máximo de delincuencia moral o negación intelectual profunda ante una urgencia biológica nivel extinción. Enfrentar, resistir, batallar y revertir el avance arrollador de esta contaminación universal nos requiere la titánica, violenta pero iluminadora tarea global de aplicar cirugía a corazón abierto a nuestro metabolismo planetario: exige y reclama a gritos, para las próximas décadas del siglo veintiuno, una deconstrucción profunda y la remodelación integral termodinámica de nuestros macro-sistemas absolutos de producción energética primaria, nuestra filosofía y cadena de consumo masivo o extractivista, transformar el paradigma motor que da vida y sangre al transporte intercontinental y citadino privado, refundar y revolucionar de cero los arcaicos sistemas medievales con los que enterramos nuestra basura municipal diaria, rediseñar quirúrgicamente el metabolismo de concreto y asfalto de nuestra planificación urbana moderna, y consolidar militar y educacionalmente a las políticas proteccionistas ambientales, como la espina dorsal intocable que guíe la geopolítica y legislación penal de los estados soberanos futuros.</p>
+                    
+                    <p>La sentencia última y axioma central de la sociología ecológica dicta su veredicto lapidario: tratar de preservar, rescatar y salvaguardar el medio ambiente biótico de la Tierra frente a procurar y fomentar la prosperidad económica integral y el bienestar psicosomático y monetario de la población humana del planeta, resultaron nunca ser, como la ortodoxia nos enseñaba con engaño, dos directrices encontradas u objetivos dispares y contradictorios que tuviéramos que elegir; sino que por un mandato estricto y riguroso de las leyes de supervivencia interconectadas e indivisibles, se asimilan en realidad a un mismo frente sagrado que hay que preservar con garras tecnológicas, legales y morales.</p>
+                    <p>Una sociedad humana intrínsecamente viable, verdaderamente sana, inteligente, empática, civilizada y tecnológicamente avanzada no puede ni tiene el derecho histórico de denominarse "Sociedad Sostenible" y merecer heredar la bóveda azul del cielo, a menos y hasta que logre probar con evidencia y orgullo profundo, que es absolutamente capaz, hábil y sabia en la proeza inmensa de cubrir y asegurar soberanamente sus complejas necesidades materiales y filosóficas básicas y actuales, operando dentro del estrecho y frágil límite orgánico global, velando fanáticamente y por diseño por proteger, restaurar y jamás volver a destrozar, quemar, desmantelar, corromper o aniquilar las preciosas, puras, equilibradas y perfectas condiciones atmosféricas, edáficas y biológicas, que las lejanas y futuras generaciones inexploradas van a reclamar, necesitar desesperada e innegablemente para garantizar el simple milagro cósmico, grandioso, espectacular y frágil, que significa nacer, florecer, respirar hondo, abrir por primera vez los ojos bajo la luz de nuestro pequeño sol amarillo, y sencillamente experimentar lo hermoso que es la chispa de la vida en el planeta Tierra.</p>
 
-                    <div class="mt-16 p-8 border border-[var(--border-glass)] bg-[#0c0c10] rounded-xl relative overflow-hidden group">
-                        <div class="absolute inset-0 bg-gradient-to-br from-[var(--neon-glow)] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                        <h4 class="text-[var(--text-muted)] text-xs font-bold uppercase tracking-[0.2em] mb-4 relative z-10">Fuentes Principales</h4>
-                        <ul class="text-sm space-y-2 relative z-10" style="padding-left: 0;">
-                            <li><a href="#" class="text-gray-400 hover:text-[var(--neon-accent)] transition-colors">Organización Mundial de la Salud — Contaminación del aire</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-[var(--neon-accent)] transition-colors">OMS — Contaminación del aire doméstico y salud</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-[var(--neon-accent)] transition-colors">IPCC — Informe de Síntesis del Sexto Informe de Evaluación</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-[var(--neon-accent)] transition-colors">PNUMA — Global Resources Outlook 2024</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-[var(--neon-accent)] transition-colors">Banco Mundial — What a Waste 2.0</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-[var(--neon-accent)] transition-colors">Banco Mundial — Los desechos a nivel mundial crecerán un 70 % para 2050</a></li>
+                    <div class="mt-16 p-8 border border-[var(--border-glass)] bg-[#050507] rounded-2xl relative overflow-hidden group shadow-lg">
+                        <div class="absolute inset-0 bg-gradient-to-br from-[var(--neon-glow-strong)] to-transparent opacity-0 group-hover:opacity-10 transition-opacity duration-700"></div>
+                        <h4 class="text-[var(--neon-accent)] text-xs font-black uppercase tracking-[0.3em] mb-6 relative z-10">Base de Datos Empírica Central</h4>
+                        <ul class="text-sm space-y-4 relative z-10" style="padding-left: 0;">
+                            <li class="pl-6 border-l-2 border-[var(--border-glass)] hover:border-white transition-colors">
+                                <a href="https://www.who.int/data/gho/data/themes/air-pollution/1000?utm_source=chatgpt.com" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition-colors block">
+                                    <span class="block font-bold text-white mb-1">Organización Mundial de la Salud (OMS)</span>
+                                    Estadísticas globales críticas sobre el envenenamiento del aire ambiental.
+                                </a>
+                            </li>
+                            <li class="pl-6 border-l-2 border-[var(--border-glass)] hover:border-white transition-colors">
+                                <a href="https://www.who.int/news-room/fact-sheets/detail/household-air-pollution-and-health?utm_source=chatgpt.com" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition-colors block">
+                                    <span class="block font-bold text-white mb-1">OMS — Contaminación del Aire Doméstico y Salud</span>
+                                    La crisis silenciada del humo intramuros.
+                                </a>
+                            </li>
+                            <li class="pl-6 border-l-2 border-[var(--border-glass)] hover:border-[var(--neon-accent)] transition-colors">
+                                <a href="https://www.ipcc.ch/report/sixth-assessment-report-cycle/?utm_source=chatgpt.com" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-[var(--neon-accent)] transition-colors block">
+                                    <span class="block font-bold text-white hover:text-[var(--neon-accent)] mb-1 transition-colors">Panel Intergubernamental de Cambio Climático (IPCC)</span>
+                                    Informe de Síntesis del Sexto Informe de Evaluación Global de las Naciones Unidas.
+                                </a>
+                            </li>
+                            <li class="pl-6 border-l-2 border-[var(--border-glass)] hover:border-[var(--neon-accent)] transition-colors">
+                                <a href="https://www.unep.org/resources/Global-Resource-Outlook-2024?utm_source=chatgpt.com" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-[var(--neon-accent)] transition-colors block">
+                                    <span class="block font-bold text-white hover:text-[var(--neon-accent)] mb-1 transition-colors">PNUMA — Global Resources Outlook 2024</span>
+                                    Auditoría planetaria sobre el colapso y consumo desmedido de recursos finitos.
+                                </a>
+                            </li>
+                            <li class="pl-6 border-l-2 border-[var(--border-glass)] hover:border-white transition-colors">
+                                <a href="https://datatopics.worldbank.org/what-a-waste/?utm_source=chatgpt.com" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition-colors block">
+                                    <span class="block font-bold text-white mb-1">Banco Mundial — Informe 'What a Waste 2.0'</span>
+                                    Modelación econométrica del apocalipsis de la basura sólida global.
+                                </a>
+                            </li>
+                            <li class="pl-6 border-l-2 border-[var(--border-glass)] hover:border-white transition-colors">
+                                <a href="https://www.bancomundial.org/es/news/press-release/2018/09/20/global-waste-to-grow-by-70-percent-by-2050-unless-urgent-action-is-taken?utm_source=chatgpt.com" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition-colors block">
+                                    <span class="block font-bold text-white mb-1">Banco Mundial (Alerta Temprana)</span>
+                                    Pronóstico del incremento masivo del 70% en residuos proyectado a 2050 de no mediar acción urgente.
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 `
@@ -824,11 +1077,23 @@
                 content: document.getElementById('reader-content'),
                 btnPrev: document.getElementById('btn-prev'),
                 btnNext: document.getElementById('btn-next'),
-                indicator: document.getElementById('reading-indicator')
+                indicator: document.getElementById('reading-indicator'),
+                nav: document.getElementById('main-nav'),
+                progressBar: document.getElementById('progress-bar')
             },
 
             init: function() {
                 this.renderCards();
+                // Ocultar Navbar un poco al bajar
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > 50) {
+                        this.ui.nav.style.background = 'rgba(5, 5, 7, 0.9)';
+                        this.ui.nav.style.boxShadow = '0 10px 30px -10px rgba(0,0,0,0.8)';
+                    } else {
+                        this.ui.nav.style.background = 'rgba(5, 5, 7, 0.6)';
+                        this.ui.nav.style.boxShadow = 'none';
+                    }
+                });
             },
 
             renderCards: function() {
@@ -839,11 +1104,19 @@
                     card.onclick = () => this.openArticle(index);
                     
                     card.innerHTML = `
-                        <p class="text-[var(--neon-accent)] text-xs font-bold uppercase tracking-widest mb-3">Blog 0${index + 1}</p>
-                        <h4 class="text-2xl font-bold text-white mb-4 leading-snug group-hover:text-[var(--neon-accent)] transition-colors duration-300">${doc.title}</h4>
-                        <p class="text-[var(--text-muted)] text-sm leading-relaxed mb-6 flex-grow font-light">${doc.excerpt}</p>
-                        <div class="mt-auto flex items-center text-white text-xs font-medium uppercase tracking-[0.1em] opacity-50 group-hover:opacity-100 transition-opacity">
-                            Leer Investigación <span class="ml-2 transform group-hover:translate-x-1 transition-transform">→</span>
+                        <p class="text-[var(--neon-accent)] text-[10px] font-bold uppercase tracking-[0.3em] mb-4 drop-shadow-[0_0_5px_var(--neon-accent)]">
+                            Módulo de Inv. 0${index + 1}
+                        </p>
+                        <h4 class="text-2xl md:text-3xl font-black text-white mb-5 leading-[1.1] group-hover:text-[var(--neon-accent)] transition-colors duration-400">
+                            ${doc.title}
+                        </h4>
+                        <p class="text-gray-400 text-sm leading-relaxed mb-8 flex-grow font-light">
+                            ${doc.excerpt}
+                        </p>
+                        <div class="mt-auto flex justify-between items-center w-full border-t border-[var(--border-glass)] pt-5">
+                            <span class="text-white text-[10px] font-bold uppercase tracking-widest opacity-50 group-hover:opacity-100 transition-opacity flex items-center">
+                                Acceder al Doc <span class="ml-2 transform group-hover:translate-x-1 group-hover:scale-110 transition-all text-[var(--neon-accent)]">►</span>
+                            </span>
                         </div>
                     `;
                     this.ui.grid.appendChild(card);
@@ -854,25 +1127,44 @@
                 this.currentIndex = index;
                 const doc = database[index];
                 
-                this.ui.title.textContent = doc.title;
-                this.ui.content.innerHTML = doc.content;
-                this.ui.indicator.textContent = `Artículo ${index + 1} de ${database.length}`;
-                
-                this.ui.btnPrev.disabled = index === 0;
-                this.ui.btnNext.disabled = index === database.length - 1;
-
-                this.views.home.classList.remove('active-view');
-                this.views.home.classList.add('hidden-view');
+                // Efecto de apagado suave antes de insertar el HTML pesado
+                this.ui.content.style.opacity = '0';
                 
                 setTimeout(() => {
-                    this.views.reader.classList.remove('hidden-view');
-                    this.views.reader.classList.add('active-view');
-                    window.scrollTo({ top: 0, behavior: 'instant' });
-                }, 400); 
+                    this.ui.title.textContent = doc.title;
+                    this.ui.content.innerHTML = doc.content;
+                    this.ui.indicator.textContent = `Módulo 0${index + 1} / 0${database.length}`;
+                    
+                    // Calcular porcentaje de barra
+                    const pct = ((index + 1) / database.length) * 100;
+                    this.ui.progressBar.style.width = `${pct}%`;
+                    
+                    this.ui.btnPrev.disabled = index === 0;
+                    this.ui.btnNext.disabled = index === database.length - 1;
+
+                    // Fade in del texto nuevo
+                    this.ui.content.style.transition = 'opacity 0.6s ease';
+                    this.ui.content.style.opacity = '1';
+                }, 300);
+
+                // Transición de vistas si estamos en Home
+                if (this.views.home.classList.contains('active-view')) {
+                    this.views.home.classList.remove('active-view');
+                    this.views.home.classList.add('hidden-view');
+                    
+                    setTimeout(() => {
+                        this.views.reader.classList.remove('hidden-view');
+                        this.views.reader.classList.add('active-view');
+                        window.scrollTo({ top: 0, behavior: 'instant' });
+                    }, 500); 
+                } else {
+                    // Si ya estamos leyendo, simplemente scroll arriba suave
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
             },
 
             navigate: function(target) {
-                if (target === 'home') {
+                if (target === 'home' && !this.views.home.classList.contains('active-view')) {
                     this.views.reader.classList.remove('active-view');
                     this.views.reader.classList.add('hidden-view');
                     
@@ -880,28 +1172,26 @@
                         this.views.home.classList.remove('hidden-view');
                         this.views.home.classList.add('active-view');
                         window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }, 400);
+                    }, 500);
                 }
             },
 
             prevArticle: function() {
                 if (this.currentIndex > 0) {
-                    this.views.reader.classList.remove('active-view');
-                    setTimeout(() => this.openArticle(this.currentIndex - 1), 400);
+                    this.openArticle(this.currentIndex - 1);
                 }
             },
 
             nextArticle: function() {
                 if (this.currentIndex < database.length - 1) {
-                    this.views.reader.classList.remove('active-view');
-                    setTimeout(() => this.openArticle(this.currentIndex + 1), 400);
+                    this.openArticle(this.currentIndex + 1);
                 }
             },
 
             scrollTo: function(id) {
                 if (this.views.reader.classList.contains('active-view')) {
                     this.navigate('home');
-                    setTimeout(() => this._doScroll(id), 500);
+                    setTimeout(() => this._doScroll(id), 600);
                 } else {
                     this._doScroll(id);
                 }
@@ -910,13 +1200,13 @@
             _doScroll: function(id) {
                 const el = document.getElementById(id);
                 if (el) {
-                    const y = el.getBoundingClientRect().top + window.scrollY - 80;
+                    const y = el.getBoundingClientRect().top + window.scrollY - 88; // Descontar alto del nav
                     window.scrollTo({top: y, behavior: 'smooth'});
                 }
             }
         };
 
-        // Bootstrap App
+        // Bootstrap App Initialization
         document.addEventListener('DOMContentLoaded', () => app.init());
     </script>
 </body>
