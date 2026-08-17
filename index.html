@@ -111,7 +111,6 @@
             box-shadow: 0 20px 40px -10px rgba(0,0,0,0.8), 0 0 30px var(--neon-glow), inset 0 0 0 1px rgba(0, 229, 255, 0.1);
         }
 
-        /* Línea superior neón en las tarjetas */
         .hypr-card::before {
             content: '';
             position: absolute;
@@ -197,7 +196,7 @@
             text-shadow: 0 0 5px var(--neon-accent);
         }
 
-        /* MODIFICACIÓN CRÍTICA: Multimedia viva a todo color desde el inicio, sin efecto opaco */
+        /* Criterio Técnico Actualizado: Imágenes con color y brillo absoluto 100% de visibilidad */
         .blog-media-container {
             position: relative;
             margin: 4rem 0;
@@ -205,21 +204,23 @@
             overflow: hidden;
             border: 1px solid var(--border-glass);
             background: #000;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: all 0.4s ease;
         }
-
+        
         .blog-media {
             width: 100%;
             max-height: 500px;
             object-fit: cover;
             display: block;
-            opacity: 1 !important; 
-            filter: none !important;
+            opacity: 1 !important; /* CRÍTICO: Removida la opacidad, ahora brilla totalmente */
+            filter: none !important; /* CRÍTICO: Removidos filtros que oscurecían */
             transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-            transform: scale(1);
+            transform: scale(1.02);
         }
         
         .blog-media-container:hover .blog-media {
-            transform: scale(1.02);
+            transform: scale(1);
         }
         
         .blog-media-container:hover {
@@ -250,7 +251,6 @@
             to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
         }
 
-        /* Utilidades UI */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: var(--bg-base); }
         ::-webkit-scrollbar-thumb { background: #1f232b; border-radius: 4px; border: 1px solid #000; }
@@ -286,6 +286,85 @@
             font-style: italic;
             border-radius: 0 12px 12px 0;
         }
+
+        /* Estilos para Tarjetas Desplegables del Equipo */
+        .team-member-card {
+            background: var(--surface);
+            border: 1px solid var(--border-glass);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(12px);
+        }
+        .team-member-card:hover {
+            border-color: var(--border-neon);
+            box-shadow: 0 10px 30px var(--neon-glow);
+        }
+        .team-header {
+            padding: 2rem;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+        }
+        .team-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 2px solid var(--neon-accent);
+            object-fit: cover;
+            margin-right: 1.5rem;
+            box-shadow: 0 0 15px var(--neon-glow-strong);
+        }
+        .team-details-content {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.5s ease;
+            padding: 0 2rem;
+            background: rgba(0,0,0,0.3);
+        }
+        .team-member-card.expanded .team-details-content {
+            max-height: 500px;
+            opacity: 1;
+            padding-bottom: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-glass);
+        }
+        .chevron-icon {
+            margin-left: auto;
+            transition: transform 0.4s ease;
+            color: var(--neon-accent);
+            font-size: 1.5rem;
+        }
+        .team-member-card.expanded .chevron-icon {
+            transform: rotate(180deg);
+        }
+        .stack-pill {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            background: rgba(0, 229, 255, 0.1);
+            border: 1px solid rgba(0, 229, 255, 0.3);
+            color: var(--neon-accent);
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .social-link {
+            color: var(--text-muted);
+            transition: color 0.3s ease;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: bold;
+            margin-right: 1rem;
+        }
+        .social-link:hover {
+            color: var(--neon-accent);
+            text-shadow: 0 0 8px var(--neon-glow-strong);
+        }
     </style>
 </head>
 <body class="antialiased selection:bg-[var(--neon-accent)] selection:text-black">
@@ -309,11 +388,12 @@
                     Inicio
                     <span class="absolute -bottom-2 left-0 w-0 h-[2px] bg-[var(--neon-accent)] transition-all duration-300 group-hover:w-full"></span>
                 </button>
-                <button onclick="app.scrollTo('quienes-somos')" class="text-xs font-bold text-gray-400 hover:text-[var(--neon-accent)] transition-colors duration-300 tracking-[0.2em] uppercase relative group">
+                <!-- CRÍTICO: Enlace actualizado para enrutar a la nueva vista Acerca De -->
+                <button onclick="app.navigate('about')" class="text-xs font-bold text-gray-400 hover:text-[var(--neon-accent)] transition-colors duration-300 tracking-[0.2em] uppercase relative group">
                     Acerca De
                     <span class="absolute -bottom-2 left-0 w-0 h-[2px] bg-[var(--neon-accent)] transition-all duration-300 group-hover:w-full"></span>
                 </button>
-                <button onclick="app.scrollTo('articulos')" class="text-xs font-bold text-gray-400 hover:text-[var(--neon-accent)] transition-colors duration-300 tracking-[0.2em] uppercase relative group">
+                <button onclick="app.navigate('home'); setTimeout(()=>app.scrollTo('articulos'), 100);" class="text-xs font-bold text-gray-400 hover:text-[var(--neon-accent)] transition-colors duration-300 tracking-[0.2em] uppercase relative group">
                     Investigación
                     <span class="absolute -bottom-2 left-0 w-0 h-[2px] bg-[var(--neon-accent)] transition-all duration-300 group-hover:w-full"></span>
                 </button>
@@ -347,7 +427,7 @@
             </div>
         </section>
 
-        <!-- Quiénes Somos -->
+        <!-- Quiénes Somos (Landing) -->
         <section id="quienes-somos" class="w-full py-32 bg-[rgba(5,5,8,0.7)] border-y border-[var(--border-glass)] relative">
             <div class="absolute top-0 left-1/4 w-1/2 h-[1px] bg-gradient-to-r from-transparent via-[var(--neon-accent)] to-transparent opacity-30"></div>
             <div class="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col md:flex-row gap-16 items-center">
@@ -387,6 +467,165 @@
                 </div>
             </div>
         </section>
+    </main>
+
+    <!-- NUEVA SECCIÓN "ACERCA DE" -->
+    <main id="view-about" class="view-section hidden-view w-full pt-[160px] pb-40 relative">
+        <div class="max-w-5xl mx-auto px-6 lg:px-8 w-full">
+            
+            <header class="mb-20">
+                <div class="inline-flex items-center mb-6">
+                    <span class="w-12 h-[1px] bg-[var(--text-muted)] mr-4"></span>
+                    <p class="text-[var(--neon-accent)] text-xs tracking-[0.4em] font-bold uppercase text-glow">Información de Desarrollo</p>
+                </div>
+                <h1 class="text-5xl md:text-7xl font-black text-white leading-tight tracking-tighter">
+                    Acerca del <br>Proyecto CAPS.
+                </h1>
+            </header>
+
+            <!-- Tarjetas Desplegables del Equipo -->
+            <div class="space-y-6 mb-32">
+                <!-- Miembro 1 -->
+                <div class="team-member-card" id="member-1">
+                    <div class="team-header" onclick="app.toggleMember('member-1')">
+                        <img src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?q=80&w=800&auto=format&fit=crop" alt="Miembro 1" class="team-avatar">
+                        <div>
+                            <h3 class="text-2xl font-bold text-white tracking-tight">Alex V.</h3>
+                            <p class="text-[var(--neon-accent)] text-sm uppercase tracking-widest font-semibold mt-1">Líder de Desarrollo / Frontend</p>
+                        </div>
+                        <span class="chevron-icon">▼</span>
+                    </div>
+                    <div class="team-details-content">
+                        <p class="text-[var(--text-muted)] mb-6 text-justify">
+                            Arquitecto de la interfaz y experiencia de usuario. Especialista en crear ecosistemas inmersivos y minimalistas que garantizan la legibilidad y estructuración perfecta de los datos documentales del proyecto.
+                        </p>
+                        <div class="mb-6">
+                            <span class="stack-pill">HTML5</span>
+                            <span class="stack-pill">CSS3 Avanzado</span>
+                            <span class="stack-pill">JavaScript ES6+</span>
+                            <span class="stack-pill">Tailwind CSS</span>
+                        </div>
+                        <div class="flex items-center">
+                            <a href="#" class="social-link">Github</a>
+                            <a href="#" class="social-link">LinkedIn</a>
+                            <a href="mailto:email@example.com" class="social-link">Email</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Miembro 2 -->
+                <div class="team-member-card" id="member-2">
+                    <div class="team-header" onclick="app.toggleMember('member-2')">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=800&auto=format&fit=crop" alt="Miembro 2" class="team-avatar">
+                        <div>
+                            <h3 class="text-2xl font-bold text-white tracking-tight">Ricardo M.</h3>
+                            <p class="text-[var(--neon-accent)] text-sm uppercase tracking-widest font-semibold mt-1">Investigación Documental / Backend</p>
+                        </div>
+                        <span class="chevron-icon">▼</span>
+                    </div>
+                    <div class="team-details-content">
+                        <p class="text-[var(--text-muted)] mb-6 text-justify">
+                            Analista de datos empíricos y responsable de la validación cruzada con entidades como PNUMA y la OMS. Encargado de la lógica de estructuración de bases de datos para el despliegue del contenido.
+                        </p>
+                        <div class="mb-6">
+                            <span class="stack-pill">C++</span>
+                            <span class="stack-pill">Rust</span>
+                            <span class="stack-pill">Java</span>
+                            <span class="stack-pill">SQL</span>
+                        </div>
+                        <div class="flex items-center">
+                            <a href="#" class="social-link">Github</a>
+                            <a href="#" class="social-link">LinkedIn</a>
+                            <a href="mailto:email@example.com" class="social-link">Email</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Miembro 3 -->
+                <div class="team-member-card" id="member-3">
+                    <div class="team-header" onclick="app.toggleMember('member-3')">
+                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=800&auto=format&fit=crop" alt="Miembro 3" class="team-avatar">
+                        <div>
+                            <h3 class="text-2xl font-bold text-white tracking-tight">Samuel C.</h3>
+                            <p class="text-[var(--neon-accent)] text-sm uppercase tracking-widest font-semibold mt-1">Infraestructura y Ciberseguridad</p>
+                        </div>
+                        <span class="chevron-icon">▼</span>
+                    </div>
+                    <div class="team-details-content">
+                        <p class="text-[var(--text-muted)] mb-6 text-justify">
+                            Auditor de seguridad de los sistemas de información. Gestiona el despliegue ininterrumpido en entornos hosting, asegurando la resiliencia y el aislamiento criptográfico de la aplicación SPA.
+                        </p>
+                        <div class="mb-6">
+                            <span class="stack-pill">Linux LPI</span>
+                            <span class="stack-pill">eJPT</span>
+                            <span class="stack-pill">OSCP</span>
+                            <span class="stack-pill">Bash Scripting</span>
+                        </div>
+                        <div class="flex items-center">
+                            <a href="#" class="social-link">Github</a>
+                            <a href="#" class="social-link">X (Twitter)</a>
+                            <a href="mailto:email@example.com" class="social-link">Email</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Misión, Visión, Valores Espaciados -->
+            <div class="space-y-16 mb-32">
+                <div class="p-10 border border-[var(--border-glass)] bg-[rgba(10,10,15,0.6)] rounded-2xl relative overflow-hidden group">
+                    <div class="absolute top-0 left-0 w-2 h-full bg-[var(--neon-accent)] shadow-[0_0_15px_var(--neon-accent)]"></div>
+                    <h3 class="text-3xl font-black text-white mb-4 tracking-tight">Nuestra Misión</h3>
+                    <p class="text-[var(--text-muted)] text-lg leading-relaxed">
+                        Desarrollar y proporcionar una plataforma documental de libre acceso que consolide, estructure y exponga empíricamente la ineludible verdad sobre la crisis ambiental y social contemporánea. Buscamos decodificar datos científicos complejos y transformarlos en conocimiento asimilable y riguroso para la comunidad universitaria y ciudadana global.
+                    </p>
+                </div>
+
+                <div class="p-10 border border-[var(--border-glass)] bg-[rgba(10,10,15,0.6)] rounded-2xl relative overflow-hidden group">
+                    <div class="absolute top-0 left-0 w-2 h-full bg-[#ff0055] shadow-[0_0_15px_#ff0055]"></div>
+                    <h3 class="text-3xl font-black text-white mb-4 tracking-tight">Nuestra Visión</h3>
+                    <p class="text-[var(--text-muted)] text-lg leading-relaxed">
+                        Convertirnos en el nodo digital de referencia académica en el mapeo transversal de la triple crisis planetaria. Aspiramos a ser el catalizador de un despertar cognitivo que inspire a futuras generaciones de ingenieros, políticos y ciudadanos a rediseñar la arquitectura técnica y termodinámica de nuestra civilización antes del punto de no retorno.
+                    </p>
+                </div>
+
+                <div class="p-10 border border-[var(--border-glass)] bg-[rgba(10,10,15,0.6)] rounded-2xl relative overflow-hidden group">
+                    <div class="absolute top-0 left-0 w-2 h-full bg-[#bd00ff] shadow-[0_0_15px_#bd00ff]"></div>
+                    <h3 class="text-3xl font-black text-white mb-4 tracking-tight">Nuestros Valores</h3>
+                    <ul class="text-[var(--text-muted)] text-lg leading-relaxed space-y-3 mt-4">
+                        <li class="flex items-center"><span class="text-[#bd00ff] mr-3">◆</span> <strong>Rigor Científico:</strong> Nada se afirma sin respaldo en datos comprobables.</li>
+                        <li class="flex items-center"><span class="text-[#bd00ff] mr-3">◆</span> <strong>Incorruptibilidad:</strong> Independencia total frente a agendas corporativas de "greenwashing".</li>
+                        <li class="flex items-center"><span class="text-[#bd00ff] mr-3">◆</span> <strong>Justicia Social:</strong> Entender que no hay ecología posible sin erradicar la pobreza humana.</li>
+                        <li class="flex items-center"><span class="text-[#bd00ff] mr-3">◆</span> <strong>Excelencia Técnica:</strong> Código eficiente, diseños minimalistas e interacciones intencionales.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Quiénes Somos Ampliamente Desarrollado -->
+            <div class="article-content max-w-none mb-32 border-t border-[var(--border-glass)] pt-20">
+                <h3 class="text-4xl md:text-5xl font-black text-white mb-10 tracking-tight" style="border:none; padding:0; margin-top:0;">El Origen de CAPS.</h3>
+                <p class="text-xl text-[var(--text-muted)] text-justify leading-relaxed mb-6 font-light">
+                    CAPS (Contaminación Ambiental y Problemas Sociales) no nació como un simple encargo académico para la asignatura de Historia Universal 101 del FPG Universitario. Nació como una reacción visceral e intelectual frente a la desinformación masiva y el letargo institucional que envuelve a la crisis más grande a la que se ha enfrentado nuestra especie. 
+                </p>
+                <p class="text-xl text-[var(--text-muted)] text-justify leading-relaxed mb-6 font-light">
+                    Somos un colectivo de desarrolladores, ingenieros y analistas que comprendimos que los informes de miles de páginas del IPCC, la OMS y el Banco Mundial no estaban llegando a la pantalla de los jóvenes ni al discurso de la clase obrera. Decidimos construir un puente. Un portal diseñado bajo los principios de eficiencia e inmersión visual, capaz de diseccionar la red de retroalimentación que existe entre el envenenamiento de nuestra atmósfera y la pobreza crónica que azota al sur global.
+                </p>
+                <p class="text-xl text-[var(--text-muted)] text-justify leading-relaxed font-light">
+                    Nuestra labor es la auditoría. Nos dedicamos a compilar y presentar de forma indudable que el hiperconsumo, la obsolescencia programada, el colapso demográfico urbano y la violencia sistémica de la desigualdad son engranajes perfectos de una misma máquina de extinción. Este sitio web es nuestra barricada digital, escrita en líneas de código, para garantizar que la verdad histórica y científica de nuestro siglo quede registrada, accesible y permanentemente expuesta.
+                </p>
+            </div>
+
+            <!-- Frase Filosófica y Dedicatoria -->
+            <div class="mt-20 flex flex-col items-center justify-center text-center">
+                <div class="w-16 h-1 bg-[var(--neon-accent)] mb-10 opacity-50"></div>
+                <blockquote class="text-2xl md:text-4xl font-light italic text-white leading-snug max-w-4xl tracking-wide text-glow mb-8">
+                    "No heredamos la tierra de nuestros ancestros, la tomamos prestada del escaso y frágil futuro de nuestros hijos. Destruir nuestra biósfera por el lucro de una década, es el acto de traición cósmica más imperdonable de la humanidad."
+                </blockquote>
+                <p class="text-[var(--neon-accent)] text-sm tracking-[0.3em] font-bold uppercase">
+                    — Dedicado a los defensores anónimos de la biósfera y a las generaciones que enfrentarán la tormenta.
+                </p>
+            </div>
+
+        </div>
     </main>
 
     <main id="view-reader" class="view-section hidden-view w-full pt-[88px] bg-[rgba(3,3,4,0.95)]">
@@ -432,7 +671,7 @@
                 
                 <!-- Cierre del artículo -->
                 <div class="mt-24 pt-12 border-t border-[var(--border-glass)] flex justify-between items-center">
-                    <button onclick="app.navigate('home')" class="text-[var(--text-muted)] hover:text-white transition-colors flex items-center text-sm uppercase tracking-widest font-bold">
+                    <button onclick="app.navigate('home'); setTimeout(()=>app.scrollTo('articulos'), 100);" class="text-[var(--text-muted)] hover:text-white transition-colors flex items-center text-sm uppercase tracking-widest font-bold">
                         <span class="mr-2">↑</span> Volver al Archivo
                     </button>
                     <span class="text-[var(--neon-accent)] text-xl font-black">CAPS.</span>
@@ -472,6 +711,7 @@
          * BASE DE DATOS LOCAL EXHAUSTIVA
          * Información corroborada y extendida para mayor inmersión documental,
          * respetando estrictamente el INFORMATION_CONTENT.txt
+         * CRÍTICO: Exactamente 2 imágenes inyectadas a todo brillo por cada blog.
          */
         const database = [
             {
@@ -479,7 +719,7 @@
                 excerpt: "Este primer artículo establece el contexto global y social de la crisis, funcionando como el pilar introductorio que deconstruye la noción de contaminación.",
                 content: `
                     <div class="block-quote-hypr">
-                        "La degradación ambiental ha dejado de ser un fenómeno geográficamente aislado para convertirse en el desafío estructural más complejo de la humanidad contemporánea."
+                        "La degradación ambiental ha dejado de ser un fenómeno geographically aislado para convertirse en el desafío estructural más complejo de la humanidad contemporánea."
                     </div>
 
                     <h3>1. ¿Qué es la contaminación ambiental?</h3>
@@ -503,7 +743,7 @@
                     <p>Ante esta realidad objetiva, el <strong>Programa de las Naciones Unidas para el Medio Ambiente (PNUMA)</strong> ha conceptualizado la situación actual no como un simple contratiempo, sino como una <strong style="color: var(--neon-accent);">triple crisis planetaria</strong>: la convergencia sinérgica del cambio climático, la aniquilación de la biodiversidad, y la pandemia de contaminación y residuos.</p>
 
                     <div class="blog-media-container">
-                        <img src="https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?auto=format&fit=crop&w=1600&q=80" alt="Emisiones Industriales" class="blog-media">
+                        <img src="https://images.unsplash.com/photo-1473448912268-2022ce9509d8?q=80&w=1600&auto=format&fit=crop" alt="Industria y Sociedad Compleja" class="blog-media">
                     </div>
 
                     <h3>2. La relación entre contaminación y sociedad</h3>
@@ -548,6 +788,10 @@
                     <p>El algoritmo del colapso local opera así:</p>
                     <p><em>Condición de pobreza → Incapacidad fiscal para infraestructura pública → Gestión nula de residuos y excretas → Exposición directa a vectores contaminantes → Brotes epidemiológicos crónicos → Gasto de bolsillo catastrófico en salud e incapacidad laboral → Agravamiento de la condición de pobreza original.</em></p>
                     
+                    <div class="blog-media-container">
+                        <img src="https://images.unsplash.com/photo-1528323273322-d81458248d40?q=80&w=1600&auto=format&fit=crop" alt="Impacto de Desechos en Comunidades Vulnerables" class="blog-media">
+                    </div>
+
                     <p>En las naciones en vías de desarrollo, las arcas públicas famélicas enfrentan la imposibilidad matemática de financiar las barreras defensivas de la modernidad:</p>
                     <ul>
                         <li>Redes complejas de alcantarillado subterráneo.</li>
@@ -592,7 +836,7 @@
                     <p>La contaminación atmosférica trasciende la concepción de "daño ecológico"; es un asalto silencioso y masivo contra el tejido mismo de la salud pública mundial.</p>
 
                     <div class="blog-media-container">
-                        <img src="https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&w=1600&q=80" alt="Contraste Naturaleza y Contaminación" class="blog-media">
+                        <img src="https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?q=80&w=1600&auto=format&fit=crop" alt="Contaminación Atmosférica y Smog Urbano" class="blog-media">
                     </div>
 
                     <h3>5. Contaminación del agua</h3>
@@ -653,6 +897,10 @@
                         <li>La deposición ácida (lluvia ácida) derivada de la polución del aire, que disuelve los nutrientes del suelo y quema los bosques boreales.</li>
                         <li>La invasión de montañas de basura que sepultan manglares, arrecifes y ecosistemas de alta fragilidad.</li>
                     </ul>
+
+                    <div class="blog-media-container">
+                        <img src="https://images.unsplash.com/photo-1621451537084-482c73073e0f?q=80&w=1600&auto=format&fit=crop" alt="Pérdida de Biodiversidad y Bosques Dañados" class="blog-media">
+                    </div>
                     
                     <p>La desintegración del tejido de la biodiversidad es una amenaza existencial directa para la civilización urbana. Los ecosistemas silvestres nos subsidian gratuitamente servicios sin los cuales las economías modernas no podrían operar un solo día:</p>
                     <ul>
@@ -693,7 +941,7 @@
                     <p>El Banco Mundial advierte de manera concluyente que la fracción mayoritaria de los desechos planetarios es manejada bajo estándares medievales (inadecuados). Como dictamina la constante de la injusticia ambiental, la toxicidad y el caos sanitario de esta mala gestión se concentra implacablemente sobre los guetos urbanos y las naciones más empobrecidas del globo.</p>
 
                     <div class="blog-media-container">
-                        <img src="https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&w=1600&q=80" alt="Avalancha de Plásticos" class="blog-media">
+                        <img src="https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?q=80&w=1600&auto=format&fit=crop" alt="Avalancha de Plásticos" class="blog-media">
                     </div>
 
                     <h3>8. Plásticos y sociedad de consumo</h3>
@@ -745,6 +993,10 @@
                     <p>La arquitectura del modelo circular desmantela esa línea y propone un bucle cerrado bio-inspirado:</p>
                     <p style="font-family: monospace;" class="text-[var(--neon-accent)] bg-black p-4 rounded text-center my-4">Reducción drástica → Reutilización máxima → Reparación técnica → Reciclaje profundo → Recuperación perpetua de la materia.</p>
                     
+                    <div class="blog-media-container">
+                        <img src="https://images.unsplash.com/photo-1581093458791-9f3c3900df4b?q=80&w=1600&auto=format&fit=crop" alt="Concepto de Economía Circular y Robótica" class="blog-media">
+                    </div>
+
                     <p>El axioma fundamental es retener el valor atómico y funcional de los metales, plásticos y minerales en la esfera económica durante el mayor margen de tiempo físicamente concebible, eliminando el concepto mismo de "basura" del vocabulario industrial.</p>
                     
                     <p>La implementación a gran escala de esta ingeniería de flujo de materiales garantizaría la disminución radical de:</p>
@@ -797,7 +1049,7 @@
                     <p>Ergo, la intervención maestra para amputar los brazos de la contaminación moderna reside en el urbanismo inteligente. El diseño de una ciudad sostenible del futuro cercano exige una ingeniería social estricta que armonice la vitalidad económica, la justicia y bienestar social, junto a una infraestructura bio-integrada de protección ambiental.</p>
 
                     <div class="blog-media-container">
-                        <img src="https://images.unsplash.com/photo-1449824913935-59a10b8d2000?auto=format&fit=crop&w=1600&q=80" alt="Ciudad Saturada y Smog" class="blog-media">
+                        <img src="https://images.unsplash.com/photo-1449824913935-59a10b8d2000?q=80&w=1600&auto=format&fit=crop" alt="Ciudad Saturada y Smog" class="blog-media">
                     </div>
 
                     <h3>9. Contaminación y cambio climático</h3>
@@ -841,6 +1093,10 @@
                         <li>Vulnerabilidad extrema a plagas virales y bacterianas (Neumonías, agravamiento de pandemias respiratorias).</li>
                     </ul>
                     
+                    <div class="blog-media-container">
+                        <img src="https://images.unsplash.com/photo-1584634731339-252c581ab8cb?q=80&w=1600&auto=format&fit=crop" alt="Crisis de Salud Pública por Contaminación Atmosférica" class="blog-media">
+                    </div>
+
                     <p>Añadiendo a la brutal asimetría de esta violencia estructural, los reportes de la <strong>OMS</strong> desvelan una tragedia silenciosa: aproximadamente 2.100 millones de personas, sumidas en la pobreza energética extrema del tercer mundo, cocinan diariamente quemando leña, bosta y carbón vegetal en los interiores sin ventilación de sus hogares. Este humo tóxico intramuros condena a muerte a millones de mujeres y niños cada año, consolidando la polución doméstica como un crimen social de lesa humanidad en pleno siglo XXI.</p>
                     
                     <p>Esto cincela en piedra el postulado más duro de la ecología política: respirar aire limpio no es un derecho biológico garantizado, sino un lujo posicional, dictado estrictamente por el código postal y el extracto bancario de los individuos.</p>
@@ -916,7 +1172,7 @@
                     <p>Dado que la atmósfera y los océanos ignoran soberanamente las líneas trazadas en los mapas geopolíticos (una nube de dióxido de azufre generada en Beijing o New York impacta directamente a ecosistemas a miles de kilómetros), la arquitectura de tratados y vigilancia supranacional (Protocolos Internacionales, Acuerdos de París, Tribunales Ambientales) es la red de seguridad final, pues el clima global y el océano azul es un bien comunal del planeta Tierra en su conjunto.</p>
 
                     <div class="blog-media-container">
-                        <img src="https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=1600&q=80" alt="Tecnología Renovable y Ciudades del Futuro" class="blog-media">
+                        <img src="https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?q=80&w=1600&auto=format&fit=crop" alt="Tecnología Renovable y Ciudades del Futuro" class="blog-media">
                     </div>
 
                     <h3>18. Tecnología: problema y solución</h3>
@@ -962,6 +1218,10 @@
                     <h3>17. Educación ambiental</h3>
                     <p>La mente humana no evolucionó para procesar catástrofes abstractas de moléculas invisibles a cien años futuro; por ello, la alfabetización ecológica intensiva es la reescritura necesaria del software mental de las masas. Una población que ignora el funcionamiento de la biósfera que la sostiene es una población estructuralmente ciega que firmará su propia sentencia de exterminio en las urnas y en los supermercados.</p>
                     
+                    <div class="blog-media-container">
+                        <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=1600&auto=format&fit=crop" alt="Educación y Conciencia Universitaria" class="blog-media">
+                    </div>
+
                     <p>Una matriz de educación ecológica contemporánea tiene la directiva central de enseñar:</p>
                     <ul>
                         <li>La física básica de la atmósfera y el ciclo de la toxicología industrial.</li>
@@ -1054,7 +1314,8 @@
             currentIndex: 0,
             views: {
                 home: document.getElementById('view-home'),
-                reader: document.getElementById('view-reader')
+                reader: document.getElementById('view-reader'),
+                about: document.getElementById('view-about') // CRÍTICO: Nueva vista registrada en SPA
             },
             ui: {
                 grid: document.getElementById('cards-container'),
@@ -1112,7 +1373,6 @@
                 this.currentIndex = index;
                 const doc = database[index];
                 
-                // Efecto de apagado suave antes de insertar el HTML pesado
                 this.ui.content.style.opacity = '0';
                 
                 setTimeout(() => {
@@ -1120,44 +1380,42 @@
                     this.ui.content.innerHTML = doc.content;
                     this.ui.indicator.textContent = `Módulo 0${index + 1} / 0${database.length}`;
                     
-                    // Calcular porcentaje de barra
                     const pct = ((index + 1) / database.length) * 100;
                     this.ui.progressBar.style.width = `${pct}%`;
                     
                     this.ui.btnPrev.disabled = index === 0;
                     this.ui.btnNext.disabled = index === database.length - 1;
 
-                    // Fade in del texto nuevo
                     this.ui.content.style.transition = 'opacity 0.6s ease';
                     this.ui.content.style.opacity = '1';
                 }, 300);
 
-                // Transición de vistas si estamos en Home
-                if (this.views.home.classList.contains('active-view')) {
-                    this.views.home.classList.remove('active-view');
-                    this.views.home.classList.add('hidden-view');
-                    
-                    setTimeout(() => {
-                        this.views.reader.classList.remove('hidden-view');
-                        this.views.reader.classList.add('active-view');
-                        window.scrollTo({ top: 0, behavior: 'instant' });
-                    }, 500); 
-                } else {
-                    // Si ya estamos leyendo, simplemente scroll arriba suave
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                }
+                this.navigate('reader');
             },
 
             navigate: function(target) {
-                if (target === 'home' && !this.views.home.classList.contains('active-view')) {
-                    this.views.reader.classList.remove('active-view');
-                    this.views.reader.classList.add('hidden-view');
+                // Si la vista solicitada no está activa, procedemos a cambiar
+                if (!this.views[target].classList.contains('active-view')) {
+                    // Ocultar todas las vistas
+                    Object.values(this.views).forEach(view => {
+                        if (view && view.classList.contains('active-view')) {
+                            view.classList.remove('active-view');
+                            view.classList.add('hidden-view');
+                        }
+                    });
                     
+                    // Mostrar la vista objetivo
                     setTimeout(() => {
-                        this.views.home.classList.remove('hidden-view');
-                        this.views.home.classList.add('active-view');
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        if(this.views[target]) {
+                            this.views[target].classList.remove('hidden-view');
+                            this.views[target].classList.add('active-view');
+                            // Reseteamos el scroll a top instántaneamente si vamos a leer, si no smooth.
+                            window.scrollTo({ top: 0, behavior: target === 'reader' ? 'instant' : 'smooth' });
+                        }
                     }, 500);
+                } else {
+                    // Si ya estamos en ella, solo subimos el scroll
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                 }
             },
 
@@ -1174,7 +1432,7 @@
             },
 
             scrollTo: function(id) {
-                if (this.views.reader.classList.contains('active-view')) {
+                if (!this.views.home.classList.contains('active-view')) {
                     this.navigate('home');
                     setTimeout(() => this._doScroll(id), 600);
                 } else {
@@ -1185,8 +1443,15 @@
             _doScroll: function(id) {
                 const el = document.getElementById(id);
                 if (el) {
-                    const y = el.getBoundingClientRect().top + window.scrollY - 88; // Descontar alto del nav
+                    const y = el.getBoundingClientRect().top + window.scrollY - 88; 
                     window.scrollTo({top: y, behavior: 'smooth'});
+                }
+            },
+
+            toggleMember: function(id) {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.classList.toggle('expanded');
                 }
             }
         };
