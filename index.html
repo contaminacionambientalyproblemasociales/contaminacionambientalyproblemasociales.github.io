@@ -1,778 +1,923 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="scroll-smooth">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Contaminación ambiental — Los problemas del siglo XXI</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --bg: #DEE2DC;
-    --bg-deep: #C9CFC5;
-    --panel: #EEF0EA;
-    --ink: #171F1B;
-    --ink-soft: #4B564F;
-    --line: rgba(23,31,27,0.14);
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CAPS - Contaminación y Problemas Sociales</title>
+    <meta name="description" content="Proyecto Documental: Contaminación ambiental y los problemas sociales del siglo XXI. FPG Universitario.">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- ÚNICA FUENTE: Inter (Múltiples grosores para jerarquía visual sin cambiar de fuente) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Paleta Hypr.land / Cyber-Minimalista */
+            --bg-base: #030304;
+            --surface: rgba(12, 12, 16, 0.6);
+            --surface-hover: rgba(20, 20, 25, 0.85);
+            
+            /* Acentos Neón - Cyan Eléctrico */
+            --neon-accent: #00e5ff;
+            --neon-glow: rgba(0, 229, 255, 0.15);
+            --neon-glow-strong: rgba(0, 229, 255, 0.4);
+            
+            /* Tipografía */
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-glass: rgba(255, 255, 255, 0.06);
+            --border-neon: rgba(0, 229, 255, 0.25);
+        }
 
-    /* escala AQI, usada como lenguaje de severidad en toda la página */
-    --aqi-good: #4C8B5C;
-    --aqi-moderate: #C8A22A;
-    --aqi-sensitive: #D98A2B;
-    --aqi-unhealthy: #C1473C;
-    --aqi-very: #7A4A93;
-    --aqi-hazardous: #6B2530;
-  }
+        /* CONDICIÓN CRÍTICA: ÚNICA FUENTE DE TEXTO */
+        * {
+            font-family: 'Inter', sans-serif !important;
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-  *{margin:0;padding:0;box-sizing:border-box;}
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            overflow-x: hidden;
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
 
-  html{scroll-behavior:smooth;}
+        .parallax-wrapper {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: -2;
+            /* Imagen fácilmente reemplazable en el style o JS */
+            background-image: url('https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?q=80&w=2000&auto=format&fit=crop');
+            background-attachment: fixed;
+            background-position: center;
+            background-size: cover;
+            /* Oscurecimiento extremo para legibilidad impecable */
+            filter: brightness(0.15) contrast(1.1) grayscale(0.5);
+        }
 
-  body{
-    background:var(--bg);
-    color:var(--ink);
-    font-family:'Inter', sans-serif;
-    line-height:1.6;
-    overflow-x:hidden;
-  }
+        .parallax-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: -1;
+            background: radial-gradient(circle at 50% 50%, transparent 0%, var(--bg-base) 100%),
+                        linear-gradient(180deg, rgba(3,3,4,0.7) 0%, rgba(3,3,4,0.95) 100%);
+        }
 
-  h1,h2,h3{
-    font-family:'Fraunces', serif;
-    font-weight:600;
-    letter-spacing:-0.01em;
-    line-height:1.08;
-  }
+        .glass-nav {
+            background: rgba(3, 3, 4, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-glass);
+            transition: all 0.3s ease;
+        }
 
-  .mono{
-    font-family:'IBM Plex Mono', monospace;
-  }
+        .sub-nav-glass {
+            background: rgba(5, 5, 8, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-glass);
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+        }
 
-  .eyebrow{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:0.72rem;
-    letter-spacing:0.14em;
-    text-transform:uppercase;
-    color:var(--ink-soft);
-    display:flex;
-    align-items:center;
-    gap:0.6rem;
-    margin-bottom:1.1rem;
-  }
-  .eyebrow::before{
-    content:"";
-    width:22px;
-    height:1px;
-    background:var(--ink-soft);
-    display:inline-block;
-  }
+        .hypr-card {
+            background: var(--surface);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--border-glass);
+            border-radius: 12px;
+            padding: 2.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            height: 100%;
+        }
 
-  section{
-    padding:6.5rem 8vw;
-    position:relative;
-  }
-  @media (max-width:720px){
-    section{padding:4.2rem 6vw;}
-  }
+        .hypr-card:hover {
+            transform: translateY(-4px);
+            background: var(--surface-hover);
+            border-color: var(--border-neon);
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.7), 0 0 25px var(--neon-glow);
+        }
 
-  .wrap{ max-width:1180px; margin:0 auto; }
+        .hypr-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: var(--neon-accent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            box-shadow: 0 0 12px var(--neon-accent);
+        }
+        .hypr-card:hover::before { opacity: 1; }
 
-  /* ---------- NAV ---------- */
-  nav{
-    position:fixed;
-    top:0; left:0; right:0;
-    z-index:100;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:1.15rem 8vw;
-    background:rgba(222,226,220,0.82);
-    backdrop-filter:blur(10px);
-    border-bottom:1px solid var(--line);
-  }
-  .brand{
-    font-family:'Fraunces', serif;
-    font-weight:600;
-    font-size:1.05rem;
-  }
-  .brand span{ color:var(--aqi-unhealthy); }
-  nav ul{
-    list-style:none;
-    display:flex;
-    gap:2rem;
-  }
-  nav a{
-    color:var(--ink);
-    text-decoration:none;
-    font-size:0.86rem;
-    font-weight:500;
-    opacity:0.75;
-    transition:opacity .2s;
-  }
-  nav a:hover{ opacity:1; }
-  @media (max-width:820px){
-    nav ul{ display:none; }
-  }
+        .article-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
 
-  /* ---------- HERO ---------- */
-  .hero{
-    min-height:100vh;
-    display:flex;
-    align-items:center;
-    padding-top:6rem;
-  }
-  .hero-grid{
-    display:grid;
-    grid-template-columns:1.15fr 0.85fr;
-    gap:4rem;
-    align-items:center;
-    max-width:1180px;
-    margin:0 auto;
-    width:100%;
-  }
-  @media (max-width:900px){
-    .hero-grid{ grid-template-columns:1fr; gap:3rem; }
-  }
-  .hero h1{
-    font-size:clamp(2.4rem, 5.4vw, 4.2rem);
-    color:var(--ink);
-  }
-  .hero h1 em{
-    font-style:italic;
-    color:var(--aqi-unhealthy);
-  }
-  .hero p.lede{
-    margin-top:1.6rem;
-    font-size:1.08rem;
-    color:var(--ink-soft);
-    max-width:46ch;
-  }
-  .hero-cta{
-    margin-top:2.3rem;
-    display:flex;
-    gap:1rem;
-    flex-wrap:wrap;
-  }
-  .btn{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:0.8rem;
-    letter-spacing:0.03em;
-    padding:0.85rem 1.5rem;
-    border-radius:2px;
-    text-decoration:none;
-    display:inline-block;
-    transition:transform .2s ease, background .2s ease;
-  }
-  .btn-primary{
-    background:var(--ink);
-    color:var(--bg);
-  }
-  .btn-primary:hover{ transform:translateY(-2px); }
-  .btn-ghost{
-    border:1px solid var(--line);
-    color:var(--ink);
-  }
-  .btn-ghost:hover{ border-color:var(--ink); }
+        .article-content h3 {
+            color: #ffffff;
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-top: 4rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border-glass);
+            letter-spacing: -0.01em;
+            position: relative;
+        }
+        
+        .article-content h3::before {
+            content: '::';
+            color: var(--neon-accent);
+            margin-right: 12px;
+            font-weight: 900;
+            opacity: 0.8;
+            text-shadow: 0 0 8px var(--neon-glow-strong);
+        }
 
-  /* ---------- AQI DIAL (signature element) ---------- */
-  .dial-card{
-    background:var(--panel);
-    border:1px solid var(--line);
-    border-radius:6px;
-    padding:2rem;
-  }
-  .dial-label{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:0.7rem;
-    letter-spacing:0.1em;
-    text-transform:uppercase;
-    color:var(--ink-soft);
-    display:flex;
-    justify-content:space-between;
-    margin-bottom:1.2rem;
-  }
-  .dial-svg{ width:100%; height:auto; display:block; }
-  .dial-readout{
-    text-align:center;
-    margin-top:0.6rem;
-  }
-  .dial-readout .num{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:2.6rem;
-    font-weight:600;
-  }
-  .dial-readout .cat{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:0.78rem;
-    letter-spacing:0.08em;
-    text-transform:uppercase;
-    color:var(--aqi-unhealthy);
-    margin-top:0.2rem;
-  }
-  .dial-readout .fine{
-    font-size:0.78rem;
-    color:var(--ink-soft);
-    margin-top:0.8rem;
-  }
-  .needle{
-    transform-origin:150px 150px;
-    transition:transform 1.8s cubic-bezier(.22,1,.36,1);
-  }
+        .article-content p {
+            font-size: 1.125rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+            line-height: 1.8;
+        }
 
-  /* ---------- SCALE STRIP ---------- */
-  .scale-strip{
-    display:flex;
-    width:100%;
-    height:6px;
-    border-radius:3px;
-    overflow:hidden;
-    margin:0.6rem 0 0.2rem;
-  }
-  .scale-strip div{ flex:1; }
+        .article-content strong {
+            color: #ffffff;
+            font-weight: 600;
+        }
 
-  /* ---------- INTRO ---------- */
-  .intro{
-    background:var(--panel);
-    border-top:1px solid var(--line);
-    border-bottom:1px solid var(--line);
-  }
-  .intro .wrap{
-    display:grid;
-    grid-template-columns:0.6fr 1.4fr;
-    gap:3rem;
-  }
-  @media (max-width:800px){
-    .intro .wrap{ grid-template-columns:1fr; gap:1.5rem; }
-  }
-  .intro h2{ font-size:clamp(1.6rem,3vw,2.1rem); }
-  .intro p{ font-size:1.02rem; color:var(--ink-soft); max-width:62ch; }
-  .intro p + p{ margin-top:1rem; }
+        .article-content ul {
+            margin-bottom: 2rem;
+            padding-left: 0.5rem;
+        }
 
-  /* ---------- PROBLEMS GRID ---------- */
-  .section-head{
-    display:flex;
-    justify-content:space-between;
-    align-items:flex-end;
-    flex-wrap:wrap;
-    gap:1rem;
-    margin-bottom:3rem;
-  }
-  .section-head h2{ font-size:clamp(1.8rem,3.4vw,2.6rem); }
-  .section-head .count{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:0.78rem;
-    color:var(--ink-soft);
-  }
+        .article-content li {
+            color: var(--text-muted);
+            margin-bottom: 0.875rem;
+            font-size: 1.125rem;
+            font-weight: 300;
+            position: relative;
+            padding-left: 1.75rem;
+        }
 
-  .problem-grid{
-    display:grid;
-    grid-template-columns:repeat(3, 1fr);
-    gap:1.4rem;
-  }
-  @media (max-width:980px){ .problem-grid{ grid-template-columns:repeat(2,1fr); } }
-  @media (max-width:640px){ .problem-grid{ grid-template-columns:1fr; } }
+        .article-content li::before {
+            content: "▹";
+            color: var(--neon-accent);
+            position: absolute;
+            left: 0;
+            top: -2px;
+            font-size: 1.25rem;
+        }
 
-  .card{
-    background:var(--panel);
-    border:1px solid var(--line);
-    border-radius:6px;
-    padding:1.7rem;
-    position:relative;
-    overflow:hidden;
-    transition:transform .25s ease, box-shadow .25s ease;
-  }
-  .card:hover{
-    transform:translateY(-4px);
-    box-shadow:0 14px 34px -18px rgba(23,31,27,0.35);
-  }
-  .card .bar{
-    position:absolute;
-    top:0; left:0; right:0;
-    height:4px;
-  }
-  .card .tag{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:0.66rem;
-    letter-spacing:0.09em;
-    text-transform:uppercase;
-    padding:0.25rem 0.55rem;
-    border-radius:2px;
-    display:inline-block;
-    margin-bottom:1rem;
-    color:#fff;
-  }
-  .card h3{
-    font-size:1.22rem;
-    margin-bottom:0.6rem;
-  }
-  .card p{
-    font-size:0.92rem;
-    color:var(--ink-soft);
-    margin-bottom:1rem;
-  }
-  .card .stat{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:0.78rem;
-    color:var(--ink);
-    border-top:1px solid var(--line);
-    padding-top:0.8rem;
-  }
-  .card .stat b{ font-size:0.98rem; }
+        /* Multimedia: Opaca por defecto para no romper el descanso visual */
+        .blog-media {
+            width: 100%;
+            max-height: 450px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin: 3rem 0;
+            border: 1px solid var(--border-glass);
+            opacity: 0.35; 
+            filter: grayscale(60%) brightness(0.6);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .blog-media:hover {
+            opacity: 1;
+            filter: grayscale(0%) brightness(1);
+            border-color: var(--border-neon);
+            box-shadow: 0 0 30px var(--neon-glow);
+        }
 
-  /* ---------- CAUSES ---------- */
-  .causes{ background:var(--bg-deep); }
-  .cause-list{
-    display:grid;
-    grid-template-columns:repeat(5,1fr);
-    gap:0;
-    border-top:1px solid var(--line);
-  }
-  @media (max-width:980px){ .cause-list{ grid-template-columns:repeat(2,1fr);} }
-  @media (max-width:560px){ .cause-list{ grid-template-columns:1fr;} }
-  .cause-item{
-    padding:1.8rem 1.3rem;
-    border-bottom:1px solid var(--line);
-    border-right:1px solid var(--line);
-  }
-  .cause-item .n{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:0.72rem;
-    color:var(--ink-soft);
-    display:block;
-    margin-bottom:0.7rem;
-  }
-  .cause-item h4{
-    font-family:'Fraunces', serif;
-    font-weight:600;
-    font-size:1.05rem;
-    margin-bottom:0.5rem;
-  }
-  .cause-item p{ font-size:0.86rem; color:var(--ink-soft); }
+        .view-section {
+            transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .hidden-view {
+            display: none !important;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        .active-view {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+            animation: softFadeIn 0.6s forwards;
+        }
 
-  /* ---------- STATS ---------- */
-  .stats-grid{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:1.2rem;
-  }
-  @media (max-width:900px){ .stats-grid{ grid-template-columns:repeat(2,1fr); } }
-  @media (max-width:560px){ .stats-grid{ grid-template-columns:1fr; } }
-  .stat-card{
-    background:var(--panel);
-    border:1px solid var(--line);
-    border-radius:6px;
-    padding:1.6rem;
-  }
-  .stat-card .big{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:2.1rem;
-    font-weight:600;
-    line-height:1;
-  }
-  .stat-card .label{
-    margin-top:0.7rem;
-    font-size:0.86rem;
-    color:var(--ink-soft);
-  }
-  .stats-note{
-    margin-top:1.6rem;
-    font-size:0.78rem;
-    color:var(--ink-soft);
-    font-family:'IBM Plex Mono', monospace;
-  }
+        @keyframes softFadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-  /* ---------- SOLUTIONS ---------- */
-  .solutions{ background:var(--panel); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
-  .sol-list{
-    display:flex;
-    flex-direction:column;
-  }
-  .sol-row{
-    display:grid;
-    grid-template-columns:80px 1fr 1.4fr;
-    gap:2rem;
-    padding:1.9rem 0;
-    border-top:1px solid var(--line);
-    align-items:baseline;
-  }
-  .sol-list .sol-row:last-child{ border-bottom:1px solid var(--line); }
-  @media (max-width:760px){
-    .sol-row{ grid-template-columns:1fr; gap:0.5rem; padding:1.4rem 0; }
-  }
-  .sol-row .idx{
-    font-family:'IBM Plex Mono', monospace;
-    color:var(--ink-soft);
-    font-size:0.85rem;
-  }
-  .sol-row h4{
-    font-family:'Fraunces', serif;
-    font-weight:600;
-    font-size:1.28rem;
-  }
-  .sol-row p{ font-size:0.94rem; color:var(--ink-soft); }
+        /* Scrollbar Minimalista */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-base); }
+        ::-webkit-scrollbar-thumb { background: #2a2a35; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--neon-accent); }
 
-  /* ---------- ACTIONS ---------- */
-  .actions-grid{
-    display:grid;
-    grid-template-columns:repeat(5,1fr);
-    gap:1rem;
-  }
-  @media (max-width:980px){ .actions-grid{ grid-template-columns:repeat(3,1fr);} }
-  @media (max-width:620px){ .actions-grid{ grid-template-columns:repeat(2,1fr);} }
-  .action-card{
-    background:var(--ink);
-    color:var(--bg);
-    border-radius:6px;
-    padding:1.5rem 1.2rem;
-    min-height:150px;
-    display:flex;
-    flex-direction:column;
-    justify-content:space-between;
-  }
-  .action-card .n{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:0.7rem;
-    opacity:0.55;
-  }
-  .action-card p{
-    font-family:'Fraunces', serif;
-    font-size:1.05rem;
-    font-weight:500;
-    line-height:1.25;
-    margin-top:0.8rem;
-  }
-
-  /* ---------- FOOTER ---------- */
-  footer{
-    padding:3.5rem 8vw 2.5rem;
-    border-top:1px solid var(--line);
-    display:flex;
-    justify-content:space-between;
-    flex-wrap:wrap;
-    gap:1.5rem;
-  }
-  footer .brand{ font-size:0.95rem; }
-  footer .fine{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:0.74rem;
-    color:var(--ink-soft);
-    max-width:44ch;
-  }
-
-  /* reveal on scroll */
-  .reveal{
-    opacity:0;
-    transform:translateY(18px);
-    transition:opacity .7s ease, transform .7s ease;
-  }
-  .reveal.in{
-    opacity:1;
-    transform:translateY(0);
-  }
-
-  @media (prefers-reduced-motion: reduce){
-    .needle{ transition:none; }
-    .reveal{ opacity:1; transform:none; transition:none; }
-    html{ scroll-behavior:auto; }
-  }
-</style>
+        .text-glow { text-shadow: 0 0 15px var(--neon-glow-strong); }
+        
+        .neon-btn {
+            color: var(--text-main);
+            border: 1px solid var(--border-glass);
+            background: rgba(255,255,255,0.02);
+            transition: all 0.3s ease;
+        }
+        .neon-btn:hover:not(:disabled) {
+            border-color: var(--neon-accent);
+            color: var(--neon-accent);
+            background: rgba(0, 229, 255, 0.05);
+            box-shadow: 0 0 15px var(--neon-glow);
+        }
+        .neon-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+    </style>
 </head>
-<body>
+<body class="antialiased">
 
-<nav>
-  <div class="brand">Aire<span>/</span>Límite</div>
-  <ul>
-    <li><a href="#problemas">Problemas</a></li>
-    <li><a href="#causas">Causas</a></li>
-    <li><a href="#datos">Datos</a></li>
-    <li><a href="#soluciones">Soluciones</a></li>
-    <li><a href="#accion">Actúa</a></li>
-  </ul>
-</nav>
+    <div class="parallax-wrapper"></div>
+    <div class="parallax-overlay"></div>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-grid">
-    <div>
-      <div class="eyebrow">Diagnóstico global · Siglo XXI</div>
-      <h1>La contaminación es la letra pequeña de <em>todos</em> los problemas de nuestro tiempo.</h1>
-      <p class="lede">Cambio climático, plástico en los océanos, aire irrespirable en las ciudades, pérdida de especies: son capítulos del mismo problema. Esta página los organiza, con sus causas, sus cifras y lo que realmente podemos hacer.</p>
-      <div class="hero-cta">
-        <a href="#problemas" class="btn btn-primary">Ver los problemas</a>
-        <a href="#accion" class="btn btn-ghost">Qué puedo hacer yo</a>
-      </div>
-    </div>
-
-    <div class="dial-card reveal">
-      <div class="dial-label">
-        <span>Índice de calidad del aire</span>
-        <span>Promedio urbano global</span>
-      </div>
-      <svg class="dial-svg" viewBox="0 0 300 175" xmlns="http://www.w3.org/2000/svg">
-        <path d="M 30 150 A 120 120 0 0 1 62 63" fill="none" stroke="#4C8B5C" stroke-width="14" stroke-linecap="round"/>
-        <path d="M 62 63 A 120 120 0 0 1 118 33" fill="none" stroke="#C8A22A" stroke-width="14" stroke-linecap="round"/>
-        <path d="M 118 33 A 120 120 0 0 1 182 33" fill="none" stroke="#D98A2B" stroke-width="14" stroke-linecap="round"/>
-        <path d="M 182 33 A 120 120 0 0 1 238 63" fill="none" stroke="#C1473C" stroke-width="14" stroke-linecap="round"/>
-        <path d="M 238 63 A 120 120 0 0 1 270 150" fill="none" stroke="#7A4A93" stroke-width="14" stroke-linecap="round"/>
-        <g class="needle" id="needle" style="transform:rotate(0deg);">
-          <line x1="150" y1="150" x2="150" y2="42" stroke="#171F1B" stroke-width="3" stroke-linecap="round"/>
-          <circle cx="150" cy="150" r="7" fill="#171F1B"/>
-        </g>
-      </svg>
-      <div class="dial-readout">
-        <div class="num">138</div>
-        <div class="cat">No saludable</div>
-        <div class="scale-strip">
-          <div style="background:#4C8B5C"></div>
-          <div style="background:#C8A22A"></div>
-          <div style="background:#D98A2B"></div>
-          <div style="background:#C1473C"></div>
-          <div style="background:#7A4A93"></div>
+    <!-- Barra de Navegación Omnipresente -->
+    <nav class="fixed top-0 w-full z-50 glass-nav h-20 flex items-center">
+        <div class="w-full max-w-7xl mx-auto px-6 lg:px-8 flex items-center justify-between">
+            <div class="flex-shrink-0 cursor-pointer group" onclick="app.navigate('home')">
+                <span class="text-2xl font-black tracking-tighter text-white">
+                    CAPS<span class="text-[var(--neon-accent)] group-hover:text-white transition-colors duration-300">.</span>
+                </span>
+            </div>
+            <div class="hidden md:flex space-x-10">
+                <button onclick="app.navigate('home')" class="text-xs font-bold text-gray-400 hover:text-[var(--neon-accent)] transition-all tracking-[0.15em] uppercase">Inicio</button>
+                <button onclick="app.scrollTo('quienes-somos')" class="text-xs font-bold text-gray-400 hover:text-[var(--neon-accent)] transition-all tracking-[0.15em] uppercase">Quiénes Somos</button>
+                <button onclick="app.scrollTo('articulos')" class="text-xs font-bold text-gray-400 hover:text-[var(--neon-accent)] transition-all tracking-[0.15em] uppercase">Documental</button>
+            </div>
         </div>
-        <div class="fine">Cifra ilustrativa: muchas capitales del mundo superan hoy los niveles que la OMS considera seguros.</div>
-      </div>
-    </div>
-  </div>
-</section>
+    </nav>
 
-<!-- INTRO -->
-<section class="intro reveal">
-  <div class="wrap">
-    <div class="eyebrow">Definición</div>
-    <div>
-      <h2>¿Qué entendemos por contaminación ambiental?</h2>
-      <p>Es la introducción de sustancias, energía u organismos en el aire, el agua o el suelo a un ritmo que supera la capacidad del planeta para absorberlos o neutralizarlos. No es un evento aislado: es una acumulación silenciosa que se mide en partes por millón, en toneladas y en grados.</p>
-      <p>Lo que distingue al siglo XXI no es que la contaminación sea nueva, sino su escala: por primera vez, sus efectos —climáticos, sanitarios, económicos— son globales, simultáneos y medibles en tiempo real.</p>
-    </div>
-  </div>
-</section>
+    <main id="view-home" class="view-section active-view w-full pt-20">
+        
+        <!-- Hero Section: Título desplazado a la izquierda -->
+        <section class="min-h-[80vh] flex flex-col justify-center relative w-full">
+            <div class="w-full max-w-7xl mx-auto px-6 lg:px-8">
+                <!-- Limitamos el ancho y alineamos a la izquierda para el estilo requerido -->
+                <div class="max-w-4xl">
+                    <p class="text-[var(--neon-accent)] text-sm tracking-[0.3em] font-bold uppercase mb-4 pl-1 text-glow">Proyecto de Investigación</p>
+                    <h1 class="text-7xl md:text-8xl lg:text-9xl font-black tracking-tighter text-white mb-6 leading-[0.9]">
+                        CAPS
+                    </h1>
+                    <div class="pl-6 border-l-2 border-[var(--border-glass)] hover:border-[var(--neon-accent)] transition-colors duration-500">
+                        <h2 class="text-2xl md:text-3xl lg:text-4xl text-gray-300 font-light leading-snug">
+                            Contaminación ambiental y los<br>
+                            <span class="text-white font-medium">problemas sociales del siglo XXI.</span>
+                        </h2>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-<!-- PROBLEMAS -->
-<section id="problemas">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <h2>Seis problemas que definen la época</h2>
-      <div class="count mono">01 — 06</div>
-    </div>
+        <!-- Quiénes Somos -->
+        <section id="quienes-somos" class="w-full py-32 bg-black/40 border-t border-[var(--border-glass)]">
+            <div class="max-w-7xl mx-auto px-6 lg:px-8">
+                <div class="max-w-3xl">
+                    <div class="flex items-center mb-8">
+                        <div class="h-[1px] w-8 bg-[var(--neon-accent)] mr-4"></div>
+                        <h3 class="text-xs font-bold tracking-[0.2em] text-[var(--neon-accent)] uppercase">Quiénes Somos</h3>
+                    </div>
+                    <p class="text-gray-400 text-xl md:text-2xl leading-relaxed font-light">
+                        Bienvenidos al portal de investigación documental <strong class="text-white font-normal">FPG Universitario (Historia Universal 101)</strong>. 
+                        Este espacio examina de manera exhaustiva la profunda interconexión entre la degradación ecológica y las crisis sociales contemporáneas, demostrando que la protección del medio ambiente y el bienestar de la sociedad son inseparables.
+                    </p>
+                </div>
+            </div>
+        </section>
 
-    <div class="problem-grid">
+        <!-- Tarjetas Estilo Blog -->
+        <section id="articulos" class="w-full py-32 pb-48 relative">
+            <div class="max-w-7xl mx-auto px-6 lg:px-8">
+                <div class="mb-16">
+                    <h3 class="text-3xl md:text-4xl font-bold text-white tracking-tight mb-3">Archivo Documental</h3>
+                    <p class="text-gray-500 font-light">Seleccione una tarjeta para acceder a la investigación completa.</p>
+                </div>
+                
+                <!-- Contenedor inyectado vía JS -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="cards-container">
+                    <!-- Cards dinámicas -->
+                </div>
+            </div>
+        </section>
+    </main>
 
-      <div class="card reveal">
-        <div class="bar" style="background:var(--aqi-hazardous)"></div>
-        <span class="tag" style="background:var(--aqi-hazardous)">Crítico</span>
-        <h3>Cambio climático</h3>
-        <p>La quema de combustibles fósiles ha elevado la temperatura media global desde la era preindustrial, alterando patrones de lluvia, sequías e intensidad de eventos extremos.</p>
-        <div class="stat">Aumento aproximado: <b>+1.1 °C</b> desde 1850–1900</div>
-      </div>
+    <main id="view-reader" class="view-section hidden-view w-full pt-20">
+        
+        <!-- Sub-Barra Titular (Sticky) para Navegación de Artículos -->
+        <div class="sticky top-20 w-full z-40 sub-nav-glass py-4">
+            <div class="max-w-5xl mx-auto px-6 flex justify-between items-center">
+                <button onclick="app.prevArticle()" id="btn-prev" class="neon-btn px-4 py-2 rounded text-sm font-medium flex items-center group">
+                    <span class="mr-2 opacity-50 group-hover:opacity-100 transition-opacity">←</span> Anterior
+                </button>
+                
+                <span id="reading-indicator" class="text-gray-500 text-xs tracking-[0.2em] uppercase hidden md:block">
+                    Artículo 1 de 5
+                </span>
+                
+                <button onclick="app.nextArticle()" id="btn-next" class="neon-btn px-4 py-2 rounded text-sm font-medium flex items-center group">
+                    Siguiente <span class="ml-2 opacity-50 group-hover:opacity-100 transition-opacity">→</span>
+                </button>
+            </div>
+        </div>
 
-      <div class="card reveal">
-        <div class="bar" style="background:var(--aqi-unhealthy)"></div>
-        <span class="tag" style="background:var(--aqi-unhealthy)">Grave</span>
-        <h3>Plástico y océanos</h3>
-        <p>Gran parte del plástico producido nunca se recicla; buena parte termina en ríos y mares, fragmentándose en microplásticos que ya aparecen en la cadena alimentaria.</p>
-        <div class="stat">Producción global: <b>&gt;400 millones de t/año</b></div>
-      </div>
+        <!-- Contenido del Artículo -->
+        <article class="w-full py-24 pb-48">
+            <div class="max-w-4xl mx-auto px-6">
+                <header class="mb-20 text-center">
+                    <p class="text-[var(--neon-accent)] text-xs tracking-[0.3em] font-bold uppercase mb-6 text-glow" id="reader-subtitle">Serie Documental</p>
+                    <h1 id="reader-title" class="text-4xl md:text-5xl lg:text-6xl font-black text-white leading-[1.1] tracking-tighter">Título</h1>
+                </header>
+                
+                <!-- Inyección del contenido denso -->
+                <div id="reader-content" class="article-content"></div>
+            </div>
+        </article>
+    </main>
 
-      <div class="card reveal">
-        <div class="bar" style="background:var(--aqi-sensitive)"></div>
-        <span class="tag" style="background:var(--aqi-sensitive)">Alto</span>
-        <h3>Contaminación del aire</h3>
-        <p>El material particulado (PM2.5) proveniente del tráfico, la industria y la quema de combustibles afecta directamente la salud respiratoria y cardiovascular en zonas urbanas.</p>
-        <div class="stat">La mayoría de la población urbana respira aire fuera de los límites recomendados</div>
-      </div>
+    <footer class="border-t border-[var(--border-glass)] bg-[#030304] py-12 w-full z-30 relative">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
+            <div class="mb-4 md:mb-0">
+                <span class="text-white font-bold tracking-widest text-lg">CAPS<span class="text-[var(--neon-accent)]">.</span></span>
+                <p class="text-gray-600 text-xs mt-1 tracking-wider uppercase">FPG Universitario - Historia Universal 101</p>
+            </div>
+            <div class="text-gray-600 text-xs font-light">
+                Diseñado bajo directrices minimalistas e inmersivas.
+            </div>
+        </div>
+    </footer>
 
-      <div class="card reveal">
-        <div class="bar" style="background:var(--aqi-unhealthy)"></div>
-        <span class="tag" style="background:var(--aqi-unhealthy)">Grave</span>
-        <h3>Pérdida de biodiversidad</h3>
-        <p>La destrucción de hábitats, el cambio climático y la contaminación están acelerando la desaparición de especies a un ritmo muy superior al histórico.</p>
-        <div class="stat">Extinción a ritmo muy superior al promedio natural</div>
-      </div>
+    <script>
+        /**
+         * BASE DE DATOS LOCAL
+         * Contiene todo el texto exigido sin resumir, estructurado semánticamente.
+         * Imágenes opacas por defecto (reemplazables por URL fácilmente).
+         */
+        const database = [
+            {
+                title: "La Triple Crisis Planetaria: Sociedad, Pobreza y Desigualdad",
+                excerpt: "Este primer artículo establece el contexto global y social de la crisis, funcionando como el pilar introductorio.",
+                content: `
+                    <h3>1. ¿Qué es la contaminación ambiental?</h3>
+                    <p>La contaminación ambiental es la introducción de sustancias, formas de energía o agentes en el medio ambiente que alteran sus condiciones naturales y pueden producir daños en los ecosistemas, los seres humanos y otros organismos.</p>
+                    <p>Entre los principales contaminantes se encuentran:</p>
+                    <ul>
+                        <li>Gases y partículas provenientes de vehículos e industrias.</li>
+                        <li>Aguas residuales y productos químicos.</li>
+                        <li>Plásticos y otros residuos sólidos.</li>
+                        <li>Pesticidas y fertilizantes.</li>
+                        <li>Metales pesados.</li>
+                        <li>Derrames de petróleo.</li>
+                        <li>Contaminantes procedentes de actividades mineras.</li>
+                        <li>Ruido y contaminación lumínica.</li>
+                        <li>Gases de efecto invernadero.</li>
+                    </ul>
+                    <p>En el siglo XXI, la contaminación dejó de ser solamente un problema relacionado con determinados lugares industriales. Se ha convertido en un problema global estrechamente relacionado con la manera en que las sociedades producen, consumen, se transportan, construyen ciudades y utilizan los recursos naturales.</p>
+                    <p>El Programa de las Naciones Unidas para el Medio Ambiente (PNUMA) describe la situación actual como una triple crisis planetaria, formada por el cambio climático, la pérdida de biodiversidad y la contaminación y los residuos.</p>
 
-      <div class="card reveal">
-        <div class="bar" style="background:var(--aqi-moderate)"></div>
-        <span class="tag" style="background:var(--aqi-moderate)">Moderado</span>
-        <h3>Escasez de agua</h3>
-        <p>La contaminación de acuíferos, sumada al estrés hídrico por sequías y sobreexplotación, reduce el acceso a agua potable en regiones enteras.</p>
-        <div class="stat">Miles de millones enfrentan estrés hídrico severo al menos un mes al año</div>
-      </div>
+                    <img src="https://images.unsplash.com/photo-1473448912268-2022ce9509d8?q=80&w=1600&auto=format&fit=crop" alt="Industria y Sociedad" class="blog-media">
 
-      <div class="card reveal">
-        <div class="bar" style="background:var(--aqi-moderate)"></div>
-        <span class="tag" style="background:var(--aqi-moderate)">Moderado</span>
-        <h3>Residuos electrónicos</h3>
-        <p>El consumo acelerado de dispositivos genera montañas de desechos electrónicos, muchos con metales pesados que contaminan suelo y agua si no se gestionan bien.</p>
-        <div class="stat">Es una de las corrientes de residuos de más rápido crecimiento en el mundo</div>
-      </div>
+                    <h3>2. La relación entre contaminación y sociedad</h3>
+                    <p>La relación es de doble sentido:</p>
+                    <p><strong>La sociedad produce contaminación → la contaminación afecta a la sociedad.</strong></p>
+                    <p>Las actividades humanas son una de las principales causas de la contaminación moderna. Al mismo tiempo, las consecuencias recaen sobre las personas mediante enfermedades, pérdida de recursos naturales, daños económicos, desplazamientos, problemas alimentarios y deterioro de la calidad de vida.</p>
+                    <p>Por ejemplo:</p>
+                    <p>Producción industrial → emisiones → contaminación atmosférica → enfermedades respiratorias → gastos médicos y pérdidas económicas.</p>
+                    <p>Otro ejemplo:</p>
+                    <p>Consumo excesivo → más residuos → acumulación de basura → contaminación del agua y suelo → daños a ecosistemas → problemas para comunidades humanas.</p>
+                    <p>Por eso, la contaminación ambiental no debe analizarse únicamente como un problema de la naturaleza. También es un problema social, económico, político y sanitario.</p>
 
-    </div>
-  </div>
-</section>
+                    <h3>4. Contaminación y desigualdad social</h3>
+                    <p>Uno de los aspectos más importantes de la contaminación en el siglo XXI es que sus efectos no se distribuyen de manera igualitaria.</p>
+                    <p>Las personas con menos recursos suelen estar más expuestas a determinados riesgos ambientales. Por ejemplo, pueden vivir cerca de:</p>
+                    <ul>
+                        <li>Vertederos.</li>
+                        <li>Industrias contaminantes.</li>
+                        <li>Carreteras con mucho tráfico.</li>
+                        <li>Zonas con deficiente infraestructura sanitaria.</li>
+                        <li>Ríos contaminados.</li>
+                        <li>Áreas vulnerables a inundaciones.</li>
+                    </ul>
+                    <p>Además, las comunidades con menos recursos suelen tener menos capacidad económica para protegerse o recuperarse de los daños.</p>
+                    <p>El problema también existe a escala internacional. Los países y grupos sociales tienen diferentes niveles de consumo, producción y emisiones, mientras que los efectos ambientales pueden afectar especialmente a poblaciones vulnerables.</p>
+                    <p>El IPCC señala que las contribuciones históricas y actuales al cambio climático son desiguales entre regiones, países y grupos de personas, y están relacionadas con el uso de energía, los cambios de uso del suelo y los patrones de consumo y producción.</p>
 
-<!-- CAUSAS -->
-<section id="causas" class="causes">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <h2>Causas raíz</h2>
-      <div class="count mono">Estructurales, no accidentales</div>
-    </div>
-  </div>
-  <div class="cause-list reveal">
-    <div class="cause-item">
-      <span class="n">causa / 01</span>
-      <h4>Combustibles fósiles</h4>
-      <p>Carbón, petróleo y gas siguen siendo la base energética de gran parte del mundo.</p>
-    </div>
-    <div class="cause-item">
-      <span class="n">causa / 02</span>
-      <h4>Industrialización</h4>
-      <p>Procesos productivos que liberan gases, efluentes y residuos sin tratamiento suficiente.</p>
-    </div>
-    <div class="cause-item">
-      <span class="n">causa / 03</span>
-      <h4>Deforestación</h4>
-      <p>La pérdida de bosques reduce la capacidad del planeta para absorber CO₂.</p>
-    </div>
-    <div class="cause-item">
-      <span class="n">causa / 04</span>
-      <h4>Consumo acelerado</h4>
-      <p>Modelos de producción y descarte rápido que multiplican residuos y emisiones.</p>
-    </div>
-    <div class="cause-item" style="border-right:none;">
-      <span class="n">causa / 05</span>
-      <h4>Gestión inadecuada de residuos</h4>
-      <p>Falta de infraestructura para tratar basura, aguas residuales y desechos peligrosos.</p>
-    </div>
-  </div>
-</section>
+                    <h3>13. Contaminación y pobreza</h3>
+                    <p>La pobreza y la contaminación pueden reforzarse mutuamente.</p>
+                    <p>Por ejemplo:</p>
+                    <p>Pobreza → menor acceso a infraestructura → gestión deficiente de residuos → contaminación → enfermedades → gastos médicos → menor capacidad económica.</p>
+                    <p>Esto puede crear un círculo difícil de romper.</p>
+                    <p>En países y comunidades con pocos recursos pueden existir dificultades para financiar:</p>
+                    <ul>
+                        <li>Sistemas de alcantarillado.</li>
+                        <li>Plantas de tratamiento de agua.</li>
+                        <li>Recogida de residuos.</li>
+                        <li>Transporte público.</li>
+                        <li>Energías limpias.</li>
+                        <li>Sistemas de monitoreo ambiental.</li>
+                    </ul>
+                    <p>Por eso, combatir la contaminación también requiere políticas de desarrollo social.</p>
+                `
+            },
+            {
+                title: "Ecosistemas en Peligro: Aire, Agua, Suelo y Biodiversidad",
+                excerpt: "Recorrido analítico profundo detallando los daños directos a la naturaleza y a los recursos vitales del planeta.",
+                content: `
+                    <h3>3. Contaminación del aire</h3>
+                    <p>La contaminación atmosférica es uno de los problemas ambientales más importantes del siglo XXI.</p>
+                    <p>Sus principales fuentes son:</p>
+                    <ul>
+                        <li>Automóviles, camiones y motocicletas.</li>
+                        <li>Centrales eléctricas.</li>
+                        <li>Industrias.</li>
+                        <li>Quema de combustibles fósiles.</li>
+                        <li>Incendios forestales.</li>
+                        <li>Quema de basura.</li>
+                        <li>Actividades agrícolas.</li>
+                        <li>Construcción.</li>
+                        <li>Uso de combustibles contaminantes dentro de los hogares.</li>
+                    </ul>
+                    <p>Entre los contaminantes más importantes están las partículas finas (PM2.5), óxidos de nitrógeno, dióxido de azufre, monóxido de carbono y ozono troposférico.</p>
+                    <p>La Organización Mundial de la Salud señala que el 99 % de la población mundial está expuesta a niveles de contaminación atmosférica que superan sus recomendaciones de calidad del aire. También estima que la contaminación del aire ambiental y doméstico estuvo relacionada con aproximadamente 6,6 millones de muertes en 2021.</p>
+                    <p>Esto demuestra que la contaminación atmosférica no solamente afecta al medio ambiente: afecta directamente a la sociedad y a la salud pública.</p>
 
-<!-- DATOS -->
-<section id="datos">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <h2>La magnitud, en cifras</h2>
-      <div class="count mono">Órdenes de magnitud aproximados</div>
-    </div>
+                    <img src="https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?q=80&w=1600&auto=format&fit=crop" alt="Contaminación Atmosférica" class="blog-media">
 
-    <div class="stats-grid reveal">
-      <div class="stat-card">
-        <div class="big">+1.1°C</div>
-        <div class="label">Aumento aproximado de la temperatura global desde la era preindustrial.</div>
-      </div>
-      <div class="stat-card">
-        <div class="big">400M t</div>
-        <div class="label">Plástico producido cada año en el mundo, gran parte de un solo uso.</div>
-      </div>
-      <div class="stat-card">
-        <div class="big">~7M</div>
-        <div class="label">Muertes prematuras al año que la OMS asocia con la contaminación del aire.</div>
-      </div>
-      <div class="stat-card">
-        <div class="big">1/3</div>
-        <div class="label">De los alimentos producidos en el mundo se pierde o desperdicia.</div>
-      </div>
-    </div>
-    <div class="stats-note">* Cifras aproximadas con fines educativos, basadas en estimaciones ampliamente citadas por organismos internacionales. Pueden variar según la fuente y el año de medición.</div>
-  </div>
-</section>
+                    <h3>5. Contaminación del agua</h3>
+                    <p>El agua es fundamental para la vida y para prácticamente todas las actividades humanas.</p>
+                    <p>Sin embargo, puede contaminarse por:</p>
+                    <ul>
+                        <li>Aguas residuales sin tratamiento adecuado.</li>
+                        <li>Petróleo.</li>
+                        <li>Productos químicos industriales.</li>
+                        <li>Pesticidas.</li>
+                        <li>Fertilizantes.</li>
+                        <li>Metales pesados.</li>
+                        <li>Plásticos.</li>
+                        <li>Desechos domésticos.</li>
+                        <li>Actividades mineras.</li>
+                        <li>Microorganismos patógenos.</li>
+                    </ul>
+                    <p>La contaminación del agua puede provocar enfermedades, afectar la agricultura, reducir la disponibilidad de agua potable y destruir ecosistemas acuáticos.</p>
+                    <p>También tiene consecuencias económicas. Una comunidad que depende de un río contaminado puede perder recursos relacionados con:</p>
+                    <ul>
+                        <li>Pesca.</li>
+                        <li>Agricultura.</li>
+                        <li>Turismo.</li>
+                        <li>Agua potable.</li>
+                        <li>Recreación.</li>
+                    </ul>
+                    <p>Por lo tanto, un problema ambiental puede convertirse rápidamente en un problema económico y social.</p>
 
-<!-- SOLUCIONES -->
-<section id="soluciones" class="solutions">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <h2>Lo que ya se está haciendo</h2>
-    </div>
-    <div class="sol-list reveal">
-      <div class="sol-row">
-        <div class="idx">01</div>
-        <h4>Energías renovables</h4>
-        <p>Solar, eólica e hidroeléctrica están reemplazando gradualmente a los combustibles fósiles en la matriz energética de muchos países.</p>
-      </div>
-      <div class="sol-row">
-        <div class="idx">02</div>
-        <h4>Economía circular</h4>
-        <p>Diseñar productos para reparar, reutilizar y reciclar en lugar de desechar, reduciendo la extracción de nuevos recursos.</p>
-      </div>
-      <div class="sol-row">
-        <div class="idx">03</div>
-        <h4>Políticas públicas y acuerdos internacionales</h4>
-        <p>Marcos como los compromisos climáticos globales buscan coordinar reducciones de emisiones entre países.</p>
-      </div>
-      <div class="sol-row">
-        <div class="idx">04</div>
-        <h4>Innovación tecnológica</h4>
-        <p>Captura de carbono, movilidad eléctrica y agricultura de precisión reducen el impacto ambiental de sectores clave.</p>
-      </div>
-      <div class="sol-row">
-        <div class="idx">05</div>
-        <h4>Restauración de ecosistemas</h4>
-        <p>Reforestación y protección de humedales devuelven capacidad natural de absorción de carbono y regulación hídrica.</p>
-      </div>
-    </div>
-  </div>
-</section>
+                    <h3>6. Contaminación del suelo</h3>
+                    <p>El suelo también puede contaminarse mediante sustancias químicas y residuos.</p>
+                    <p>Algunas causas son:</p>
+                    <ul>
+                        <li>Uso excesivo de pesticidas.</li>
+                        <li>Fertilizantes.</li>
+                        <li>Desechos industriales.</li>
+                        <li>Minería.</li>
+                        <li>Derrames de petróleo.</li>
+                        <li>Vertederos.</li>
+                        <li>Residuos electrónicos.</li>
+                        <li>Productos químicos domésticos.</li>
+                    </ul>
+                    <p>La contaminación del suelo puede disminuir la productividad agrícola y permitir que sustancias peligrosas lleguen a las plantas, animales y seres humanos.</p>
+                    <p>Esto es especialmente importante porque la sociedad depende del suelo para producir gran parte de los alimentos.</p>
 
-<!-- ACCIÓN -->
-<section id="accion">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <h2>Qué puedes hacer tú</h2>
-      <div class="count mono">A escala individual, sí importa</div>
-    </div>
-    <div class="actions-grid reveal">
-      <div class="action-card">
-        <span class="n">01</span>
-        <p>Reduce, reutiliza y recicla —en ese orden de prioridad.</p>
-      </div>
-      <div class="action-card">
-        <span class="n">02</span>
-        <p>Prioriza transporte público, bici o caminar cuando puedas.</p>
-      </div>
-      <div class="action-card">
-        <span class="n">03</span>
-        <p>Consume con conciencia: menos plástico de un solo uso.</p>
-      </div>
-      <div class="action-card">
-        <span class="n">04</span>
-        <p>Ahorra energía y agua en el día a día.</p>
-      </div>
-      <div class="action-card">
-        <span class="n">05</span>
-        <p>Habla del tema: la presión social cambia políticas.</p>
-      </div>
-    </div>
-  </div>
-</section>
+                    <h3>20. Contaminación y biodiversidad</h3>
+                    <p>La contaminación también afecta a animales y plantas.</p>
+                    <p>Por ejemplo:</p>
+                    <ul>
+                        <li>Los plásticos pueden ser ingeridos por animales.</li>
+                        <li>Los productos químicos pueden intoxicar organismos.</li>
+                        <li>La contaminación del agua puede producir zonas con poco oxígeno.</li>
+                        <li>Los pesticidas pueden afectar organismos que no son objetivo.</li>
+                        <li>La contaminación atmosférica puede alterar ecosistemas.</li>
+                        <li>Los residuos pueden destruir hábitats.</li>
+                    </ul>
+                    <p>La pérdida de biodiversidad también afecta a la sociedad porque los ecosistemas proporcionan servicios esenciales como:</p>
+                    <ul>
+                        <li>Polinización.</li>
+                        <li>Agua limpia.</li>
+                        <li>Alimentos.</li>
+                        <li>Regulación climática.</li>
+                        <li>Protección de costas.</li>
+                        <li>Fertilidad del suelo.</li>
+                    </ul>
+                    <p>Por eso, proteger la naturaleza también significa proteger las condiciones que permiten el funcionamiento de las sociedades humanas.</p>
+                `
+            },
+            {
+                title: "La Cultura del Consumo: Residuos, Plásticos y el Costo Económico",
+                excerpt: "Análisis crítico del modelo materialista moderno, la generación incontrolable de basura y el impacto financiero a nivel global.",
+                content: `
+                    <h3>7. El problema de los residuos</h3>
+                    <p>El crecimiento de las ciudades, la población y el consumo ha aumentado considerablemente la cantidad de residuos generados.</p>
+                    <p>Según el Banco Mundial, en 2016 se generaron aproximadamente 2.01 mil millones de toneladas de residuos sólidos municipales en el mundo. El informe What a Waste 2.0 proyectó que esta cantidad podría llegar a 3.40 mil millones de toneladas para 2050 si no se producen cambios importantes.</p>
+                    <p>El problema no consiste solamente en producir basura, sino también en cómo se gestiona.</p>
+                    <p>Cuando los residuos se depositan o queman de manera inadecuada pueden:</p>
+                    <ul>
+                        <li>Contaminar el suelo.</li>
+                        <li>Contaminar las aguas subterráneas.</li>
+                        <li>Liberar contaminantes atmosféricos.</li>
+                        <li>Aumentar el riesgo de inundaciones al bloquear drenajes.</li>
+                        <li>Favorecer la transmisión de enfermedades.</li>
+                        <li>Dañar animales.</li>
+                        <li>Contaminar océanos y ríos.</li>
+                    </ul>
+                    <p>El Banco Mundial señala que una parte importante de los residuos mundiales es gestionada de manera inadecuada y que las consecuencias ambientales y sociales afectan especialmente a las poblaciones más pobres.</p>
 
-<footer>
-  <div class="brand">Aire<span style="color:var(--aqi-unhealthy)">/</span>Límite</div>
-  <div class="fine">Página educativa sobre contaminación ambiental y problemas del siglo XXI. Cifras aproximadas con fines de divulgación.</div>
-</footer>
+                    <img src="https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?q=80&w=1600&auto=format&fit=crop" alt="Residuos y Plásticos" class="blog-media">
 
-<script>
-  // Animar la aguja del medidor AQI al cargar
-  window.addEventListener('DOMContentLoaded', () => {
-    const needle = document.getElementById('needle');
-    // 138 sobre una escala 0-300 aprox mapeada a 180 grados (de -90 a +90)
-    const value = 138, max = 300;
-    const angle = (value / max) * 180 - 90;
-    requestAnimationFrame(() => {
-      needle.style.transform = `rotate(${angle}deg)`;
-    });
-  });
+                    <h3>8. Plásticos y sociedad de consumo</h3>
+                    <p>El plástico representa uno de los ejemplos más claros de la relación entre contaminación y hábitos sociales.</p>
+                    <p>Los plásticos tienen numerosas ventajas: son baratos, ligeros, resistentes y fáciles de producir. Por eso se utilizan en envases, transporte, medicina, construcción, electrónica y prácticamente todos los sectores de la economía.</p>
+                    <p>El problema aparece cuando una sociedad utiliza grandes cantidades de productos de corta duración y posteriormente los desecha.</p>
+                    <p>Entre los principales problemas están:</p>
+                    <ul>
+                        <li>Acumulación de plástico en vertederos.</li>
+                        <li>Contaminación de ríos.</li>
+                        <li>Contaminación marina.</li>
+                        <li>Fragmentación en microplásticos.</li>
+                        <li>Daños a animales.</li>
+                        <li>Dificultad para reciclar determinados productos.</li>
+                    </ul>
+                    <p>El Banco Mundial estimó que los plásticos representan aproximadamente el 12 % de los residuos sólidos municipales considerados en What a Waste 2.0.</p>
+                    <p>Esto demuestra que el problema de los residuos está relacionado con el modelo de consumo.</p>
 
-  // Scroll reveal
-  const revealEls = document.querySelectorAll('.reveal');
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting){
-        e.target.classList.add('in');
-        io.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.12 });
-  revealEls.forEach(el => io.observe(el));
-</script>
+                    <h3>11. Contaminación y economía</h3>
+                    <p>La contaminación también tiene un enorme impacto económico.</p>
+                    <p>Puede generar:</p>
+                    <p><strong>Gastos sanitarios</strong><br>
+                    Las enfermedades asociadas con la contaminación aumentan el gasto de hospitales y sistemas de salud.</p>
+                    <p><strong>Pérdida de productividad</strong><br>
+                    Una persona enferma puede faltar al trabajo o tener una menor capacidad laboral.</p>
+                    <p><strong>Daños a la agricultura</strong><br>
+                    La contaminación y el cambio climático pueden afectar la producción agrícola.</p>
+                    <p><strong>Daños al turismo</strong><br>
+                    Las playas contaminadas, los ríos deteriorados y las ciudades con mala calidad ambiental pueden perder atractivo turístico.</p>
+                    <p><strong>Costos de limpieza</strong><br>
+                    Los gobiernos deben invertir grandes cantidades de dinero para limpiar ríos, gestionar residuos y recuperar ecosistemas.</p>
+                    <p>Por eso, prevenir la contaminación puede ser económicamente más eficiente que solucionar posteriormente sus consecuencias.</p>
 
+                    <h3>19. Economía circular</h3>
+                    <p>Uno de los conceptos importantes para enfrentar la contaminación en el siglo XXI es la economía circular.</p>
+                    <p>El modelo tradicional puede representarse así:</p>
+                    <p>Extraer → producir → consumir → desechar.</p>
+                    <p>La economía circular intenta cambiarlo por:</p>
+                    <p>Reducir → reutilizar → reparar → reciclar → recuperar materiales.</p>
+                    <p>El objetivo es que los materiales permanezcan en circulación durante el mayor tiempo posible.</p>
+                    <p>Esto puede disminuir:</p>
+                    <ul>
+                        <li>Extracción de materias primas.</li>
+                        <li>Consumo energético.</li>
+                        <li>Generación de residuos.</li>
+                        <li>Contaminación.</li>
+                    </ul>
+                    <p>El PNUMA destaca que el consumo creciente de recursos naturales está relacionado con la crisis planetaria de cambio climático, pérdida de biodiversidad y contaminación y residuos.</p>
+                `
+            },
+            {
+                title: "Urbanización, Salud Pública y el Clima del Futuro",
+                excerpt: "Conexión entre la rápida expansión de las ciudades mal planificadas con la crisis sanitaria y el deterioro atmosférico global.",
+                content: `
+                    <h3>10. Urbanización y contaminación</h3>
+                    <p>El siglo XXI se caracteriza por una enorme expansión urbana.</p>
+                    <p>Las ciudades concentran:</p>
+                    <ul>
+                        <li>Personas.</li>
+                        <li>Vehículos.</li>
+                        <li>Industrias.</li>
+                        <li>Construcciones.</li>
+                        <li>Comercios.</li>
+                        <li>Residuos.</li>
+                        <li>Consumo energético.</li>
+                    </ul>
+                    <p>Esto genera oportunidades económicas, pero también aumenta las presiones ambientales.</p>
+                    <p>Una ciudad mal planificada puede presentar:</p>
+                    <ul>
+                        <li>Congestión vehicular.</li>
+                        <li>Mala calidad del aire.</li>
+                        <li>Escasez de áreas verdes.</li>
+                        <li>Problemas de residuos.</li>
+                        <li>Contaminación acústica.</li>
+                        <li>Inundaciones.</li>
+                        <li>Contaminación de ríos.</li>
+                        <li>Elevado consumo energético.</li>
+                    </ul>
+                    <p>Por eso, la planificación urbana es fundamental para reducir la contaminación.</p>
+                    <p>Una ciudad sostenible necesita combinar desarrollo económico, bienestar social y protección ambiental.</p>
+
+                    <img src="https://images.unsplash.com/photo-1449824913935-59a10b8d2000?q=80&w=1600&auto=format&fit=crop" alt="Ciudad y Contaminación" class="blog-media">
+
+                    <h3>9. Contaminación y cambio climático</h3>
+                    <p>Aunque contaminación ambiental y cambio climático no son exactamente lo mismo, están profundamente relacionados.</p>
+                    <p>La utilización de combustibles fósiles produce contaminantes atmosféricos y también gases de efecto invernadero.</p>
+                    <p>Los principales combustibles fósiles son:</p>
+                    <ul>
+                        <li>Carbón.</li>
+                        <li>Petróleo.</li>
+                        <li>Gas natural.</li>
+                    </ul>
+                    <p>Cuando se queman, liberan principalmente dióxido de carbono (CO₂), además de otros contaminantes.</p>
+                    <p>El IPCC concluyó que las actividades humanas, principalmente mediante las emisiones de gases de efecto invernadero, han causado inequívocamente el calentamiento global. La temperatura media de la superficie mundial alcanzó aproximadamente 1,1 °C por encima del período 1850-1900 durante 2011-2020.</p>
+                    <p>El cambio climático puede aumentar problemas sociales como:</p>
+                    <ul>
+                        <li>Olas de calor.</li>
+                        <li>Sequías.</li>
+                        <li>Inundaciones.</li>
+                        <li>Pérdidas agrícolas.</li>
+                        <li>Daños a infraestructura.</li>
+                        <li>Escasez de agua.</li>
+                        <li>Desplazamientos de población.</li>
+                        <li>Pérdidas económicas.</li>
+                    </ul>
+                    <p>Por ello, la contaminación y el cambio climático forman parte de una problemática ambiental mucho más amplia.</p>
+
+                    <h3>12. La contaminación como problema de salud pública</h3>
+                    <p>La contaminación ambiental puede afectar prácticamente todos los aspectos de la salud.</p>
+                    <p>La contaminación atmosférica está relacionada con enfermedades como:</p>
+                    <ul>
+                        <li>Enfermedades cardiovasculares.</li>
+                        <li>Accidentes cerebrovasculares.</li>
+                        <li>Enfermedad pulmonar obstructiva crónica.</li>
+                        <li>Cáncer de pulmón.</li>
+                        <li>Infecciones respiratorias.</li>
+                    </ul>
+                    <p>La OMS también señala que aproximadamente 2.1 mil millones de personas todavía cocinan utilizando combustibles o tecnologías contaminantes, lo que demuestra que la contaminación doméstica continúa siendo un importante problema social.</p>
+                    <p>Esto muestra una característica importante de la contaminación en el siglo XXI: no todas las personas tienen las mismas posibilidades de evitar la exposición.</p>
+
+                    <h3>21. La contaminación en el futuro</h3>
+                    <p>Si las tendencias actuales continúan, algunos problemas ambientales podrían aumentar debido a la combinación de:</p>
+                    <ul>
+                        <li>Crecimiento urbano.</li>
+                        <li>Mayor consumo.</li>
+                        <li>Aumento de residuos.</li>
+                        <li>Cambio climático.</li>
+                        <li>Degradación de ecosistemas.</li>
+                        <li>Mayor demanda de recursos.</li>
+                    </ul>
+                    <p>El Banco Mundial proyectó un aumento considerable de los residuos hacia 2050 si no se modifican los sistemas actuales de producción y gestión.</p>
+                    <p>Por otro lado, el IPCC advierte que los riesgos relacionados con el cambio climático aumentan con cada incremento del calentamiento y que las decisiones tomadas en las próximas décadas tendrán consecuencias duraderas.</p>
+                    <p>Esto convierte al siglo XXI en un período decisivo para modificar la relación entre sociedad y medio ambiente.</p>
+                `
+            },
+            {
+                title: "La Ruta hacia la Sostenibilidad: Roles, Tecnología y Educación",
+                excerpt: "Plan de acción integral sobre el papel de empresas, gobiernos y ciudadanos, cerrando con la importancia vital de la educación ambiental.",
+                content: `
+                    <h3>14. El papel de las empresas</h3>
+                    <p>Las empresas tienen un papel fundamental porque producen bienes y servicios que requieren:</p>
+                    <ul>
+                        <li>Materias primas.</li>
+                        <li>Energía.</li>
+                        <li>Agua.</li>
+                        <li>Transporte.</li>
+                        <li>Empaques.</li>
+                        <li>Infraestructura.</li>
+                    </ul>
+                    <p>Una empresa puede contribuir a la contaminación si utiliza procesos altamente contaminantes o produce grandes cantidades de residuos.</p>
+                    <p>Sin embargo, también puede ser parte de la solución mediante:</p>
+                    <ul>
+                        <li>Energías renovables.</li>
+                        <li>Eficiencia energética.</li>
+                        <li>Reciclaje.</li>
+                        <li>Economía circular.</li>
+                        <li>Reducción de empaques.</li>
+                        <li>Productos reutilizables.</li>
+                        <li>Tecnologías menos contaminantes.</li>
+                        <li>Tratamiento de aguas residuales.</li>
+                    </ul>
+                    <p>Esto ha provocado un cambio importante en el siglo XXI: la sostenibilidad ambiental se ha convertido progresivamente en una cuestión relacionada también con la responsabilidad empresarial.</p>
+
+                    <h3>15. El papel de los gobiernos</h3>
+                    <p>Los gobiernos tienen la responsabilidad de establecer reglas que reduzcan la contaminación.</p>
+                    <p>Entre las medidas posibles están:</p>
+                    <ul>
+                        <li>Límites de emisiones.</li>
+                        <li>Normas de calidad del aire.</li>
+                        <li>Protección de fuentes de agua.</li>
+                        <li>Sistemas de gestión de residuos.</li>
+                        <li>Impuestos o restricciones a contaminantes.</li>
+                        <li>Incentivos para energías renovables.</li>
+                        <li>Transporte público.</li>
+                        <li>Protección de bosques.</li>
+                        <li>Áreas naturales protegidas.</li>
+                        <li>Educación ambiental.</li>
+                        <li>Monitoreo de la contaminación.</li>
+                    </ul>
+                    <p>La cooperación internacional también es importante porque muchos problemas ambientales no respetan fronteras.</p>
+                    <p>La contaminación atmosférica puede desplazarse entre países, los océanos son compartidos y el cambio climático afecta al planeta entero.</p>
+
+                    <img src="https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?q=80&w=1600&auto=format&fit=crop" alt="Tecnología y Sostenibilidad" class="blog-media">
+
+                    <h3>16. El papel de los ciudadanos</h3>
+                    <p>La sociedad no está formada solamente por gobiernos y empresas. Los ciudadanos también pueden influir.</p>
+                    <p>Algunas acciones son:</p>
+                    <ul>
+                        <li>Reducir el consumo innecesario.</li>
+                        <li>Reutilizar productos.</li>
+                        <li>Separar residuos.</li>
+                        <li>Evitar tirar basura.</li>
+                        <li>Utilizar transporte público cuando sea posible.</li>
+                        <li>Caminar o utilizar bicicleta.</li>
+                        <li>Ahorrar electricidad.</li>
+                        <li>Reducir el desperdicio de alimentos.</li>
+                        <li>Evitar productos desechables cuando existan alternativas.</li>
+                        <li>Participar en campañas ambientales.</li>
+                        <li>Exigir políticas ambientales.</li>
+                        <li>Informarse sobre problemas ambientales.</li>
+                    </ul>
+                    <p>Sin embargo, es importante aclarar que la responsabilidad no debe recaer únicamente en los individuos. Las decisiones de gobiernos, industrias y grandes empresas pueden tener un impacto mucho mayor que las acciones aisladas de una persona.</p>
+
+                    <h3>18. Tecnología: problema y solución</h3>
+                    <p>La tecnología tiene una relación ambivalente con el medio ambiente.</p>
+                    <p>Por un lado, el desarrollo tecnológico puede aumentar el consumo de recursos y producir residuos electrónicos.</p>
+                    <p>Por otro, puede ayudar a reducir la contaminación mediante:</p>
+                    <ul>
+                        <li>Paneles solares.</li>
+                        <li>Vehículos eléctricos.</li>
+                        <li>Baterías.</li>
+                        <li>Sistemas de tratamiento de agua.</li>
+                        <li>Sensores de calidad del aire.</li>
+                        <li>Agricultura de precisión.</li>
+                        <li>Reciclaje avanzado.</li>
+                        <li>Sistemas inteligentes de transporte.</li>
+                        <li>Tecnologías de eficiencia energética.</li>
+                    </ul>
+                    <p>Por lo tanto, la pregunta no es simplemente si la tecnología es "buena" o "mala", sino cómo se diseña, utiliza y regula.</p>
+
+                    <h3>17. Educación ambiental</h3>
+                    <p>La educación es fundamental porque las personas necesitan comprender la relación entre sus acciones y el ambiente.</p>
+                    <p>La educación ambiental puede enseñar:</p>
+                    <ul>
+                        <li>Qué es la contaminación.</li>
+                        <li>Cuáles son sus causas.</li>
+                        <li>Cuáles son sus consecuencias.</li>
+                        <li>Cómo reducir los residuos.</li>
+                        <li>Cómo ahorrar recursos.</li>
+                        <li>Cómo proteger los ecosistemas.</li>
+                        <li>Cómo participar en decisiones ambientales.</li>
+                    </ul>
+                    <p>También ayuda a desarrollar una cultura de prevención.</p>
+                    <p>Una sociedad informada puede exigir mejores políticas y tomar decisiones de consumo más responsables.</p>
+
+                    <h3>22. ¿Cómo puede la sociedad enfrentar la contaminación?</h3>
+                    <p>La solución necesita actuar en varios niveles simultáneamente.</p>
+                    <p><strong>A nivel individual</strong><br>Reducir consumo innecesario, reutilizar, reciclar y disminuir desperdicios.</p>
+                    <p><strong>A nivel comunitario</strong><br>Crear programas de limpieza, educación ambiental, reciclaje y protección de espacios naturales.</p>
+                    <p><strong>A nivel empresarial</strong><br>Reducir emisiones y residuos, utilizar energías limpias y diseñar productos más duraderos.</p>
+                    <p><strong>A nivel gubernamental</strong><br>Crear y hacer cumplir leyes ambientales, invertir en infraestructura y mejorar el transporte y la gestión de residuos.</p>
+                    <p><strong>A nivel internacional</strong><br>Cooperar para reducir emisiones, proteger océanos y biodiversidad y apoyar financieramente a países con menos recursos.</p>
+
+                    <h3>23. Conclusión</h3>
+                    <p>La contaminación ambiental es uno de los grandes desafíos de la sociedad del siglo XXI porque está directamente relacionada con la forma en que la humanidad produce, consume, se transporta, construye ciudades y utiliza los recursos naturales.</p>
+                    <p>No se trata solamente de un problema ecológico. La contaminación afecta la salud, economía, educación, calidad de vida, alimentación, disponibilidad de agua, empleo, ciudades y desigualdad social.</p>
+                    <p>La evidencia científica muestra que las actividades humanas están provocando importantes transformaciones ambientales. El IPCC confirma que el calentamiento global es causado inequívocamente por actividades humanas, mientras que la OMS documenta la enorme carga sanitaria asociada con la contaminación del aire.</p>
+                    <p>Al mismo tiempo, el crecimiento de los residuos demuestra cómo los patrones de consumo están conectados con la degradación ambiental. El Banco Mundial proyecta que, sin cambios importantes, la generación mundial de residuos podría alcanzar aproximadamente 3.4 mil millones de toneladas anuales para 2050.</p>
+                    <p>Por ello, enfrentar la contaminación requiere mucho más que pedirle a las personas que "no contaminen". Es necesario transformar sistemas de producción, consumo, energía, transporte, gestión de residuos y planificación urbana, además de fortalecer la educación y las políticas ambientales.</p>
+                    <p>En definitiva, la protección del medio ambiente y el bienestar de la sociedad son dos objetivos inseparables. Una sociedad sostenible es aquella capaz de satisfacer sus necesidades sin destruir las condiciones ambientales que necesitarán las generaciones futuras.</p>
+
+                    <div class="mt-16 p-8 border border-[var(--border-glass)] bg-[#0c0c10] rounded-xl relative overflow-hidden group">
+                        <div class="absolute inset-0 bg-gradient-to-br from-[var(--neon-glow)] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <h4 class="text-[var(--text-muted)] text-xs font-bold uppercase tracking-[0.2em] mb-4 relative z-10">Fuentes Principales</h4>
+                        <ul class="text-sm space-y-2 relative z-10" style="padding-left: 0;">
+                            <li><a href="#" class="text-gray-400 hover:text-[var(--neon-accent)] transition-colors">Organización Mundial de la Salud — Contaminación del aire</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-[var(--neon-accent)] transition-colors">OMS — Contaminación del aire doméstico y salud</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-[var(--neon-accent)] transition-colors">IPCC — Informe de Síntesis del Sexto Informe de Evaluación</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-[var(--neon-accent)] transition-colors">PNUMA — Global Resources Outlook 2024</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-[var(--neon-accent)] transition-colors">Banco Mundial — What a Waste 2.0</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-[var(--neon-accent)] transition-colors">Banco Mundial — Los desechos a nivel mundial crecerán un 70 % para 2050</a></li>
+                        </ul>
+                    </div>
+                `
+            }
+        ];
+
+        const app = {
+            currentIndex: 0,
+            views: {
+                home: document.getElementById('view-home'),
+                reader: document.getElementById('view-reader')
+            },
+            ui: {
+                grid: document.getElementById('cards-container'),
+                title: document.getElementById('reader-title'),
+                content: document.getElementById('reader-content'),
+                btnPrev: document.getElementById('btn-prev'),
+                btnNext: document.getElementById('btn-next'),
+                indicator: document.getElementById('reading-indicator')
+            },
+
+            init: function() {
+                this.renderCards();
+            },
+
+            renderCards: function() {
+                this.ui.grid.innerHTML = '';
+                database.forEach((doc, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'hypr-card group';
+                    card.onclick = () => this.openArticle(index);
+                    
+                    card.innerHTML = `
+                        <p class="text-[var(--neon-accent)] text-xs font-bold uppercase tracking-widest mb-3">Blog 0${index + 1}</p>
+                        <h4 class="text-2xl font-bold text-white mb-4 leading-snug group-hover:text-[var(--neon-accent)] transition-colors duration-300">${doc.title}</h4>
+                        <p class="text-[var(--text-muted)] text-sm leading-relaxed mb-6 flex-grow font-light">${doc.excerpt}</p>
+                        <div class="mt-auto flex items-center text-white text-xs font-medium uppercase tracking-[0.1em] opacity-50 group-hover:opacity-100 transition-opacity">
+                            Leer Investigación <span class="ml-2 transform group-hover:translate-x-1 transition-transform">→</span>
+                        </div>
+                    `;
+                    this.ui.grid.appendChild(card);
+                });
+            },
+
+            openArticle: function(index) {
+                this.currentIndex = index;
+                const doc = database[index];
+                
+                this.ui.title.textContent = doc.title;
+                this.ui.content.innerHTML = doc.content;
+                this.ui.indicator.textContent = `Artículo ${index + 1} de ${database.length}`;
+                
+                this.ui.btnPrev.disabled = index === 0;
+                this.ui.btnNext.disabled = index === database.length - 1;
+
+                this.views.home.classList.remove('active-view');
+                this.views.home.classList.add('hidden-view');
+                
+                setTimeout(() => {
+                    this.views.reader.classList.remove('hidden-view');
+                    this.views.reader.classList.add('active-view');
+                    window.scrollTo({ top: 0, behavior: 'instant' });
+                }, 400); 
+            },
+
+            navigate: function(target) {
+                if (target === 'home') {
+                    this.views.reader.classList.remove('active-view');
+                    this.views.reader.classList.add('hidden-view');
+                    
+                    setTimeout(() => {
+                        this.views.home.classList.remove('hidden-view');
+                        this.views.home.classList.add('active-view');
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }, 400);
+                }
+            },
+
+            prevArticle: function() {
+                if (this.currentIndex > 0) {
+                    this.views.reader.classList.remove('active-view');
+                    setTimeout(() => this.openArticle(this.currentIndex - 1), 400);
+                }
+            },
+
+            nextArticle: function() {
+                if (this.currentIndex < database.length - 1) {
+                    this.views.reader.classList.remove('active-view');
+                    setTimeout(() => this.openArticle(this.currentIndex + 1), 400);
+                }
+            },
+
+            scrollTo: function(id) {
+                if (this.views.reader.classList.contains('active-view')) {
+                    this.navigate('home');
+                    setTimeout(() => this._doScroll(id), 500);
+                } else {
+                    this._doScroll(id);
+                }
+            },
+
+            _doScroll: function(id) {
+                const el = document.getElementById(id);
+                if (el) {
+                    const y = el.getBoundingClientRect().top + window.scrollY - 80;
+                    window.scrollTo({top: y, behavior: 'smooth'});
+                }
+            }
+        };
+
+        // Bootstrap App
+        document.addEventListener('DOMContentLoaded', () => app.init());
+    </script>
 </body>
 </html>
