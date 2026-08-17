@@ -197,7 +197,7 @@
             text-shadow: 0 0 5px var(--neon-accent);
         }
 
-        /* Criterio Técnico: Multimedia MUY OPACA que deje leer, viva en hover */
+        /* MODIFICACIÓN CRÍTICA: Multimedia viva a todo color desde el inicio, sin efecto opaco */
         .blog-media-container {
             position: relative;
             margin: 4rem 0;
@@ -206,35 +206,20 @@
             border: 1px solid var(--border-glass);
             background: #000;
         }
-        
-        .blog-media-container::after {
-            content: 'Pase el cursor para iluminar';
-            position: absolute;
-            bottom: 1rem; right: 1rem;
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: rgba(255,255,255,0.3);
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
-        .blog-media-container:hover::after { opacity: 0; }
 
         .blog-media {
             width: 100%;
             max-height: 500px;
             object-fit: cover;
             display: block;
-            opacity: 0.25; 
-            filter: grayscale(80%) sepia(20%) hue-rotate(180deg) brightness(0.4);
-            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-            transform: scale(1.02);
+            opacity: 1 !important; 
+            filter: none !important;
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: scale(1);
         }
         
         .blog-media-container:hover .blog-media {
-            opacity: 1;
-            filter: grayscale(0%) sepia(0%) brightness(1);
-            transform: scale(1);
+            transform: scale(1.02);
         }
         
         .blog-media-container:hover {
@@ -518,7 +503,7 @@
                     <p>Ante esta realidad objetiva, el <strong>Programa de las Naciones Unidas para el Medio Ambiente (PNUMA)</strong> ha conceptualizado la situación actual no como un simple contratiempo, sino como una <strong style="color: var(--neon-accent);">triple crisis planetaria</strong>: la convergencia sinérgica del cambio climático, la aniquilación de la biodiversidad, y la pandemia de contaminación y residuos.</p>
 
                     <div class="blog-media-container">
-                        <img src="https://images.unsplash.com/photo-1473448912268-2022ce9509d8?q=80&w=1600&auto=format&fit=crop" alt="Industria y Sociedad Compleja" class="blog-media">
+                        <img src="https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?auto=format&fit=crop&w=1600&q=80" alt="Emisiones Industriales" class="blog-media">
                     </div>
 
                     <h3>2. La relación entre contaminación y sociedad</h3>
@@ -607,7 +592,7 @@
                     <p>La contaminación atmosférica trasciende la concepción de "daño ecológico"; es un asalto silencioso y masivo contra el tejido mismo de la salud pública mundial.</p>
 
                     <div class="blog-media-container">
-                        <img src="https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?q=80&w=1600&auto=format&fit=crop" alt="Contaminación Atmosférica y Smog Urbano" class="blog-media">
+                        <img src="https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&w=1600&q=80" alt="Contraste Naturaleza y Contaminación" class="blog-media">
                     </div>
 
                     <h3>5. Contaminación del agua</h3>
@@ -708,7 +693,7 @@
                     <p>El Banco Mundial advierte de manera concluyente que la fracción mayoritaria de los desechos planetarios es manejada bajo estándares medievales (inadecuados). Como dictamina la constante de la injusticia ambiental, la toxicidad y el caos sanitario de esta mala gestión se concentra implacablemente sobre los guetos urbanos y las naciones más empobrecidas del globo.</p>
 
                     <div class="blog-media-container">
-                        <img src="https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?q=80&w=1600&auto=format&fit=crop" alt="Avalancha de Plásticos" class="blog-media">
+                        <img src="https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&w=1600&q=80" alt="Avalancha de Plásticos" class="blog-media">
                     </div>
 
                     <h3>8. Plásticos y sociedad de consumo</h3>
@@ -812,7 +797,7 @@
                     <p>Ergo, la intervención maestra para amputar los brazos de la contaminación moderna reside en el urbanismo inteligente. El diseño de una ciudad sostenible del futuro cercano exige una ingeniería social estricta que armonice la vitalidad económica, la justicia y bienestar social, junto a una infraestructura bio-integrada de protección ambiental.</p>
 
                     <div class="blog-media-container">
-                        <img src="https://images.unsplash.com/photo-1449824913935-59a10b8d2000?q=80&w=1600&auto=format&fit=crop" alt="Ciudad Saturada y Smog" class="blog-media">
+                        <img src="https://images.unsplash.com/photo-1449824913935-59a10b8d2000?auto=format&fit=crop&w=1600&q=80" alt="Ciudad Saturada y Smog" class="blog-media">
                     </div>
 
                     <h3>9. Contaminación y cambio climático</h3>
@@ -931,7 +916,7 @@
                     <p>Dado que la atmósfera y los océanos ignoran soberanamente las líneas trazadas en los mapas geopolíticos (una nube de dióxido de azufre generada en Beijing o New York impacta directamente a ecosistemas a miles de kilómetros), la arquitectura de tratados y vigilancia supranacional (Protocolos Internacionales, Acuerdos de París, Tribunales Ambientales) es la red de seguridad final, pues el clima global y el océano azul es un bien comunal del planeta Tierra en su conjunto.</p>
 
                     <div class="blog-media-container">
-                        <img src="https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?q=80&w=1600&auto=format&fit=crop" alt="Tecnología Renovable y Ciudades del Futuro" class="blog-media">
+                        <img src="https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=1600&q=80" alt="Tecnología Renovable y Ciudades del Futuro" class="blog-media">
                     </div>
 
                     <h3>18. Tecnología: problema y solución</h3>
